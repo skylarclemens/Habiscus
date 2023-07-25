@@ -8,19 +8,59 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: [
+        SortDescriptor(\.created_at, order: .reverse)
+    ]) var habits: FetchedResults<Habit>
+    
+    @State private var addHabitOpen = false
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                Section {
+                    ForEach(habits) { habit in
+                        HabitRow(habit: habit)
+                            .overlay(
+                                NavigationLink {
+                                    HabitView(habit: habit)
+                                } label: {
+                                    EmptyView()
+                                }.opacity(0)
+                            )
+                    }
+                    .onDelete(perform: removeHabits)
+                }
+            }
+            .environment(\.defaultMinListRowHeight, 80)
+            .navigationTitle("Habiscus")
+            .toolbar {
+                Button {
+                    addHabitOpen = true
+                } label: {
+                    Label("Add", systemImage: "plus")
+                }
+            }
+            .sheet(isPresented: $addHabitOpen) {
+                AddHabitView()
+            }
         }
-        .padding()
+        .tint(.pink)
+    }
+    
+    func removeHabits(at offsets: IndexSet) {
+        for offset in offsets {
+            let habit = habits[offset]
+            moc.delete(habit)
+        }
+        try? moc.save()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static var dataController = DataController()
     static var previews: some View {
         ContentView()
+            .environment(\.managedObjectContext, dataController.container.viewContext)
     }
 }

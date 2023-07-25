@@ -7,18 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E3B01982A6D9A2900223905 /* HabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3B01972A6D9A2900223905 /* HabitView.swift */; };
 		7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */; };
 		7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7A12A6B52B9001E0C23 /* ContentView.swift */; };
 		7E67A7A42A6B52BA001E0C23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */; };
 		7E67A7A72A6B52BA001E0C23 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E67A7A62A6B52BA001E0C23 /* Preview Assets.xcassets */; };
+		7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */; };
+		7E67A7B22A6B60CF001E0C23 /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7B12A6B60CF001E0C23 /* AddHabitView.swift */; };
+		7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */; };
+		7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */; };
+		7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */; };
+		7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */; };
+		7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */; };
+		7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */; };
+		7EF1E2B22A6EDE9C00DE3517 /* HabitRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E3B01972A6D9A2900223905 /* HabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitView.swift; sourceTree = "<group>"; };
 		7E67A79C2A6B52B9001E0C23 /* Habiscus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habiscus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusApp.swift; sourceTree = "<group>"; };
 		7E67A7A12A6B52B9001E0C23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7E67A7A62A6B52BA001E0C23 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		7E67A7B12A6B60CF001E0C23 /* AddHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
+		7EE77DE92A6DDBC90058CDF8 /* Habiscus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Habiscus.xcdatamodel; sourceTree = "<group>"; };
+		7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Count+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Count+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7EF1E2B12A6EDE9C00DE3517 /* HabitRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +55,10 @@
 		7E67A7932A6B52B9001E0C23 = {
 			isa = PBXGroup;
 			children = (
+				7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */,
+				7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */,
+				7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */,
+				7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */,
 				7E67A79E2A6B52B9001E0C23 /* Habiscus */,
 				7E67A79D2A6B52B9001E0C23 /* Products */,
 			);
@@ -53,6 +77,12 @@
 			children = (
 				7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */,
 				7E67A7A12A6B52B9001E0C23 /* ContentView.swift */,
+				7EF1E2B12A6EDE9C00DE3517 /* HabitRow.swift */,
+				7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */,
+				7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */,
+				7E3B01972A6D9A2900223905 /* HabitView.swift */,
+				7E67A7B12A6B60CF001E0C23 /* AddHabitView.swift */,
+				7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */,
 				7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */,
 				7E67A7A52A6B52BA001E0C23 /* Preview Content */,
 			);
@@ -137,8 +167,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E67A7B22A6B60CF001E0C23 /* AddHabitView.swift in Sources */,
 				7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */,
+				7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */,
+				7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */,
+				7E3B01982A6D9A2900223905 /* HabitView.swift in Sources */,
+				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,
+				7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */,
+				7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */,
+				7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */,
+				7EF1E2B22A6EDE9C00DE3517 /* HabitRow.swift in Sources */,
 				7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */,
+				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +379,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7EE77DE92A6DDBC90058CDF8 /* Habiscus.xcdatamodel */,
+			);
+			currentVersion = 7EE77DE92A6DDBC90058CDF8 /* Habiscus.xcdatamodel */;
+			path = Habiscus.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 7E67A7942A6B52B9001E0C23 /* Project object */;
 }
