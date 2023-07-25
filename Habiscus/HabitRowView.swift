@@ -13,6 +13,59 @@ extension Date {
     }
 }
 
+struct Checkmark: Shape {
+    func path(in rect: CGRect) -> Path {
+        let width = rect.size.width
+        let height = rect.size.height
+        
+        var path = Path()
+        path.move(to: CGPoint(x: 0, y: 0.5 * height))
+        path.addLine(to: CGPoint(x: 0.4 * width, y: 1.0 * height))
+        path.addLine(to: CGPoint(x: width, y: 0))
+        return path
+    }
+}
+
+struct AnimatedCheckmark: View {
+    var animationDuration: Double = 0.75
+    @State private var innerTrimEnd: CGFloat = 0
+    @State private var scale = 1.0
+    var body: some View {
+        HStack {
+            Checkmark()
+                .trim(from: 0, to: innerTrimEnd)
+                .stroke(.white, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+                .frame(width: 15, height: 15)
+                .scaleEffect(scale)
+        }
+        .onAppear {
+            animate()
+        }
+    }
+    
+    func animate() {
+        withAnimation(
+            .easeInOut(duration: animationDuration * 0.7)
+        ) {
+            innerTrimEnd = 1.0
+        }
+        
+        withAnimation(
+            .linear(duration: animationDuration * 0.2)
+            .delay(animationDuration * 0.6)
+        ) {
+            scale = 1.1
+        }
+        
+        withAnimation(
+            .linear(duration: animationDuration * 0.1)
+            .delay(animationDuration * 0.9)
+        ) {
+            scale = 1
+        }
+    }
+}
+
 struct CircleProgressStyle: ProgressViewStyle {
     let color: Color
     var strokeWidth: Double = 5.0
@@ -41,11 +94,15 @@ struct GoalCounterView: View {
     var body: some View {
         ZStack {
             HStack {
-                Text(currentGoal, format: .number)
-                    .bold()
-                    .foregroundColor(.white)
+                if currentGoal/habit.goalNumber >= 1 {
+                    AnimatedCheckmark()
+                } else {
+                    Text(currentGoal, format: .number)
+                        .bold()
+                        .foregroundColor(.white)
+                }
             }
-            ProgressView(value: Double(currentGoal) / Double(habit.goalCount), total: 1.0)
+            ProgressView(value: Double(currentGoal) / Double(habit.goalNumber), total: 1.0)
                 .progressViewStyle(CircleProgressStyle(color: .yellow, strokeWidth: 5))
                 .frame(width: 50)
                 .animation(.easeOut(duration: 1.5).delay(0.25), value: currentGoal)
@@ -124,7 +181,7 @@ struct HabitRowView_Previews: PreviewProvider {
         habit.name = "Test"
         habit.createdAt = Date.now
         habit.addToCounts(count)
-        habit.goal = 2
+        habit.goal = 1
         habit.goalFrequency = 1
         return List {
             HabitRowView(habit: habit)

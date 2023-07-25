@@ -43,7 +43,7 @@ extension Habit {
         color ?? "pink"
     }
     
-    public var goalCount: Int {
+    public var goalNumber: Int {
         Int(goal)
     }
     
