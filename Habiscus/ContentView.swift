@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.created_at, order: .reverse)
+        SortDescriptor(\.createdAt, order: .reverse)
     ]) var habits: FetchedResults<Habit>
     
     @State private var addHabitOpen = false
@@ -20,7 +20,7 @@ struct ContentView: View {
             List {
                 Section {
                     ForEach(habits) { habit in
-                        HabitRow(habit: habit)
+                        HabitRowView(habit: habit)
                             .overlay(
                                 NavigationLink {
                                     HabitView(habit: habit)
