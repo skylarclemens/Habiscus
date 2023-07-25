@@ -42,6 +42,18 @@ extension Habit {
     public var habitColor: String {
         color ?? "pink"
     }
+    
+    public var goalCount: Int {
+        Int(goal)
+    }
+    
+    public var goalFrequencyNumber: Int {
+        Int(goalFrequency)
+    }
+    
+    public var goalFrequencyString: String {
+        goalFrequency == 1 ? "Daily" : "Weekly"
+    }
 }
 
 // MARK: Generated accessors for counts

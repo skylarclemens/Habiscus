@@ -20,7 +20,7 @@
 		7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */; };
 		7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */; };
 		7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */; };
-		7EF1E2B22A6EDE9C00DE3517 /* HabitRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRow.swift */; };
+		7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,7 +38,7 @@
 		7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Count+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		7EF1E2B12A6EDE9C00DE3517 /* HabitRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRow.swift; sourceTree = "<group>"; };
+		7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +77,7 @@
 			children = (
 				7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */,
 				7E67A7A12A6B52B9001E0C23 /* ContentView.swift */,
-				7EF1E2B12A6EDE9C00DE3517 /* HabitRow.swift */,
+				7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */,
 				7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */,
 				7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */,
 				7E3B01972A6D9A2900223905 /* HabitView.swift */,
@@ -176,7 +176,7 @@
 				7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */,
 				7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */,
 				7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */,
-				7EF1E2B22A6EDE9C00DE3517 /* HabitRow.swift in Sources */,
+				7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */,
 				7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */,
 				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
 			);

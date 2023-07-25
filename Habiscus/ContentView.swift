@@ -20,7 +20,7 @@ struct ContentView: View {
             List {
                 Section {
                     ForEach(habits) { habit in
-                        HabitRow(habit: habit)
+                        HabitRowView(habit: habit)
                             .overlay(
                                 NavigationLink {
                                     HabitView(habit: habit)
