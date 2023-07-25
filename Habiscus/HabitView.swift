@@ -35,7 +35,7 @@ struct HabitView: View {
                             let newCount = Count(context: moc)
                             newCount.id = UUID()
                             newCount.count += 1
-                            newCount.created_at = Date.now
+                            newCount.createdAt = Date.now
                             newCount.habit = habit
                             try? moc.save()
                         } label: {
@@ -121,10 +121,10 @@ struct HabitView_Previews: PreviewProvider {
         let habit = Habit(context: moc)
         let count = Count(context: moc)
         count.count += 1
-        count.created_at = Date.now
+        count.createdAt = Date.now
         count.habit = habit
         habit.name = "Test"
-        habit.created_at = Date.now
+        habit.createdAt = Date.now
         habit.addToCounts(count)
         
         return NavigationStack {

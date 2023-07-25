@@ -54,7 +54,7 @@ struct RemindersView: View {
                 DatePicker("What time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
             } else if repeatValue == "Weekly" {
                 HStack {
-                    Picker("Day", selection: $selectedDay) {
+                    Picker("When?", selection: $selectedDay) {
                         ForEach(Day.allCases, id: \.self) {
                             Text($0.rawValue).tag($0)
                         }
@@ -81,6 +81,10 @@ struct AddHabitView: View {
     @State private var repeatValue = "Daily"
     @State private var selectedDateTime = Date.now
     @State private var selectedDay: Day = .Monday
+    
+    let goalRepeatOptions = ["Daily", "Weekly"]
+    @State private var goalRepeat: String = "Daily"
+    @State private var goalCount: Int = 1
     
     var body: some View {
         NavigationStack {
@@ -113,8 +117,19 @@ struct AddHabitView: View {
                     }
                     .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
                 }
-                .frame(maxWidth: .infinity)
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
+                Section("Goal") {
+                    VStack {
+                        Picker("Repeat", selection: $goalRepeat) {
+                            ForEach(goalRepeatOptions, id: \.self) { option in
+                                Text(option)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        Stepper("\(goalCount) \(goalCount > 1 ? "times" : "time")", value: $goalCount, in: 1...1000)
+                    }
+                    
+                }
                 Section("Reminders") {
                     RemindersView(repeatValue: $repeatValue, selectedDateTime: $selectedDateTime, selectedDay: $selectedDay)
                 }
@@ -129,8 +144,9 @@ struct AddHabitView: View {
                         newHabit.id = UUID()
                         newHabit.name = name
                         newHabit.color = color
-                        newHabit.created_at = Date.now
-                        
+                        newHabit.createdAt = Date.now
+                        newHabit.goal = Int16(goalCount)
+                        newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
                         try? moc.save()
                         setReminderNotification()
                         

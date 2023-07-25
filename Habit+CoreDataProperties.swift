@@ -2,7 +2,7 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 7/24/23.
+//  Created by Skylar Clemens on 7/25/23.
 //
 //
 
@@ -16,10 +16,12 @@ extension Habit {
         return NSFetchRequest<Habit>(entityName: "Habit")
     }
 
-    @NSManaged public var created_at: Date?
+    @NSManaged public var color: String?
+    @NSManaged public var createdAt: Date?
     @NSManaged public var id: UUID?
     @NSManaged public var name: String?
-    @NSManaged public var color: String?
+    @NSManaged public var goal: Int16
+    @NSManaged public var goalFrequency: Int16
     @NSManaged public var counts: NSSet?
     
     public var wrappedName: String {
@@ -27,7 +29,7 @@ extension Habit {
     }
     
     public var formattedCreatedDate: String {
-        created_at?.formatted(.dateTime.day().month().year()) ?? "Date not found"
+        createdAt?.formatted(.dateTime.day().month().year()) ?? "Date not found"
     }
     
     public var countsArray: [Count] {

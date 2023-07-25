@@ -17,12 +17,12 @@ extension Count {
     }
 
     @NSManaged public var id: UUID?
-    @NSManaged public var created_at: Date?
+    @NSManaged public var createdAt: Date?
     @NSManaged public var count: Int16
     @NSManaged public var habit: Habit?
     
     public var wrappedCreatedDate: Date {
-        created_at ?? Date.now
+        createdAt ?? Date.now
     }
     
     public var wrappedCount: Int {
@@ -30,7 +30,7 @@ extension Count {
     }
     
     public var createdDateString: String {
-        created_at?.formatted() ?? "Unknown date"
+        createdAt?.formatted() ?? "Unknown date"
     }
 
 }
