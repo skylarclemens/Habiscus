@@ -10,7 +10,7 @@ import SwiftUI
 struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
-    var date: Date
+    @State var date: Date
     
     var body: some View {
         ZStack {

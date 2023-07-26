@@ -127,6 +127,7 @@ struct GoalCounterView: View {
 struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
+    @State private var animated: Bool = false
     var date: Date
     
     var isCompleted: Bool {
@@ -137,7 +138,7 @@ struct HabitRowView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(habit.habitColor.opacity(0.8))
-                .padding(.vertical, 8)
+                .padding(.vertical, 4)
                 .shadow(color: .black.opacity(isCompleted ? 0 : 0.1), radius: 6, y: 3)
                 .shadow(color: habit.habitColor.opacity(isCompleted ? 0 : 0.5), radius: 4, y: 3)
             HStack {
@@ -166,8 +167,14 @@ struct HabitRowView: View {
         }
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 2, trailing: 16))
         .opacity(isCompleted ? 0.5 : 1)
-        
+        .opacity(animated ? 1 : 0)
+        .onAppear {
+            withAnimation(.spring(response: 1.5, dampingFraction: 1.5)) {
+                animated = true
+            }
+        }
     }
     
     func simpleSuccess() {
