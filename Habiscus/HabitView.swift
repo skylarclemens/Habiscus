@@ -10,7 +10,7 @@ import SwiftUI
 struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
-    @State var date: Date
+    @Binding var date: Date
     
     var body: some View {
         ZStack {
@@ -37,6 +37,7 @@ struct HabitView: View {
                                 let newCount = Count(context: moc)
                                 newCount.id = UUID()
                                 newCount.count += 1
+                                print(Calendar.current.isDateInToday(date) ? Date.now : date)
                                 newCount.createdAt = Calendar.current.isDateInToday(date) ? Date.now : date
                                 newCount.habit = habit
                                 habit.addToCounts(newCount)
@@ -71,6 +72,23 @@ struct HabitView: View {
                     .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
                     .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
                     .padding()
+                    
+                    Button {
+                        if habit.countsArray.count > 0 {
+                            let popCount = habit.countsArray.last!
+                            habit.removeFromCounts(popCount)
+                            try? moc.save()
+                        }
+                    } label: {
+                        Image(systemName: "arrow.uturn.backward.circle.fill")
+                            .renderingMode(.original)
+                            .font(.system(size: 40))
+                            .foregroundColor(habit.habitColor)
+                            
+                    }
+                    .padding()
+                    .shadow(radius: 2)
+                    
                     if habit.countsArray.count > 0 {
                         VStack(alignment: .leading) {
                             Section {
@@ -134,7 +152,7 @@ struct HabitView_Previews: PreviewProvider {
         habit.goalFrequency = 1
         
         return NavigationStack {
-            HabitView(habit: habit, date: Date())
+            HabitView(habit: habit, date: .constant(Date()))
         }
     }
 }
