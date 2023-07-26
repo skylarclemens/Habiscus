@@ -10,8 +10,18 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.createdAt, order: .reverse)
-    ]) var habits: FetchedResults<Habit>
+        SortDescriptor(\.createdAt, order: .reverse),
+    ], animation: .default) var habits: FetchedResults<Habit>
+    var openHabits: [Habit] {
+        habits.filter {
+            $0.goalNumber > $0.findCurrentGoalCount()
+        }
+    }
+    var completedHabits: [Habit] {
+        habits.filter {
+            $0.goalNumber <= $0.findCurrentGoalCount()
+        }
+    }
     
     @State private var addHabitOpen = false
     
@@ -19,7 +29,7 @@ struct ContentView: View {
         NavigationStack {
             List {
                 Section {
-                    ForEach(habits) { habit in
+                    ForEach(openHabits) { habit in
                         HabitRowView(habit: habit)
                             .overlay(
                                 NavigationLink {
@@ -28,12 +38,33 @@ struct ContentView: View {
                                     EmptyView()
                                 }.opacity(0)
                             )
+                            //.animation(Animation.easeInOut, value: habit)
                     }
                     .onDelete(perform: removeHabits)
                 }
+                Section {
+                    ForEach(completedHabits) { habit in
+                        HabitRowView(habit: habit)
+                            .overlay(
+                                NavigationLink {
+                                    HabitView(habit: habit)
+                                } label: {
+                                    EmptyView()
+                                }.opacity(0)
+                            )
+                            //.animation(Animation.easeInOut, value: habit)
+                    }
+                    .onDelete(perform: removeHabits)
+                } header: {
+                    Text("Complete")
+                        .font(.system(.title2 , design: .rounded))
+                        .textCase(nil)
+                        .foregroundColor(.secondary)
+                }
             }
+            .listStyle(.grouped)
             .environment(\.defaultMinListRowHeight, 80)
-            .navigationTitle("Habiscus")
+            .navigationTitle("Today")
             .toolbar {
                 Button {
                     addHabitOpen = true

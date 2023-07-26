@@ -89,42 +89,37 @@ struct GoalCounterView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     
-    @State private var currentGoal: Int = 0
+    @State private var currentGoalCount: Int = 0
+    private var goalCompletion: Double {
+        Double(currentGoalCount) / Double(habit.goalNumber)
+    }
     
     var body: some View {
         ZStack {
             HStack {
-                if currentGoal/habit.goalNumber >= 1 {
-                    AnimatedCheckmark()
+                if goalCompletion >= 1 {
+                    AnimatedCheckmark(animationDuration: 1.25)
                 } else {
-                    Text(currentGoal, format: .number)
+                    Text(currentGoalCount, format: .number)
                         .bold()
                         .foregroundColor(.white)
                 }
             }
-            ProgressView(value: Double(currentGoal) / Double(habit.goalNumber), total: 1.0)
-                .progressViewStyle(CircleProgressStyle(color: .yellow, strokeWidth: 5))
+            ProgressView(value: goalCompletion > 1 ? 1.0 : goalCompletion, total: 1.0)
+                .progressViewStyle(CircleProgressStyle(color: .white, strokeWidth: 6))
                 .frame(width: 50)
-                .animation(.easeOut(duration: 1.5).delay(0.25), value: currentGoal)
+                .animation(.easeOut(duration: 1.5).delay(0.25), value: currentGoalCount)
         }
         .padding(.trailing, 6)
         .onAppear {
-            findCurrentGoal()
+            currentGoalCount = habit.findCurrentGoalCount()
         }
         .onReceive(habit.objectWillChange) {
-            findCurrentGoal()
+            if habit.isDeleted {
+                return
+            }
+            currentGoalCount = habit.findCurrentGoalCount()
         }
-    }
-    
-    func findCurrentGoal() {
-        let today = Date.now
-        
-        let currentGoalCounts = habit.countsArray.filter {
-            let distance = today.fullDistance(from: $0.wrappedCreatedDate, resultIn: .day)!
-            return distance <= habit.goalFrequencyNumber - 1
-        }
-        
-        currentGoal = currentGoalCounts.count
     }
 }
 
@@ -132,35 +127,45 @@ struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     
+    var isCompleted: Bool {
+        habit.goalNumber <= habit.findCurrentGoalCount()
+    }
+    
     var body: some View {
-        HStack {
-            GoalCounterView(habit: habit)
-            Text(habit.wrappedName)
-                .font(.title2)
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-            Spacer()
-            Button {
-                simpleSuccess()
-                let newCount = Count(context: moc)
-                newCount.id = UUID()
-                newCount.count += 1
-                newCount.createdAt = Date.now
-                newCount.habit = habit
-                habit.addToCounts(newCount)
-                try? moc.save()
-            } label: {
-                Image(systemName: "plus")
-            }
-            .tint(.white)
-            .buttonStyle(.bordered)
-        }
-        .listRowBackground(
+        ZStack {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color(habit.habitColor).opacity(0.8))
-                .padding(.vertical, 5)
-        )
+                .fill(habit.habitColor.opacity(0.8))
+                .padding(.vertical, 8)
+                .shadow(color: .black.opacity(isCompleted ? 0 : 0.1), radius: 6, y: 3)
+                .shadow(color: habit.habitColor.opacity(isCompleted ? 0 : 0.5), radius: 4, y: 3)
+            HStack {
+                GoalCounterView(habit: habit)
+                Text(habit.wrappedName)
+                    .font(.title2)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                Spacer()
+                Button {
+                    simpleSuccess()
+                    let newCount = Count(context: moc)
+                    newCount.id = UUID()
+                    newCount.count += 1
+                    newCount.createdAt = Date.now
+                    newCount.habit = habit
+                    habit.addToCounts(newCount)
+                    try? moc.save()
+                } label: {
+                    Image(systemName: "plus")
+                }
+                .tint(.white)
+                .buttonStyle(.bordered)
+            }
+            .padding()
+        }
+        .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
+        .opacity(isCompleted ? 0.5 : 1)
+        
     }
     
     func simpleSuccess() {
@@ -185,6 +190,19 @@ struct HabitRowView_Previews: PreviewProvider {
         habit.goalFrequency = 1
         return List {
             HabitRowView(habit: habit)
-        }.environment(\.defaultMinListRowHeight, 90)
+                .swipeActions {
+                    Button("Delete", role: .destructive) {
+                        
+                    }
+                }
+            HabitRowView(habit: habit)
+                .swipeActions {
+                    Button("Delete", role: .destructive) {
+                        
+                    }
+                }
+        }
+        .listStyle(.grouped)
+        .environment(\.defaultMinListRowHeight, 80)
     }
 }

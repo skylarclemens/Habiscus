@@ -172,11 +172,7 @@ struct AddHabitView: View {
     
     func registerLocal(center: UNUserNotificationCenter) {
         center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
-            if granted {
-                print("Yay!")
-            } else {
-                print("D'oh")
-            }
+            guard granted else {return}
         }
     }
     
