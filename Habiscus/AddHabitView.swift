@@ -147,6 +147,7 @@ struct AddHabitView: View {
                         newHabit.createdAt = Date.now
                         newHabit.goal = Int16(goalCount)
                         newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
+                        newHabit.isCompleted = false
                         try? moc.save()
                         setReminderNotification()
                         

@@ -38,6 +38,10 @@ struct HabitView: View {
                                 newCount.count += 1
                                 newCount.createdAt = Date.now
                                 newCount.habit = habit
+                                habit.addToCounts(newCount)
+                                if habit.goalNumber <= habit.findCurrentGoalCount()  {
+                                    habit.isCompleted = true
+                                }
                                 try? moc.save()
                             } label: {
                                 Image(systemName: "plus")
@@ -46,7 +50,7 @@ struct HabitView: View {
                                     .padding()
                                     .background(
                                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .fill(Color(habit.habitColor).opacity(0.8))
+                                            .fill(habit.habitColor.opacity(0.8))
                                     )
                             }
                         }
@@ -58,16 +62,16 @@ struct HabitView: View {
                                 .fill(.ultraThickMaterial)
                         )
                         .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
-                        .shadow(color: Color(habit.habitColor).opacity(0.3), radius: 10, y: 8)
+                        .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(Color(habit.habitColor))
+                            .fill(habit.habitColor)
                     )
                     .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
-                    .shadow(color: Color(habit.habitColor).opacity(0.3), radius: 10, y: 8)
+                    .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
                     .padding()
                     if habit.countsArray.count > 0 {
                         VStack(alignment: .leading) {
@@ -80,8 +84,8 @@ struct HabitView: View {
                                                 .padding(8)
                                                 .background(
                                                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                                        .fill(Color(habit.habitColor).opacity(0.8))
-                                                        .shadow(color: Color(habit.habitColor).opacity(0.3), radius: 4, y: 2)
+                                                        .fill(habit.habitColor.opacity(0.8))
+                                                        .shadow(color: habit.habitColor.opacity(0.3), radius: 4, y: 2)
                                                 )
                                             Text(count.createdDateString)
                                         }
@@ -130,6 +134,7 @@ struct HabitView_Previews: PreviewProvider {
         habit.addToCounts(count)
         habit.goal = 2
         habit.goalFrequency = 1
+        habit.isCompleted = false
         
         return NavigationStack {
             HabitView(habit: habit)

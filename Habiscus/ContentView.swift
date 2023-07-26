@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: [
+        SortDescriptor(\.isCompleted),
         SortDescriptor(\.createdAt, order: .reverse)
     ]) var habits: FetchedResults<Habit>
     
@@ -28,10 +29,17 @@ struct ContentView: View {
                                     EmptyView()
                                 }.opacity(0)
                             )
+                            .animation(Animation.easeInOut, value: habit)
                     }
                     .onDelete(perform: removeHabits)
+                } header: {
+                    Text("Today")
+                        .textCase(nil)
+                        .foregroundColor(.primary)
+                        .font(.title)
                 }
             }
+            .listStyle(.grouped)
             .environment(\.defaultMinListRowHeight, 80)
             .navigationTitle("Habiscus")
             .toolbar {

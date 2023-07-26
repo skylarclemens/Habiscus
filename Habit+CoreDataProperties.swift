@@ -2,12 +2,13 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 7/25/23.
+//  Created by Skylar Clemens on 7/26/23.
 //
 //
 
 import Foundation
 import CoreData
+import SwiftUI
 
 
 extension Habit {
@@ -18,12 +19,13 @@ extension Habit {
 
     @NSManaged public var color: String?
     @NSManaged public var createdAt: Date?
-    @NSManaged public var id: UUID?
-    @NSManaged public var name: String?
     @NSManaged public var goal: Int16
     @NSManaged public var goalFrequency: Int16
+    @NSManaged public var id: UUID?
+    @NSManaged public var name: String?
+    @NSManaged public var isCompleted: Bool
     @NSManaged public var counts: NSSet?
-    
+
     public var wrappedName: String {
         name ?? "Unkown name"
     }
@@ -39,8 +41,8 @@ extension Habit {
         }
     }
     
-    public var habitColor: String {
-        color ?? "pink"
+    public var habitColor: Color {
+        Color(color ?? "pink")
     }
     
     public var goalNumber: Int {
@@ -53,6 +55,17 @@ extension Habit {
     
     public var goalFrequencyString: String {
         goalFrequency == 1 ? "Daily" : "Weekly"
+    }
+    
+    func findCurrentGoalCount() -> Int {
+        let today = Date.now
+        
+        let currentGoalCounts = self.countsArray.filter {
+            let distance = today.fullDistance(from: $0.wrappedCreatedDate, resultIn: .day)!
+            return distance <= self.goalFrequencyNumber - 1
+        }
+        
+        return currentGoalCounts.count
     }
 }
 
