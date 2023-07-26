@@ -147,7 +147,6 @@ struct AddHabitView: View {
                         newHabit.createdAt = Date.now
                         newHabit.goal = Int16(goalCount)
                         newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
-                        newHabit.isCompleted = false
                         try? moc.save()
                         setReminderNotification()
                         
@@ -173,11 +172,7 @@ struct AddHabitView: View {
     
     func registerLocal(center: UNUserNotificationCenter) {
         center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
-            if granted {
-                print("Yay!")
-            } else {
-                print("D'oh")
-            }
+            guard granted else {return}
         }
     }
     

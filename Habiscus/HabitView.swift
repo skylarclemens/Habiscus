@@ -39,9 +39,6 @@ struct HabitView: View {
                                 newCount.createdAt = Date.now
                                 newCount.habit = habit
                                 habit.addToCounts(newCount)
-                                if habit.goalNumber <= habit.findCurrentGoalCount()  {
-                                    habit.isCompleted = true
-                                }
                                 try? moc.save()
                             } label: {
                                 Image(systemName: "plus")
@@ -134,7 +131,6 @@ struct HabitView_Previews: PreviewProvider {
         habit.addToCounts(count)
         habit.goal = 2
         habit.goalFrequency = 1
-        habit.isCompleted = false
         
         return NavigationStack {
             HabitView(habit: habit)

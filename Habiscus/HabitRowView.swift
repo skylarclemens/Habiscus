@@ -127,13 +127,17 @@ struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     
+    var isCompleted: Bool {
+        habit.goalNumber <= habit.findCurrentGoalCount()
+    }
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(habit.habitColor.opacity(0.8))
                 .padding(.vertical, 8)
-                .shadow(color: .black.opacity(habit.isCompleted ? 0 : 0.1), radius: 6, y: 3)
-                .shadow(color: habit.habitColor.opacity(habit.isCompleted ? 0 : 0.5), radius: 4, y: 3)
+                .shadow(color: .black.opacity(isCompleted ? 0 : 0.1), radius: 6, y: 3)
+                .shadow(color: habit.habitColor.opacity(isCompleted ? 0 : 0.5), radius: 4, y: 3)
             HStack {
                 GoalCounterView(habit: habit)
                 Text(habit.wrappedName)
@@ -149,9 +153,6 @@ struct HabitRowView: View {
                     newCount.createdAt = Date.now
                     newCount.habit = habit
                     habit.addToCounts(newCount)
-                    if habit.goalNumber <= habit.findCurrentGoalCount() {
-                        habit.isCompleted = true
-                    }
                     try? moc.save()
                 } label: {
                     Image(systemName: "plus")
@@ -163,7 +164,7 @@ struct HabitRowView: View {
         }
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
-        .opacity(habit.isCompleted ? 0.5 : 1)
+        .opacity(isCompleted ? 0.5 : 1)
         
     }
     
@@ -187,7 +188,6 @@ struct HabitRowView_Previews: PreviewProvider {
         habit.addToCounts(count)
         habit.goal = 1
         habit.goalFrequency = 1
-        habit.isCompleted = true
         return List {
             HabitRowView(habit: habit)
                 .swipeActions {
