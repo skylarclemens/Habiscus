@@ -8,8 +8,11 @@
 import SwiftUI
 
 extension Date {
-    func fullDistance(from date: Date, resultIn component: Calendar.Component, calendar: Calendar = .current) -> Int? {
-        calendar.dateComponents([component], from: self, to: date).value(for: component)
+    func daysBetweenDates(to date: Date) -> Int? {
+        let dateFromComponent = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: self))
+        let dateToComponent = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: date))
+        let components = Calendar.current.dateComponents([.day], from: dateFromComponent ?? self, to: dateToComponent ?? date)
+        return components.day
     }
 }
 
@@ -89,11 +92,14 @@ struct GoalCounterView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     
-    @State private var currentGoalCount: Int = 0
+    //@State private var currentGoalCount: Int = 0
     private var goalCompletion: Double {
         Double(currentGoalCount) / Double(habit.goalNumber)
     }
-    var date: Date
+    @Binding var date: Date
+    private var currentGoalCount: Int {
+        habit.findGoalCount(on: date)
+    }
     
     var body: some View {
         ZStack {
@@ -112,15 +118,7 @@ struct GoalCounterView: View {
                 .animation(.easeOut(duration: 1.5).delay(0.25), value: currentGoalCount)
         }
         .padding(.trailing, 6)
-        .onAppear {
-            currentGoalCount = habit.findCurrentGoalCount(on: date)
-        }
-        .onReceive(habit.objectWillChange) {
-            if habit.isDeleted {
-                return
-            }
-            currentGoalCount = habit.findCurrentGoalCount(on: date)
-        }
+        
     }
 }
 
@@ -128,11 +126,9 @@ struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     @State private var animated: Bool = false
-    var date: Date
+    @Binding var date: Date
     
-    var isCompleted: Bool {
-        habit.goalNumber <= habit.findCurrentGoalCount(on: date)
-    }
+    var isCompleted: Bool = false
     
     var body: some View {
         ZStack {
@@ -142,7 +138,7 @@ struct HabitRowView: View {
                 .shadow(color: .black.opacity(isCompleted ? 0 : 0.1), radius: 6, y: 3)
                 .shadow(color: habit.habitColor.opacity(isCompleted ? 0 : 0.5), radius: 4, y: 3)
             HStack {
-                GoalCounterView(habit: habit, date: date)
+                GoalCounterView(habit: habit, date: $date)
                 Text(habit.wrappedName)
                     .font(.title2)
                     .fontWeight(.medium)
@@ -198,13 +194,13 @@ struct HabitRowView_Previews: PreviewProvider {
         habit.goal = 1
         habit.goalFrequency = 1
         return List {
-            HabitRowView(habit: habit, date: Date())
+            HabitRowView(habit: habit, date: .constant(Date()))
                 .swipeActions {
                     Button("Delete", role: .destructive) {
                         
                     }
                 }
-            HabitRowView(habit: habit, date: Date())
+            HabitRowView(habit: habit, date: .constant(Date()))
                 .swipeActions {
                     Button("Delete", role: .destructive) {
                         

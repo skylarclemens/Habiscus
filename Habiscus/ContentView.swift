@@ -14,12 +14,12 @@ struct ContentView: View {
     ], animation: .default) var habits: FetchedResults<Habit>
     var openHabits: [Habit] {
         habits.filter {
-            $0.goalNumber > $0.findCurrentGoalCount(on: dateSelected)
+            $0.goalNumber > $0.findGoalCount(on: dateSelected)
         }
     }
     var completedHabits: [Habit] {
         habits.filter {
-            $0.goalNumber <= $0.findCurrentGoalCount(on: dateSelected)
+            $0.goalNumber <= $0.findGoalCount(on: dateSelected)
         }
     }
     
@@ -31,10 +31,10 @@ struct ContentView: View {
             List {
                 Section {
                     ForEach(openHabits) { habit in
-                        HabitRowView(habit: habit, date: dateSelected)
+                        HabitRowView(habit: habit, date: $dateSelected)
                             .overlay(
                                 NavigationLink {
-                                    HabitView(habit: habit, date: dateSelected)
+                                    HabitView(habit: habit, date: $dateSelected)
                                 } label: {
                                     EmptyView()
                                 }.opacity(0)
@@ -48,10 +48,10 @@ struct ContentView: View {
                 if completedHabits.count > 0 {
                     Section {
                         ForEach(completedHabits) { habit in
-                            HabitRowView(habit: habit, date: dateSelected)
+                            HabitRowView(habit: habit, date: $dateSelected, isCompleted: true)
                                 .overlay(
                                     NavigationLink {
-                                        HabitView(habit: habit, date: dateSelected)
+                                        HabitView(habit: habit, date: $dateSelected)
                                     } label: {
                                         EmptyView()
                                     }.opacity(0)
