@@ -10,6 +10,7 @@ import SwiftUI
 struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
+    var date: Date
     
     var body: some View {
         ZStack {
@@ -36,7 +37,7 @@ struct HabitView: View {
                                 let newCount = Count(context: moc)
                                 newCount.id = UUID()
                                 newCount.count += 1
-                                newCount.createdAt = Date.now
+                                newCount.createdAt = Calendar.current.isDateInToday(date) ? Date.now : date
                                 newCount.habit = habit
                                 habit.addToCounts(newCount)
                                 try? moc.save()
@@ -133,7 +134,7 @@ struct HabitView_Previews: PreviewProvider {
         habit.goalFrequency = 1
         
         return NavigationStack {
-            HabitView(habit: habit)
+            HabitView(habit: habit, date: Date())
         }
     }
 }

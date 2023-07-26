@@ -14,57 +14,62 @@ struct ContentView: View {
     ], animation: .default) var habits: FetchedResults<Habit>
     var openHabits: [Habit] {
         habits.filter {
-            $0.goalNumber > $0.findCurrentGoalCount()
+            $0.goalNumber > $0.findCurrentGoalCount(on: dateSelected)
         }
     }
     var completedHabits: [Habit] {
         habits.filter {
-            $0.goalNumber <= $0.findCurrentGoalCount()
+            $0.goalNumber <= $0.findCurrentGoalCount(on: dateSelected)
         }
     }
     
     @State private var addHabitOpen = false
+    @State private var dateSelected: Date = Date()
     
     var body: some View {
         NavigationStack {
             List {
                 Section {
                     ForEach(openHabits) { habit in
-                        HabitRowView(habit: habit)
+                        HabitRowView(habit: habit, date: dateSelected)
                             .overlay(
                                 NavigationLink {
-                                    HabitView(habit: habit)
+                                    HabitView(habit: habit, date: dateSelected)
                                 } label: {
                                     EmptyView()
                                 }.opacity(0)
                             )
-                            //.animation(Animation.easeInOut, value: habit)
-                    }
-                    .onDelete(perform: removeHabits)
-                }
-                Section {
-                    ForEach(completedHabits) { habit in
-                        HabitRowView(habit: habit)
-                            .overlay(
-                                NavigationLink {
-                                    HabitView(habit: habit)
-                                } label: {
-                                    EmptyView()
-                                }.opacity(0)
-                            )
-                            //.animation(Animation.easeInOut, value: habit)
                     }
                     .onDelete(perform: removeHabits)
                 } header: {
-                    Text("Complete")
-                        .font(.system(.title2 , design: .rounded))
-                        .textCase(nil)
-                        .foregroundColor(.secondary)
+                    DatePicker("Date", selection: $dateSelected, in: ...Date(), displayedComponents: [.date])
+                            .labelsHidden()
+                }
+                if completedHabits.count > 0 {
+                    Section {
+                        ForEach(completedHabits) { habit in
+                            HabitRowView(habit: habit, date: dateSelected)
+                                .overlay(
+                                    NavigationLink {
+                                        HabitView(habit: habit, date: dateSelected)
+                                    } label: {
+                                        EmptyView()
+                                    }.opacity(0)
+                                )
+                        }
+                        .onDelete(perform: removeHabits)
+                    } header: {
+                        Text("Complete")
+                            .font(.system(.title2 , design: .rounded))
+                            .textCase(nil)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
             .listStyle(.grouped)
+            .scrollContentBackground(.hidden)
             .environment(\.defaultMinListRowHeight, 80)
-            .navigationTitle("Today")
+            .navigationTitle("Home")
             .toolbar {
                 Button {
                     addHabitOpen = true

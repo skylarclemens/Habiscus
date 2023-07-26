@@ -56,17 +56,6 @@ extension Habit {
         goalFrequency == 1 ? "Daily" : "Weekly"
     }
     
-    func findCurrentGoalCount() -> Int {
-        let today = Date.now
-        
-        let currentGoalCounts = self.countsArray.filter {
-            let distance = today.fullDistance(from: $0.wrappedCreatedDate, resultIn: .day)!
-            return distance <= self.goalFrequencyNumber - 1
-        }
-        
-        return currentGoalCounts.count
-    }
-    
     func findCurrentGoalCount(on date: Date) -> Int {
         let currentGoalCounts = self.countsArray.filter {
             let distance = date.fullDistance(from: $0.wrappedCreatedDate, resultIn: .day)!

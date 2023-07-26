@@ -93,6 +93,7 @@ struct GoalCounterView: View {
     private var goalCompletion: Double {
         Double(currentGoalCount) / Double(habit.goalNumber)
     }
+    var date: Date
     
     var body: some View {
         ZStack {
@@ -112,13 +113,13 @@ struct GoalCounterView: View {
         }
         .padding(.trailing, 6)
         .onAppear {
-            currentGoalCount = habit.findCurrentGoalCount()
+            currentGoalCount = habit.findCurrentGoalCount(on: date)
         }
         .onReceive(habit.objectWillChange) {
             if habit.isDeleted {
                 return
             }
-            currentGoalCount = habit.findCurrentGoalCount()
+            currentGoalCount = habit.findCurrentGoalCount(on: date)
         }
     }
 }
@@ -126,9 +127,10 @@ struct GoalCounterView: View {
 struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
+    var date: Date
     
     var isCompleted: Bool {
-        habit.goalNumber <= habit.findCurrentGoalCount()
+        habit.goalNumber <= habit.findCurrentGoalCount(on: date)
     }
     
     var body: some View {
@@ -139,7 +141,7 @@ struct HabitRowView: View {
                 .shadow(color: .black.opacity(isCompleted ? 0 : 0.1), radius: 6, y: 3)
                 .shadow(color: habit.habitColor.opacity(isCompleted ? 0 : 0.5), radius: 4, y: 3)
             HStack {
-                GoalCounterView(habit: habit)
+                GoalCounterView(habit: habit, date: date)
                 Text(habit.wrappedName)
                     .font(.title2)
                     .fontWeight(.medium)
@@ -150,7 +152,7 @@ struct HabitRowView: View {
                     let newCount = Count(context: moc)
                     newCount.id = UUID()
                     newCount.count += 1
-                    newCount.createdAt = Date.now
+                    newCount.createdAt = Calendar.current.isDateInToday(date) ? Date.now : date
                     newCount.habit = habit
                     habit.addToCounts(newCount)
                     try? moc.save()
@@ -189,13 +191,13 @@ struct HabitRowView_Previews: PreviewProvider {
         habit.goal = 1
         habit.goalFrequency = 1
         return List {
-            HabitRowView(habit: habit)
+            HabitRowView(habit: habit, date: Date())
                 .swipeActions {
                     Button("Delete", role: .destructive) {
                         
                     }
                 }
-            HabitRowView(habit: habit)
+            HabitRowView(habit: habit, date: Date())
                 .swipeActions {
                     Button("Delete", role: .destructive) {
                         
