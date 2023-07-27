@@ -118,7 +118,6 @@ struct GoalCounterView: View {
                 .animation(.easeOut(duration: 1.5).delay(0.25), value: currentGoalCount)
         }
         .padding(.trailing, 6)
-        
     }
 }
 
@@ -134,9 +133,9 @@ struct HabitRowView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(habit.habitColor.opacity(0.8))
-                .padding(.vertical, 4)
                 .shadow(color: .black.opacity(isCompleted ? 0 : 0.1), radius: 6, y: 3)
                 .shadow(color: habit.habitColor.opacity(isCompleted ? 0 : 0.5), radius: 4, y: 3)
+                .padding(.vertical, 2)
             HStack {
                 GoalCounterView(habit: habit, date: $date)
                 Text(habit.wrappedName)
@@ -172,11 +171,25 @@ struct HabitRowView: View {
                 animated = true
             }
         }
+        .contextMenu {
+            Group {
+                Button {
+                    removeHabit(habit)
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
+        }
     }
     
     func simpleSuccess() {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
+    }
+    
+    func removeHabit(_ habit: Habit) {
+        moc.delete(habit)
+        try? moc.save()
     }
 }
 
@@ -209,6 +222,5 @@ struct HabitRowView_Previews: PreviewProvider {
                 }
         }
         .listStyle(.grouped)
-        .environment(\.defaultMinListRowHeight, 80)
     }
 }

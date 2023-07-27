@@ -9,80 +9,28 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.createdAt, order: .reverse),
-    ], animation: .default) var habits: FetchedResults<Habit>
-    var openHabits: [Habit] {
-        habits.filter {
-            $0.goalNumber > $0.findGoalCount(on: dateSelected)
-        }
-    }
-    var completedHabits: [Habit] {
-        habits.filter {
-            $0.goalNumber <= $0.findGoalCount(on: dateSelected)
-        }
-    }
-    
     @State private var addHabitOpen = false
     @State private var dateSelected: Date = Date()
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                Text(checkCloseDate().uppercased())
-                    .font(.subheadline)
-                    .frame(height: 16)
-                Text(dateSelected, format: .dateTime.month().day())
-                    .font(.system(size: 40, weight: .medium, design: .rounded))
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal)
-            }
-            .animation(.spring(), value: dateSelected)
-            
-            
-            WeekView(selectedDate: $dateSelected)
-                .frame(height: 60)
-                .padding(.bottom, 16)
-                .offset(y: -20)
-            List {
-                Section {
-                    ForEach(openHabits) { habit in
-                        HabitRowView(habit: habit, date: $dateSelected)
-                            .overlay(
-                                NavigationLink {
-                                    HabitView(habit: habit, date: $dateSelected)
-                                } label: {
-                                    EmptyView()
-                                }.opacity(0)
-                            )
-                    }
-                    .onDelete(perform: removeHabits)
+            VStack {
+                VStack(spacing: 0) {
+                    Text(checkCloseDate().uppercased())
+                        .font(.subheadline)
+                        .frame(height: 16)
+                    Text(dateSelected, format: .dateTime.month().day())
+                        .font(.system(size: 40, weight: .medium, design: .rounded))
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal)
                 }
-                if completedHabits.count > 0 {
-                    Section {
-                        ForEach(completedHabits) { habit in
-                            HabitRowView(habit: habit, date: $dateSelected, isCompleted: true)
-                                .overlay(
-                                    NavigationLink {
-                                        HabitView(habit: habit, date: $dateSelected)
-                                    } label: {
-                                        EmptyView()
-                                    }.opacity(0)
-                                )
-                        }
-                        .onDelete(perform: removeHabits)
-                    } header: {
-                        Text("Complete")
-                            .font(.system(.title2 , design: .rounded))
-                            .textCase(nil)
-                            .foregroundColor(.secondary)
-                    }
-                }
+                .animation(.spring(), value: dateSelected)
+                WeekView(selectedDate: $dateSelected)
+                    .frame(height: 60)
+                    .padding(.bottom, 16)
+                    .offset(y: -15)
+                HabitListView(dateSelected: $dateSelected)
             }
-            .offset(y: -40)
-            .listStyle(.grouped)
-            .scrollContentBackground(.hidden)
-            .environment(\.defaultMinListRowHeight, 80)
             .toolbar {
                 Button {
                     addHabitOpen = true
@@ -95,14 +43,6 @@ struct ContentView: View {
             }
         }
         .tint(.pink)
-    }
-    
-    func removeHabits(at offsets: IndexSet) {
-        for offset in offsets {
-            let habit = habits[offset]
-            moc.delete(habit)
-        }
-        try? moc.save()
     }
     
     func checkCloseDate() -> String {
