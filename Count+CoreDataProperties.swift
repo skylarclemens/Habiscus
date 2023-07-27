@@ -2,7 +2,7 @@
 //  Count+CoreDataProperties.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 7/23/23.
+//  Created by Skylar Clemens on 7/26/23.
 //
 //
 
@@ -16,9 +16,10 @@ extension Count {
         return NSFetchRequest<Count>(entityName: "Count")
     }
 
-    @NSManaged public var id: UUID?
-    @NSManaged public var createdAt: Date?
     @NSManaged public var count: Int16
+    @NSManaged public var createdAt: Date?
+    @NSManaged public var id: UUID?
+    @NSManaged public var date: Date?
     @NSManaged public var habit: Habit?
     
     public var wrappedCreatedDate: Date {
@@ -31,6 +32,14 @@ extension Count {
     
     public var createdDateString: String {
         createdAt?.formatted() ?? "Unknown date"
+    }
+
+    public var wrappedDate: Date {
+        date ?? Date.now
+    }
+    
+    public var dateString: String {
+        date?.formatted() ?? "Unknown date"
     }
 
 }
