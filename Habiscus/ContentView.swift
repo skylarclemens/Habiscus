@@ -28,6 +28,22 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
+            VStack(spacing: 0) {
+                Text(checkCloseDate().uppercased())
+                    .font(.subheadline)
+                    .frame(height: 16)
+                Text(dateSelected, format: .dateTime.month().day())
+                    .font(.system(size: 40, weight: .medium, design: .rounded))
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal)
+            }
+            .animation(.spring(), value: dateSelected)
+            
+            
+            WeekView(selectedDate: $dateSelected)
+                .frame(height: 60)
+                .padding(.bottom, 16)
+                .offset(y: -20)
             List {
                 Section {
                     ForEach(openHabits) { habit in
@@ -41,9 +57,6 @@ struct ContentView: View {
                             )
                     }
                     .onDelete(perform: removeHabits)
-                } header: {
-                    DatePicker("Date", selection: $dateSelected, in: ...Date(), displayedComponents: [.date])
-                            .labelsHidden()
                 }
                 if completedHabits.count > 0 {
                     Section {
@@ -66,10 +79,10 @@ struct ContentView: View {
                     }
                 }
             }
+            .offset(y: -40)
             .listStyle(.grouped)
             .scrollContentBackground(.hidden)
             .environment(\.defaultMinListRowHeight, 80)
-            .navigationTitle("Home")
             .toolbar {
                 Button {
                     addHabitOpen = true
@@ -90,6 +103,17 @@ struct ContentView: View {
             moc.delete(habit)
         }
         try? moc.save()
+    }
+    
+    func checkCloseDate() -> String {
+        if Calendar.current.isDateInToday(dateSelected) {
+            return "Today"
+        } else if Calendar.current.isDateInYesterday(dateSelected) {
+            return "Yesterday"
+        } else if Calendar.current.isDateInTomorrow(dateSelected) {
+            return "Tomorrow"
+        }
+        return ""
     }
 }
 
