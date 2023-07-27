@@ -37,8 +37,8 @@ struct HabitView: View {
                                 let newCount = Count(context: moc)
                                 newCount.id = UUID()
                                 newCount.count += 1
-                                print(Calendar.current.isDateInToday(date) ? Date.now : date)
-                                newCount.createdAt = Calendar.current.isDateInToday(date) ? Date.now : date
+                                newCount.createdAt = Date.now
+                                newCount.date = Calendar.current.isDateInToday(date) ? Date.now : date
                                 newCount.habit = habit
                                 habit.addToCounts(newCount)
                                 try? moc.save()
@@ -75,8 +75,10 @@ struct HabitView: View {
                     
                     Button {
                         if habit.countsArray.count > 0 {
-                            let popCount = habit.countsArray.last!
-                            habit.removeFromCounts(popCount)
+                            let mostRecentCount = habit.countsArray.reduce(habit.countsArray[0], {
+                                $0.wrappedCreatedDate > $1.wrappedCreatedDate ? $0 : $1
+                            })
+                            habit.removeFromCounts(mostRecentCount)
                             try? moc.save()
                         }
                     } label: {
@@ -86,6 +88,7 @@ struct HabitView: View {
                             .foregroundColor(habit.habitColor)
                             
                     }
+                    .accessibilityLabel("Undo last count")
                     .padding()
                     .shadow(radius: 2)
                     
@@ -103,7 +106,7 @@ struct HabitView: View {
                                                         .fill(habit.habitColor.opacity(0.8))
                                                         .shadow(color: habit.habitColor.opacity(0.3), radius: 4, y: 2)
                                                 )
-                                            Text(count.createdDateString)
+                                            Text(count.dateString)
                                         }
                                     }
                                 }
@@ -144,6 +147,7 @@ struct HabitView_Previews: PreviewProvider {
         let count = Count(context: moc)
         count.count += 1
         count.createdAt = Date.now
+        count.date = Date.now
         count.habit = habit
         habit.name = "Test"
         habit.createdAt = Date.now

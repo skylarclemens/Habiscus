@@ -149,7 +149,8 @@ struct HabitRowView: View {
                     let newCount = Count(context: moc)
                     newCount.id = UUID()
                     newCount.count += 1
-                    newCount.createdAt = Calendar.current.isDateInToday(date) ? Date.now : date
+                    newCount.createdAt = Date.now
+                    newCount.date = Calendar.current.isDateInToday(date) ? Date.now : date
                     newCount.habit = habit
                     habit.addToCounts(newCount)
                     try? moc.save()
