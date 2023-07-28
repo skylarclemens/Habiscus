@@ -15,20 +15,22 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                VStack(spacing: 0) {
-                    Text(checkCloseDate().uppercased())
-                        .font(.subheadline)
-                        .frame(height: 16)
-                    Text(dateSelected, format: .dateTime.month().day())
-                        .font(.system(size: 40, weight: .medium, design: .rounded))
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal)
+                VStack {
+                    VStack(spacing: 0) {
+                        Text(checkCloseDate().uppercased())
+                            .font(.subheadline)
+                            .frame(height: 16)
+                        Text(dateSelected, format: .dateTime.month().day())
+                            .font(.system(size: 40, weight: .medium, design: .rounded))
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal)
+                    }
+                    .animation(.spring(), value: dateSelected)
+                    WeekView(selectedDate: $dateSelected)
+                        .frame(height: 60)
+                        .padding(.bottom, 16)
+                        .offset(y: -15)
                 }
-                .animation(.spring(), value: dateSelected)
-                WeekView(selectedDate: $dateSelected)
-                    .frame(height: 60)
-                    .padding(.bottom, 16)
-                    .offset(y: -15)
                 HabitListView(dateSelected: $dateSelected)
             }
             .toolbar {
@@ -52,8 +54,11 @@ struct ContentView: View {
             return "Yesterday"
         } else if Calendar.current.isDateInTomorrow(dateSelected) {
             return "Tomorrow"
+        } else {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "EEEE"
+            return dateFormatter.string(from: dateSelected)
         }
-        return ""
     }
 }
 

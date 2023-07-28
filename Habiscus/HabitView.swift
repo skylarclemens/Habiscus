@@ -12,85 +12,85 @@ struct HabitView: View {
     @ObservedObject var habit: Habit
     @Binding var date: Date
     
+    init(habit: Habit, date: Binding<Date>) {
+        self.habit = habit
+        self._date = date
+    }
+    
     var body: some View {
-        ZStack {
-            Rectangle()
-                .fill(Color(UIColor.quaternarySystemFill))
-                .ignoresSafeArea()
+        ZStack(alignment: .top) {
             ScrollView {
                 VStack(alignment: .leading) {
                     HStack {
                         VStack(alignment: .leading) {
                             Text(habit.wrappedName)
-                                .font(.largeTitle)
+                                .font(.system(.largeTitle, design: .rounded))
                                 .foregroundColor(.white)
                             Text("Goal: \(habit.goalNumber) \(habit.goalFrequencyString)")
                                 .foregroundColor(.white.opacity(0.9))
                         }
                         Spacer()
-                        HStack(spacing: 16) {
-                            Text(habit.countsArray.count, format: .number)
-                                .font(.title)
-                                .foregroundColor(.primary)
-                            Button {
-                                simpleSuccess()
-                                let newCount = Count(context: moc)
-                                newCount.id = UUID()
-                                newCount.count += 1
-                                newCount.createdAt = Date.now
-                                newCount.date = Calendar.current.isDateInToday(date) ? Date.now : date
-                                newCount.habit = habit
-                                habit.addToCounts(newCount)
-                                try? moc.save()
-                            } label: {
-                                Image(systemName: "plus")
-                                    .bold()
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .fill(habit.habitColor.opacity(0.8))
-                                    )
+                        VStack {
+                            HStack {
+                                Button {
+                                    if habit.countsArray.count > 0 {
+                                        let mostRecentCount = habit.countsArray.reduce(habit.countsArray[0], {
+                                            $0.wrappedCreatedDate > $1.wrappedCreatedDate ? $0 : $1
+                                        })
+                                        habit.removeFromCounts(mostRecentCount)
+                                        try? moc.save()
+                                    }
+                                } label: {
+                                    Image(systemName: "arrow.uturn.backward.circle.fill")
+                                        .renderingMode(.original)
+                                        .font(.system(size: 38))
+                                        .foregroundColor(habit.habitColor)
+                                        .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+                                        
+                                }
+                                .accessibilityLabel("Undo last count")
+                                GoalCounterView(habit: habit, size: 60, date: $date)
+                                Button {
+                                    simpleSuccess()
+                                    let newCount = Count(context: moc)
+                                    newCount.id = UUID()
+                                    newCount.count += 1
+                                    newCount.createdAt = Date.now
+                                    newCount.date = Calendar.current.isDateInToday(date) ? Date.now : date
+                                    newCount.habit = habit
+                                    habit.addToCounts(newCount)
+                                    try? moc.save()
+                                } label: {
+                                    Image(systemName: "plus")
+                                        .bold()
+                                        .foregroundColor(.white)
+                                        .padding(10)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                                .fill(habit.habitColor)
+                                                .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+                                        )
+                                }
                             }
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 8)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(.ultraThinMaterial)
+                            )
+                            .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+                            .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
                         }
-                        .padding(.vertical, 10)
-                        .padding(.leading, 16)
-                        .padding(.trailing, 10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(.ultraThickMaterial)
-                        )
-                        .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
-                        .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .fill(habit.habitColor)
+                            .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+                            .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
                     )
-                    .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
-                    .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
-                    .padding()
-                    
-                    Button {
-                        if habit.countsArray.count > 0 {
-                            let mostRecentCount = habit.countsArray.reduce(habit.countsArray[0], {
-                                $0.wrappedCreatedDate > $1.wrappedCreatedDate ? $0 : $1
-                            })
-                            habit.removeFromCounts(mostRecentCount)
-                            try? moc.save()
-                        }
-                    } label: {
-                        Image(systemName: "arrow.uturn.backward.circle.fill")
-                            .renderingMode(.original)
-                            .font(.system(size: 40))
-                            .foregroundColor(habit.habitColor)
-                            
-                    }
-                    .accessibilityLabel("Undo last count")
-                    .padding()
-                    .shadow(radius: 2)
+                    .padding(.horizontal)
                     
                     if habit.countsArray.count > 0 {
                         VStack(alignment: .leading) {
@@ -102,7 +102,7 @@ struct HabitView: View {
                                                 .foregroundColor(.white)
                                                 .padding(8)
                                                 .background(
-                                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
                                                         .fill(habit.habitColor.opacity(0.8))
                                                         .shadow(color: habit.habitColor.opacity(0.3), radius: 4, y: 2)
                                                 )
@@ -131,6 +131,7 @@ struct HabitView: View {
         }
         .navigationTitle(habit.wrappedName)
         .navigationBarTitleDisplayMode(.inline)
+        .tint(.white)
     }
     
     func simpleSuccess() {
