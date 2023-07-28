@@ -24,6 +24,10 @@ struct HabitRowView: View {
     
     var isCompleted: Bool = false
     
+    private var habitManager: HabitManager {
+        HabitManager(context: moc, habit: habit)
+    }
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -40,14 +44,7 @@ struct HabitRowView: View {
                 Spacer()
                 Button {
                     simpleSuccess()
-                    let newCount = Count(context: moc)
-                    newCount.id = UUID()
-                    newCount.count += 1
-                    newCount.createdAt = Date.now
-                    newCount.date = Calendar.current.isDateInToday(date) ? Date.now : date
-                    newCount.habit = habit
-                    habit.addToCounts(newCount)
-                    try? moc.save()
+                    habitManager.addNewCount(date: date)
                 } label: {
                     Image(systemName: "plus")
                         .bold()
@@ -75,18 +72,12 @@ struct HabitRowView: View {
         .contextMenu {
             Group {
                 Button {
-                    if habit.countsArray.count > 0 {
-                        let mostRecentCount = habit.countsArray.reduce(habit.countsArray[0], {
-                            $0.wrappedCreatedDate > $1.wrappedCreatedDate ? $0 : $1
-                        })
-                        habit.removeFromCounts(mostRecentCount)
-                        try? moc.save()
-                    }
+                    habitManager.undoLastCount()
                 } label: {
                     Label("Undo last count", systemImage: "arrow.uturn.backward")
                 }
                 Button(role: .destructive) {
-                    removeHabit(habit)
+                    habitManager.removeHabit()
                 } label: {
                     Label("Delete", systemImage: "trash")
                 }
@@ -97,11 +88,6 @@ struct HabitRowView: View {
     func simpleSuccess() {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
-    }
-    
-    func removeHabit(_ habit: Habit) {
-        moc.delete(habit)
-        try? moc.save()
     }
 }
 

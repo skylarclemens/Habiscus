@@ -6,20 +6,24 @@
 //
 
 import SwiftUI
+import Charts
 
 struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     @Binding var date: Date
-    var countsByDate: [Count] {
+    private var countsByDate: [Count] {
         habit.countsArray.filter {
             Calendar.current.isDate($0.wrappedDate, inSameDayAs: date)
         }
     }
-    
-    var showEntries: Bool {
+    private var habitManager: HabitManager {
+        HabitManager(context: moc, habit: habit)
+    }
+    private var showEntries: Bool {
         countsByDate.count > 0
     }
+    
     init(habit: Habit, date: Binding<Date>) {
         self.habit = habit
         self._date = date
@@ -41,13 +45,7 @@ struct HabitView: View {
                         VStack {
                             HStack {
                                 Button {
-                                    if habit.countsArray.count > 0 {
-                                        let mostRecentCount = habit.countsArray.reduce(habit.countsArray[0], {
-                                            $0.wrappedCreatedDate > $1.wrappedCreatedDate ? $0 : $1
-                                        })
-                                        habit.removeFromCounts(mostRecentCount)
-                                        try? moc.save()
-                                    }
+                                    habitManager.undoLastCount()
                                 } label: {
                                     Image(systemName: "arrow.uturn.backward.circle.fill")
                                         .renderingMode(.original)
@@ -60,14 +58,7 @@ struct HabitView: View {
                                 GoalCounterView(habit: habit, size: 60, date: $date)
                                 Button {
                                     simpleSuccess()
-                                    let newCount = Count(context: moc)
-                                    newCount.id = UUID()
-                                    newCount.count += 1
-                                    newCount.createdAt = Date.now
-                                    newCount.date = Calendar.current.isDateInToday(date) ? Date.now : date
-                                    newCount.habit = habit
-                                    habit.addToCounts(newCount)
-                                    try? moc.save()
+                                    habitManager.addNewCount(date: date)
                                 } label: {
                                     Image(systemName: "plus")
                                         .bold()
@@ -99,6 +90,19 @@ struct HabitView: View {
                             .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
                     )
                     .padding(.horizontal)
+                    
+                    
+                    VStack {
+                        Text("Streaks")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background {
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(.ultraThinMaterial)
+                            .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                    }
+                    .padding()
+                    
                     
                     WeekView(selectedDate: $date)
                         .frame(height: 80)
