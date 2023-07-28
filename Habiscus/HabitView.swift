@@ -11,7 +11,15 @@ struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     @Binding var date: Date
+    var countsByDate: [Count] {
+        habit.countsArray.filter {
+            Calendar.current.isDate($0.wrappedDate, inSameDayAs: date)
+        }
+    }
     
+    var showEntries: Bool {
+        countsByDate.count > 0
+    }
     init(habit: Habit, date: Binding<Date>) {
         self.habit = habit
         self._date = date
@@ -92,11 +100,14 @@ struct HabitView: View {
                     )
                     .padding(.horizontal)
                     
-                    if habit.countsArray.count > 0 {
-                        VStack(alignment: .leading) {
-                            Section {
-                                VStack(alignment: .leading) {
-                                    ForEach(habit.countsArray) { count in
+                    WeekView(selectedDate: $date)
+                        .frame(height: 80)
+                        .padding(.top, 16)
+                    VStack {
+                        if showEntries {
+                            VStack(alignment: .leading) {
+                                Section {
+                                    ForEach(countsByDate) { count in
                                         HStack(spacing: 12) {
                                             Text("+\(count.wrappedCount)")
                                                 .foregroundColor(.white)
@@ -109,23 +120,27 @@ struct HabitView: View {
                                             Text(count.dateString)
                                         }
                                     }
+                                } header: {
+                                    Text("Entries")
+                                        .font(.headline)
+                                        .padding(.bottom, 4)
                                 }
-                            } header: {
-                                Text("Entries")
-                                    .font(.headline)
-                                    .padding(.bottom, 4)
                             }
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(.ultraThinMaterial)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                            )
+                            .padding()
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing).combined(with: .opacity),
+                                removal: .scale.combined(with: .opacity)
+                            ))
                         }
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(.ultraThinMaterial)
-                                .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
-                        )
-                        .padding()
                     }
-                    
-                    Spacer()
+                    .opacity(showEntries ? 1 : 0)
+                    .animation(.spring(), value: showEntries)
                 }
             }
         }

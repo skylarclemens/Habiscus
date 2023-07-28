@@ -40,6 +40,7 @@ struct HabitListView: View {
                         )
                 }
             }
+            
             if completedHabits.count > 0 {
                 Section {
                     ForEach(completedHabits) { habit in
@@ -64,6 +65,8 @@ struct HabitListView: View {
         .listStyle(.grouped)
         .scrollContentBackground(.hidden)
         .environment(\.defaultMinListRowHeight, 80)
+        .animation(.spring(), value: openHabits)
+        
     }
 }
 
