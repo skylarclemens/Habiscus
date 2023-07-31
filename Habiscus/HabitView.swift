@@ -12,16 +12,19 @@ struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     @Binding var date: Date
-    private var countsByDate: [Count] {
-        habit.countsArray.filter {
-            Calendar.current.isDate($0.wrappedDate, inSameDayAs: date)
-        }
+    private var progress: Progress? {
+        habit.findProgress(from: date)
     }
+
     private var habitManager: HabitManager {
         HabitManager(context: moc, habit: habit)
     }
+    
     private var showEntries: Bool {
-        countsByDate.count > 0
+        if let progress = progress {
+            return progress.countsArray.count > 0
+        }
+        return false
     }
     
     init(habit: Habit, date: Binding<Date>) {
@@ -31,6 +34,9 @@ struct HabitView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
+            Rectangle()
+                .fill(Color(UIColor.secondarySystemBackground))
+                .ignoresSafeArea()
             ScrollView {
                 VStack(alignment: .leading) {
                     HStack {
@@ -58,7 +64,13 @@ struct HabitView: View {
                                 GoalCounterView(habit: habit, size: 60, date: $date)
                                 Button {
                                     simpleSuccess()
-                                    habitManager.addNewCount(date: date)
+                                    if let progress = progress {
+                                        print("progress found")
+                                        habitManager.addNewCount(progress: progress, date: date)
+                                    } else {
+                                        print("progress not found")
+                                        habitManager.addNewProgressAndCount(date: date)
+                                    }
                                 } label: {
                                     Image(systemName: "plus")
                                         .bold()
@@ -93,12 +105,23 @@ struct HabitView: View {
                     
                     
                     VStack {
-                        Text("Streaks")
+                        Text("Streak")
+                        if let streakCount = habit.streaksArray.last?.countNumber {
+                            Text("\(streakCount) \(streakCount == 1 ? "day" : "days")")
+                                .font(.system(.title, design: .rounded))
+                                .fontWeight(.medium)
+                                .foregroundColor(habit.habitColor)
+                        } else {
+                            Text("0 days")
+                                .font(.system(.title, design: .rounded))
+                                .fontWeight(.medium)
+                                .foregroundColor(habit.habitColor)
+                        }
                     }
-                    .frame(maxWidth: .infinity)
+                    .padding()
                     .background {
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(.ultraThinMaterial)
+                            .fill(.regularMaterial)
                             .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                     }
                     .padding()
@@ -111,9 +134,9 @@ struct HabitView: View {
                         if showEntries {
                             VStack(alignment: .leading) {
                                 Section {
-                                    ForEach(countsByDate) { count in
+                                    ForEach(progress?.countsArray ?? []) { count in
                                         HStack(spacing: 12) {
-                                            Text("+\(count.wrappedCount)")
+                                            Text("+1")
                                                 .foregroundColor(.white)
                                                 .padding(8)
                                                 .background(
@@ -133,7 +156,7 @@ struct HabitView: View {
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .fill(.ultraThinMaterial)
+                                    .fill(.regularMaterial)
                                     .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                             )
                             .padding()
@@ -165,18 +188,28 @@ struct HabitView_Previews: PreviewProvider {
     static var previews: some View {
         let habit = Habit(context: moc)
         let count = Count(context: moc)
-        count.count += 1
+        let streak = Streak(context: moc)
+        let progress = Progress(context: moc)
+        streak.count = 0
+        streak.startDate = Date.now
+        streak.habit = habit
+        progress.id = UUID()
+        progress.date = Date.now
+        progress.isCompleted = false
+        count.id = UUID()
         count.createdAt = Date.now
         count.date = Date.now
-        count.habit = habit
+        count.progress = progress
+        progress.addToCounts(count)
         habit.name = "Test"
         habit.createdAt = Date.now
-        habit.addToCounts(count)
-        habit.goal = 2
+        habit.addToProgress(progress)
+        habit.addToStreaks(streak)
+        habit.goal = 1
         habit.goalFrequency = 1
         
         return NavigationStack {
-            HabitView(habit: habit, date: .constant(Date()))
+            HabitView(habit: habit, date: .constant(Date.now))
         }
     }
 }

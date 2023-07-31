@@ -18,7 +18,10 @@ struct GoalCounterView: View {
     }
     @Binding var date: Date
     private var currentGoalCount: Int {
-        habit.findGoalCount(on: date)
+        if let progress = habit.findProgress(from: date) {
+            return progress.countsArray.count
+        }
+        return 0
     }
     
     var body: some View {
@@ -121,13 +124,21 @@ struct GoalCounterView_Previews: PreviewProvider {
     static var previews: some View {
         let habit = Habit(context: moc)
         let count = Count(context: moc)
-        count.count += 1
+        let streak = Streak(context: moc)
+        let progress = Progress(context: moc)
+        streak.count = 0
+        streak.startDate = Date.now
+        streak.habit = habit
+        progress.date = Date.now
+        progress.isCompleted = false
         count.createdAt = Date.now
-        count.habit = habit
+        count.progress = progress
         habit.name = "Test"
         habit.createdAt = Date.now
-        habit.addToCounts(count)
-        habit.goal = 2
+        progress.addToCounts(count)
+        habit.addToProgress(progress)
+        habit.addToStreaks(streak)
+        habit.goal = 1
         habit.goalFrequency = 1
         return GoalCounterView(habit: habit, date: .constant(Date()))
             .padding()

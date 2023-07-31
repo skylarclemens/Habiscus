@@ -22,30 +22,43 @@ struct HabitManager {
         self.managedHabit = habit
     }
     
-    func addNewCount(_ habit: Habit, date: Date) {
+    func addNewCount(progress: Progress, date: Date) {
+        progress.habit!.lastUpdated = Date.now
+        progress.totalCount += 1
+        progress.isCompleted = progress.totalCount >= progress.wrappedHabit.goalNumber
+        progress.lastUpdated = Date.now
         let newCount = Count(context: moc)
         newCount.id = UUID()
-        newCount.count += 1
         newCount.createdAt = Date.now
         newCount.date = Calendar.current.isDateInToday(date) ? Date.now : date
-        newCount.habit = habit
-        habit.addToCounts(newCount)
+        newCount.progress = progress
         try? moc.save()
     }
     
-    func addNewCount(date: Date) {
+    func addNewProgress(habit: Habit, date: Date) {
+        let newProgress = Progress(context: moc)
+        newProgress.id = UUID()
+        newProgress.date = date
+        newProgress.isCompleted = habit.goalNumber == 1 ? true : false
+        newProgress.lastUpdated = Date.now
+        newProgress.totalCount = 0
+        newProgress.habit = habit
+        addNewCount(progress: newProgress, date: date)
+    }
+    
+    func addNewProgressAndCount(date: Date) {
         if let habit = managedHabit {
-            addNewCount(habit, date: date)
+            addNewProgress(habit: habit, date: date)
         }
     }
     
     func undoLastCount(_ habit: Habit) {
-        if habit.countsArray.count > 0 {
-            let mostRecentCount = habit.countsArray.reduce(habit.countsArray[0], {
-                $0.wrappedCreatedDate > $1.wrappedCreatedDate ? $0 : $1
-            })
-            habit.removeFromCounts(mostRecentCount)
+        if let mostRecentCount = habit.mostRecentCount() {
+            print(mostRecentCount)
+            moc.delete(mostRecentCount)
+            habit.lastUpdated = Date.now
             try? moc.save()
+            return
         }
     }
     

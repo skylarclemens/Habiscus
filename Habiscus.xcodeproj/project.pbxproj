@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		7E1261622A742200009F15C9 /* HabitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1261612A742200009F15C9 /* HabitManager.swift */; };
 		7E1261642A742589009F15C9 /* StreakView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1261632A742589009F15C9 /* StreakView.swift */; };
+		7E12616B2A742FBB009F15C9 /* Streak+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1261692A742FBB009F15C9 /* Streak+CoreDataClass.swift */; };
+		7E12616C2A742FBB009F15C9 /* Streak+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616A2A742FBB009F15C9 /* Streak+CoreDataProperties.swift */; };
+		7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */; };
+		7E1261702A7446B3009F15C9 /* Progress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */; };
 		7E3B01982A6D9A2900223905 /* HabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3B01972A6D9A2900223905 /* HabitView.swift */; };
 		7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */; };
 		7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7A12A6B52B9001E0C23 /* ContentView.swift */; };
@@ -32,6 +36,10 @@
 /* Begin PBXFileReference section */
 		7E1261612A742200009F15C9 /* HabitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitManager.swift; sourceTree = "<group>"; };
 		7E1261632A742589009F15C9 /* StreakView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakView.swift; sourceTree = "<group>"; };
+		7E1261692A742FBB009F15C9 /* Streak+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Streak+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7E12616A2A742FBB009F15C9 /* Streak+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Streak+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7E3B01972A6D9A2900223905 /* HabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitView.swift; sourceTree = "<group>"; };
 		7E67A79C2A6B52B9001E0C23 /* Habiscus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habiscus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusApp.swift; sourceTree = "<group>"; };
@@ -67,8 +75,11 @@
 		7E67A7932A6B52B9001E0C23 = {
 			isa = PBXGroup;
 			children = (
-				7E1261632A742589009F15C9 /* StreakView.swift */,
 				7E1261612A742200009F15C9 /* HabitManager.swift */,
+				7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */,
+				7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */,
+				7E1261692A742FBB009F15C9 /* Streak+CoreDataClass.swift */,
+				7E12616A2A742FBB009F15C9 /* Streak+CoreDataProperties.swift */,
 				7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */,
 				7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */,
 				7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */,
@@ -98,6 +109,7 @@
 				7E8C91222A7302EF0006055C /* GoalCounterView.swift */,
 				7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */,
 				7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */,
+				7E1261632A742589009F15C9 /* StreakView.swift */,
 				7E3B01972A6D9A2900223905 /* HabitView.swift */,
 				7E67A7B12A6B60CF001E0C23 /* AddHabitView.swift */,
 				7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */,
@@ -188,20 +200,24 @@
 				7E67A7B22A6B60CF001E0C23 /* AddHabitView.swift in Sources */,
 				7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */,
 				7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */,
+				7E12616C2A742FBB009F15C9 /* Streak+CoreDataProperties.swift in Sources */,
 				7EA6C3ED2A72950C00DA4C41 /* WeekView.swift in Sources */,
 				7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */,
 				7E3B01982A6D9A2900223905 /* HabitView.swift in Sources */,
 				7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,
 				7E1261622A742200009F15C9 /* HabitManager.swift in Sources */,
+				7E12616B2A742FBB009F15C9 /* Streak+CoreDataClass.swift in Sources */,
 				7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */,
 				7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */,
 				7EA6C3EF2A7295C100DA4C41 /* Week.swift in Sources */,
 				7E1261642A742589009F15C9 /* StreakView.swift in Sources */,
 				7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */,
+				7E1261702A7446B3009F15C9 /* Progress+CoreDataProperties.swift in Sources */,
 				7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */,
 				7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */,
 				7E8C91232A7302EF0006055C /* GoalCounterView.swift in Sources */,
+				7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */,
 				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

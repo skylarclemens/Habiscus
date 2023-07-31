@@ -19,10 +19,19 @@ extension Date {
 struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
+    @ObservedObject var progress: Progress
     @State private var animated: Bool = false
     @Binding var date: Date
     
-    var isCompleted: Bool = false
+    init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
+        self.habit = habit
+        self._date = date
+        self.progress = progress ?? Progress.None
+    }
+    
+    var isCompleted: Bool {
+        progress != Progress.None ? progress.isCompleted : false
+    }
     
     private var habitManager: HabitManager {
         HabitManager(context: moc, habit: habit)
@@ -44,7 +53,11 @@ struct HabitRowView: View {
                 Spacer()
                 Button {
                     simpleSuccess()
-                    habitManager.addNewCount(date: date)
+                    if self.progress != Progress.None {
+                        habitManager.addNewCount(progress: progress, date: date)
+                    } else {
+                        habitManager.addNewProgressAndCount(date: date)
+                    }
                 } label: {
                     Image(systemName: "plus")
                         .bold()
@@ -97,12 +110,15 @@ struct HabitRowView_Previews: PreviewProvider {
     static var previews: some View {
         let habit = Habit(context: moc)
         let count = Count(context: moc)
-        count.count += 1
+        let progress = Progress(context: moc)
+        progress.date = Date.now
+        progress.isCompleted = false
         count.createdAt = Date.now
-        count.habit = habit
+        count.progress = progress
         habit.name = "Test"
         habit.createdAt = Date.now
-        habit.addToCounts(count)
+        progress.addToCounts(count)
+        habit.addToProgress(progress)
         habit.goal = 1
         habit.goalFrequency = 1
         return List {

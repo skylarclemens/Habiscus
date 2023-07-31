@@ -2,14 +2,13 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 7/26/23.
+//  Created by Skylar Clemens on 7/29/23.
 //
 //
 
 import Foundation
 import CoreData
 import SwiftUI
-
 
 extension Habit {
 
@@ -23,8 +22,10 @@ extension Habit {
     @NSManaged public var goalFrequency: Int16
     @NSManaged public var id: UUID?
     @NSManaged public var name: String?
-    @NSManaged public var counts: NSSet?
-
+    @NSManaged public var progress: NSSet?
+    @NSManaged public var streaks: NSSet?
+    @NSManaged public var lastUpdated: Date?
+    
     public var wrappedName: String {
         name ?? "Unkown name"
     }
@@ -33,10 +34,21 @@ extension Habit {
         createdAt?.formatted(.dateTime.day().month().year()) ?? "Date not found"
     }
     
-    public var countsArray: [Count] {
-        let set = counts as? Set<Count> ?? []
+    public var progressArray: [Progress] {
+        let set = progress as? Set<Progress> ?? []
         return set.sorted {
-            $0.wrappedCreatedDate < $1.wrappedCreatedDate
+            $0.wrappedDate < $1.wrappedDate
+        }
+    }
+    
+    public var lastUpdatedDate: Date {
+        lastUpdated ?? Date.now
+    }
+    
+    public var streaksArray: [Streak] {
+        let set = streaks as? Set<Streak> ?? []
+        return set.sorted {
+            $0.wrappedStartDate < $1.wrappedStartDate
         }
     }
     
@@ -56,29 +68,75 @@ extension Habit {
         goalFrequency == 1 ? "Daily" : "Weekly"
     }
     
-    public func findGoalCount(on date: Date) -> Int {
-        let currentGoalCounts = self.countsArray.filter {
-            let daysBetween = $0.wrappedDate.daysBetweenDates(to: date)!
-            return abs(daysBetween) <= self.goalFrequencyNumber - 1
+    public var allCountsArray: [Count] {
+        var tempCountArray: [Count] = []
+        progressArray.forEach { item in
+            item.countsArray.forEach { count in
+                tempCountArray.append(count)
+            }
         }
-        return currentGoalCounts.count
+        return tempCountArray
+    }
+    
+    public func findProgress(from date: Date) -> Progress? {
+        if let progressObjects = self.progress?.allObjects as? [Progress],
+           let progressOnDate = progressObjects.first(where: {
+            Calendar.current.isDate($0.wrappedDate, inSameDayAs: date)
+        }) {
+            return progressOnDate
+        }
+        return nil
+    }
+    
+    public func lastUpdatedProgress() -> Progress {
+        return self.progressArray.reduce(self.progressArray[0], {
+            $0.wrappedLastUpdated > $1.wrappedLastUpdated ? $0 : $1
+        })
+    }
+    
+    public func mostRecentCount() -> Count? {
+        let progress = lastUpdatedProgress()
+        
+        if progress.countsArray.count > 0 {
+            return progress.countsArray.reduce(progress.countsArray[0], {
+                $0.wrappedCreatedDate > $1.wrappedCreatedDate ? $0 : $1
+            })
+        }
+        return nil
     }
 }
 
-// MARK: Generated accessors for counts
+// MARK: Generated accessors for progress
 extension Habit {
 
-    @objc(addCountsObject:)
-    @NSManaged public func addToCounts(_ value: Count)
+    @objc(addProgressObject:)
+    @NSManaged public func addToProgress(_ value: Progress)
 
-    @objc(removeCountsObject:)
-    @NSManaged public func removeFromCounts(_ value: Count)
+    @objc(removeProgressObject:)
+    @NSManaged public func removeFromProgress(_ value: Progress)
 
-    @objc(addCounts:)
-    @NSManaged public func addToCounts(_ values: NSSet)
+    @objc(addProgress:)
+    @NSManaged public func addToProgress(_ values: NSSet)
 
-    @objc(removeCounts:)
-    @NSManaged public func removeFromCounts(_ values: NSSet)
+    @objc(removeProgress:)
+    @NSManaged public func removeFromProgress(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for streaks
+extension Habit {
+
+    @objc(addStreaksObject:)
+    @NSManaged public func addToStreaks(_ value: Streak)
+
+    @objc(removeStreaksObject:)
+    @NSManaged public func removeFromStreaks(_ value: Streak)
+
+    @objc(addStreaks:)
+    @NSManaged public func addToStreaks(_ values: NSSet)
+
+    @objc(removeStreaks:)
+    @NSManaged public func removeFromStreaks(_ values: NSSet)
 
 }
 
