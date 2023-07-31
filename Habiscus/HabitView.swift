@@ -27,6 +27,14 @@ struct HabitView: View {
         return false
     }
     
+    private var currentStreakNumber: Int {
+        if let streak = habit.currentStreak {
+            return streak.countNumber
+        } else {
+            return 0
+        }
+    }
+    
     init(habit: Habit, date: Binding<Date>) {
         self.habit = habit
         self._date = date
@@ -65,10 +73,8 @@ struct HabitView: View {
                                 Button {
                                     simpleSuccess()
                                     if let progress = progress {
-                                        print("progress found")
                                         habitManager.addNewCount(progress: progress, date: date)
                                     } else {
-                                        print("progress not found")
                                         habitManager.addNewProgressAndCount(date: date)
                                     }
                                 } label: {
@@ -103,27 +109,45 @@ struct HabitView: View {
                     )
                     .padding(.horizontal)
                     
-                    
-                    VStack {
-                        Text("Streak")
-                        if let streakCount = habit.streaksArray.last?.countNumber {
-                            Text("\(streakCount) \(streakCount == 1 ? "day" : "days")")
-                                .font(.system(.title, design: .rounded))
-                                .fontWeight(.medium)
-                                .foregroundColor(habit.habitColor)
-                        } else {
-                            Text("0 days")
-                                .font(.system(.title, design: .rounded))
-                                .fontWeight(.medium)
-                                .foregroundColor(habit.habitColor)
+                    HStack {
+                        VStack {
+                            Text("Current streak")
+                                .font(.caption)
+                            Text("\(currentStreakNumber) \(currentStreakNumber == 1 ? "day" : "days")")
+                                    .font(.system(.title, design: .rounded))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(habit.habitColor)
+                        }
+                        .padding()
+                        .background {
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(.regularMaterial)
+                                .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                        }
+                        
+                        VStack {
+                            Text("Longest streak")
+                                .font(.caption)
+                            if let longestStreak = habit.longestStreak {
+                                Text("\(longestStreak.countNumber) \(longestStreak.countNumber == 1 ? "day" : "days")")
+                                    .font(.system(.title, design: .rounded))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(habit.habitColor)
+                            } else {
+                                Text("0 days")
+                                    .font(.system(.title, design: .rounded))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(habit.habitColor)
+                            }
+                        }
+                        .padding()
+                        .background {
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(.regularMaterial)
+                                .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                         }
                     }
-                    .padding()
-                    .background {
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(.regularMaterial)
-                            .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
-                    }
+                    .frame(maxWidth: .infinity)
                     .padding()
                     
                     
@@ -190,7 +214,7 @@ struct HabitView_Previews: PreviewProvider {
         let count = Count(context: moc)
         let streak = Streak(context: moc)
         let progress = Progress(context: moc)
-        streak.count = 0
+        streak.count = 1
         streak.startDate = Date.now
         streak.habit = habit
         progress.id = UUID()

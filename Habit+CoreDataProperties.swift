@@ -48,7 +48,7 @@ extension Habit {
     public var streaksArray: [Streak] {
         let set = streaks as? Set<Streak> ?? []
         return set.sorted {
-            $0.wrappedStartDate < $1.wrappedStartDate
+            $0.wrappedStartDate.compare($1.wrappedStartDate) == .orderedAscending
         }
     }
     
@@ -67,6 +67,25 @@ extension Habit {
     public var goalFrequencyString: String {
         goalFrequency == 1 ? "Daily" : "Weekly"
     }
+    
+    public var currentStreak: Streak? {
+        let streaks = self.streaksArray
+        if streaks.count > 0 {
+            if !(Date.now.moreThanOneDayAfter(streaks.last!.wrappedLastDate)) {
+                return streaks.last!
+            }
+        }
+        return nil
+    }
+    
+    public var longestStreak: Streak? {
+        if let streaks = self.streaks?.allObjects as? [Streak],
+           let max = streaks.max(by: { $1.countNumber > $0.countNumber }) {
+            return max
+        }
+        return nil
+    }
+
     
     public var allCountsArray: [Count] {
         var tempCountArray: [Count] = []

@@ -14,6 +14,18 @@ extension Date {
         let components = Calendar.current.dateComponents([.day], from: dateFromComponent ?? self, to: dateToComponent ?? date)
         return components.day
     }
+    
+    func dateIsAfter(_ date: Date) -> Bool {
+        let todayStartDate = Calendar.current.startOfDay(for: self)
+        let dateCompare = todayStartDate.daysBetweenDates(to: date)!
+        return dateCompare > 0
+    }
+    
+    func moreThanOneDayAfter(_ date: Date) -> Bool {
+        let startDate = Calendar.current.startOfDay(for: self)
+        let dateCompare = startDate.daysBetweenDates(to: date)!
+        return abs(dateCompare) > 1
+    }
 }
 
 struct HabitRowView: View {

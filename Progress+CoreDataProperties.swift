@@ -20,7 +20,6 @@ extension Progress {
     @NSManaged public var lastUpdated: Date?
     @NSManaged public var id: UUID?
     @NSManaged public var isCompleted: Bool
-    @NSManaged public var totalCount: Int16
     @NSManaged public var counts: NSSet?
     @NSManaged public var habit: Habit?
     
@@ -37,6 +36,10 @@ extension Progress {
         return set.sorted {
             $0.wrappedCreatedDate < $1.wrappedCreatedDate
         }
+    }
+    
+    public var totalCount: Int {
+        countsArray.count
     }
     
     public var wrappedHabit: Habit {
