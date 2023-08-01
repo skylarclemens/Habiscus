@@ -12,7 +12,7 @@ import UserNotifications
 struct CustomColorPicker: View {
     @Binding var selection: String
     @Environment(\.dismiss) var dismiss
-    let colorOptions = ["pink", "blue", "purple"]
+    let colorOptions = ["pink", "blue", "green", "purple"]
     
     var body: some View {
         HStack(spacing: 20) {
@@ -103,7 +103,7 @@ struct AddHabitView: View {
                                     .frame(width: 40, height: 40)
                                     .padding(10)
                                     .background(.ultraThinMaterial)
-                                    .cornerRadius(10)
+                                    .cornerRadius(16)
                             }
                             
                             Text("COLOR")
@@ -113,7 +113,7 @@ struct AddHabitView: View {
                         .padding([.vertical, .leading], 8)
                         .padding(.trailing, 16)
                         .background(Color(UIColor.tertiarySystemBackground))
-                        .cornerRadius(10)
+                        .cornerRadius(16)
                     }
                     .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
                 }

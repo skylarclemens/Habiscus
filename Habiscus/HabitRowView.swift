@@ -7,132 +7,31 @@
 
 import SwiftUI
 
-extension Date {
-    func daysBetweenDates(to date: Date) -> Int? {
-        let dateFromComponent = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: self))
-        let dateToComponent = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: date))
-        let components = Calendar.current.dateComponents([.day], from: dateFromComponent ?? self, to: dateToComponent ?? date)
-        return components.day
-    }
-}
-
-struct Checkmark: Shape {
-    func path(in rect: CGRect) -> Path {
-        let width = rect.size.width
-        let height = rect.size.height
-        
-        var path = Path()
-        path.move(to: CGPoint(x: 0, y: 0.5 * height))
-        path.addLine(to: CGPoint(x: 0.4 * width, y: 1.0 * height))
-        path.addLine(to: CGPoint(x: width, y: 0))
-        return path
-    }
-}
-
-struct AnimatedCheckmark: View {
-    var animationDuration: Double = 0.75
-    @State private var innerTrimEnd: CGFloat = 0
-    @State private var scale = 1.0
-    var body: some View {
-        HStack {
-            Checkmark()
-                .trim(from: 0, to: innerTrimEnd)
-                .stroke(.white, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
-                .frame(width: 15, height: 15)
-                .scaleEffect(scale)
-        }
-        .onAppear {
-            animate()
-        }
-    }
-    
-    func animate() {
-        withAnimation(
-            .easeInOut(duration: animationDuration * 0.7)
-        ) {
-            innerTrimEnd = 1.0
-        }
-        
-        withAnimation(
-            .linear(duration: animationDuration * 0.2)
-            .delay(animationDuration * 0.6)
-        ) {
-            scale = 1.1
-        }
-        
-        withAnimation(
-            .linear(duration: animationDuration * 0.1)
-            .delay(animationDuration * 0.9)
-        ) {
-            scale = 1
-        }
-    }
-}
-
-struct CircleProgressStyle: ProgressViewStyle {
-    let color: Color
-    var strokeWidth: Double = 5.0
-    func makeBody(configuration: Configuration) -> some View {
-        let fractionCompleted = configuration.fractionCompleted ?? 0
-        
-        return ZStack {
-            Circle()
-                .stroke(color.opacity(0.5), lineWidth: strokeWidth)
-                .overlay (
-                    Circle()
-                        .trim(from: 0, to: fractionCompleted)
-                        .stroke(color, style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round))
-                        .rotationEffect(.degrees(-90))
-                )
-        }
-    }
-}
-
-struct GoalCounterView: View {
-    @Environment(\.managedObjectContext) var moc
-    @ObservedObject var habit: Habit
-    
-    //@State private var currentGoalCount: Int = 0
-    private var goalCompletion: Double {
-        Double(currentGoalCount) / Double(habit.goalNumber)
-    }
-    @Binding var date: Date
-    private var currentGoalCount: Int {
-        habit.findGoalCount(on: date)
-    }
-    
-    var body: some View {
-        ZStack {
-            HStack {
-                if goalCompletion >= 1 {
-                    AnimatedCheckmark(animationDuration: 1.25)
-                } else {
-                    Text(currentGoalCount, format: .number)
-                        .bold()
-                        .foregroundColor(.white)
-                }
-            }
-            ProgressView(value: goalCompletion > 1 ? 1.0 : goalCompletion, total: 1.0)
-                .progressViewStyle(CircleProgressStyle(color: .white, strokeWidth: 6))
-                .frame(width: 50)
-                .animation(.easeOut(duration: 1.5).delay(0.25), value: currentGoalCount)
-        }
-        .padding(.trailing, 6)
-    }
-}
-
 struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
+    @ObservedObject var progress: Progress
     @State private var animated: Bool = false
     @Binding var date: Date
     
-    var isCompleted: Bool = false
+    init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
+        self.habit = habit
+        self._date = date
+        self.progress = progress ?? Progress.None
+    }
+    
+    var isCompleted: Bool {
+        progress != Progress.None ? progress.isCompleted : false
+    }
+    
+    private var habitManager: HabitManager {
+        HabitManager(context: moc, habit: habit)
+    }
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(habit.habitColor.opacity(0.8))
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(habit.habitColor)
                 .shadow(color: .black.opacity(isCompleted ? 0 : 0.1), radius: 6, y: 3)
                 .shadow(color: habit.habitColor.opacity(isCompleted ? 0 : 0.5), radius: 4, y: 3)
                 .padding(.vertical, 2)
@@ -145,19 +44,24 @@ struct HabitRowView: View {
                 Spacer()
                 Button {
                     simpleSuccess()
-                    let newCount = Count(context: moc)
-                    newCount.id = UUID()
-                    newCount.count += 1
-                    newCount.createdAt = Date.now
-                    newCount.date = Calendar.current.isDateInToday(date) ? Date.now : date
-                    newCount.habit = habit
-                    habit.addToCounts(newCount)
-                    try? moc.save()
+                    if self.progress != Progress.None {
+                        habitManager.addNewCount(progress: progress, date: date)
+                        print(true)
+                    } else {
+                        habitManager.addNewProgress(date: date)
+                        print(false)
+                    }
                 } label: {
                     Image(systemName: "plus")
+                        .bold()
+                        .foregroundColor(.white)
                 }
-                .tint(.white)
-                .buttonStyle(.bordered)
+                .padding(10)
+                .background(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(.white.opacity(0.25))
+                )
+                .buttonStyle(.plain)
             }
             .padding()
         }
@@ -174,7 +78,12 @@ struct HabitRowView: View {
         .contextMenu {
             Group {
                 Button {
-                    removeHabit(habit)
+                    habitManager.undoLastCount()
+                } label: {
+                    Label("Undo last count", systemImage: "arrow.uturn.backward")
+                }
+                Button(role: .destructive) {
+                    habitManager.removeHabit()
                 } label: {
                     Label("Delete", systemImage: "trash")
                 }
@@ -186,11 +95,6 @@ struct HabitRowView: View {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
     }
-    
-    func removeHabit(_ habit: Habit) {
-        moc.delete(habit)
-        try? moc.save()
-    }
 }
 
 struct HabitRowView_Previews: PreviewProvider {
@@ -199,12 +103,15 @@ struct HabitRowView_Previews: PreviewProvider {
     static var previews: some View {
         let habit = Habit(context: moc)
         let count = Count(context: moc)
-        count.count += 1
+        let progress = Progress(context: moc)
+        progress.date = Date.now
+        progress.isCompleted = false
         count.createdAt = Date.now
-        count.habit = habit
+        count.progress = progress
         habit.name = "Test"
         habit.createdAt = Date.now
-        habit.addToCounts(count)
+        progress.addToCounts(count)
+        habit.addToProgress(progress)
         habit.goal = 1
         habit.goalFrequency = 1
         return List {

@@ -14,15 +14,21 @@ struct HabitListView: View {
     @FetchRequest(sortDescriptors: [
         SortDescriptor(\.createdAt, order: .reverse)
     ], animation: .default) var habits: FetchedResults<Habit>
-
+    
     var openHabits: [Habit] {
         habits.filter {
-            $0.goalNumber > $0.findGoalCount(on: dateSelected)
+            if let progress = $0.findProgress(from: dateSelected) {
+                return progress.totalCount < $0.goalNumber
+            }
+            return true
         }
     }
     var completedHabits: [Habit] {
         habits.filter {
-            $0.goalNumber <= $0.findGoalCount(on: dateSelected)
+            if let progress = $0.findProgress(from: dateSelected) {
+                return progress.totalCount >= $0.goalNumber
+            }
+            return false
         }
     }
     
@@ -30,7 +36,8 @@ struct HabitListView: View {
         List {
             Section {
                 ForEach(openHabits) { habit in
-                    HabitRowView(habit: habit, date: $dateSelected)
+                    HabitRowView(habit: habit, date: $dateSelected, progress:
+                        habit.findProgress(from: dateSelected))
                         .overlay(
                             NavigationLink {
                                 HabitView(habit: habit, date: $dateSelected)
@@ -40,10 +47,12 @@ struct HabitListView: View {
                         )
                 }
             }
+            
             if completedHabits.count > 0 {
                 Section {
                     ForEach(completedHabits) { habit in
-                        HabitRowView(habit: habit, date: $dateSelected, isCompleted: true)
+                        HabitRowView(habit: habit, date: $dateSelected, progress:
+                            habit.findProgress(from: dateSelected))
                             .overlay(
                                 NavigationLink {
                                     HabitView(habit: habit, date: $dateSelected)
@@ -64,6 +73,7 @@ struct HabitListView: View {
         .listStyle(.grouped)
         .scrollContentBackground(.hidden)
         .environment(\.defaultMinListRowHeight, 80)
+        .animation(.spring(), value: openHabits)
     }
 }
 
