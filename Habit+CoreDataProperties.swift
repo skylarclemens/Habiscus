@@ -23,7 +23,6 @@ extension Habit {
     @NSManaged public var id: UUID?
     @NSManaged public var name: String?
     @NSManaged public var progress: NSSet?
-    @NSManaged public var streaks: NSSet?
     @NSManaged public var lastUpdated: Date?
     
     public var wrappedName: String {
@@ -42,14 +41,7 @@ extension Habit {
     }
     
     public var lastUpdatedDate: Date {
-        lastUpdated ?? Date.now
-    }
-    
-    public var streaksArray: [Streak] {
-        let set = streaks as? Set<Streak> ?? []
-        return set.sorted {
-            $0.wrappedStartDate.compare($1.wrappedStartDate) == .orderedAscending
-        }
+        lastUpdated ?? Date()
     }
     
     public var habitColor: Color {
@@ -66,24 +58,6 @@ extension Habit {
     
     public var goalFrequencyString: String {
         goalFrequency == 1 ? "Daily" : "Weekly"
-    }
-    
-    public var currentStreak: Streak? {
-        let streaks = self.streaksArray
-        if streaks.count > 0 {
-            if !(Date.now.moreThanOneDayAfter(streaks.last!.wrappedLastDate)) {
-                return streaks.last!
-            }
-        }
-        return nil
-    }
-    
-    public var longestStreak: Streak? {
-        if let streaks = self.streaks?.allObjects as? [Streak],
-           let max = streaks.max(by: { $1.countNumber > $0.countNumber }) {
-            return max
-        }
-        return nil
     }
 
     
@@ -123,6 +97,91 @@ extension Habit {
         }
         return nil
     }
+    
+    // Starts progress array at most recent, assumed that progress is array is already sorted
+    // If first progress is not completed or is more than one day from today, returns a streak of 0
+    // Returns first, most recent, streak of streak array
+    public func getCurrentStreak() -> Int {
+        guard let latestProgress = progressArray.last,
+              latestProgress.isCompleted,
+              !Date().isMoreThanOneDayFrom(latestProgress.wrappedDate) else {
+            return 0
+        }
+
+        let streaks = calculateStreaksArray(from: progressArray.reversed())
+        return streaks.first ?? 0
+    }
+    
+    // Adds to streak if compared dates are one day apart
+    // Returns array of all streaks
+    public func calculateStreaksArray(from: [Progress]? = nil) -> [Int] {
+        let refArray: [Progress] = from ?? self.progressArray
+        var streakArray: [Int] = []
+        var streak = 0
+        print(refArray)
+        
+        for (progress, refProgress) in zip(refArray.dropFirst(), refArray) {
+            print("\n")
+            print("\(progress), \(refProgress)")
+            print("===========")
+            if progress.isCompleted, refProgress.isCompleted, abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 {
+                streak += 1
+                print("Both completed, one day apart")
+            } else {
+                if streak > 0 || refProgress.isCompleted {
+                    streakArray.append(streak + 1)
+                }
+                streak = 0
+            }
+        }
+        
+        if streak > 0 || (refArray.last?.isCompleted ?? false) {
+            streakArray.append(streak + 1)
+        }
+        
+        print("\n")
+        print("streakArray: \(streakArray)")
+        print("\n")
+        
+        return streakArray
+        
+        /*return .reduce(into: [Int]()) { result, pair in
+            print(pair)
+            let (progress, refProgress) = pair
+            if progress.isCompleted, refProgress.isCompleted, abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 {
+                streak += 1
+                print("Both completed, one day apart")
+            } else {
+                streak = progress.isCompleted ? 1 : 0
+                print("Progress completed: \(progress.isCompleted)")
+            }
+            result.append(streak)
+            print("Appended \(streak)")
+        }*/
+        
+        /*var refProgress = refArray.first ?? Progress()
+        for progress in refArray.dropFirst() {
+            if progress.isCompleted && refProgress.isCompleted && abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 {
+                streak += 1
+                if progress == refArray.last {
+                    streakArray.append(streak)
+                }
+            } else if progress.isCompleted && !refProgress.isCompleted {
+                refProgress = progress
+                continue
+            } else {
+                streakArray.append(streak)
+                streak = 1
+            }
+            refProgress = progress
+        }*/
+        
+    }
+    
+    // Gets the highest number in the streak array
+    public func getLongestStreak() -> Int {
+        calculateStreaksArray().max() ?? 0
+    }
 }
 
 // MARK: Generated accessors for progress
@@ -139,23 +198,6 @@ extension Habit {
 
     @objc(removeProgress:)
     @NSManaged public func removeFromProgress(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for streaks
-extension Habit {
-
-    @objc(addStreaksObject:)
-    @NSManaged public func addToStreaks(_ value: Streak)
-
-    @objc(removeStreaksObject:)
-    @NSManaged public func removeFromStreaks(_ value: Streak)
-
-    @objc(addStreaks:)
-    @NSManaged public func addToStreaks(_ values: NSSet)
-
-    @objc(removeStreaks:)
-    @NSManaged public func removeFromStreaks(_ values: NSSet)
 
 }
 

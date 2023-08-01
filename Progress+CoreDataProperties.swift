@@ -27,6 +27,8 @@ extension Progress {
         date ?? Date.now
     }
     
+    
+    
     public var wrappedLastUpdated: Date {
         lastUpdated ?? Date.now
     }
@@ -47,7 +49,10 @@ extension Progress {
     }
     
     static let None = Progress()
-
+    
+    public func checkCompleted() -> Bool {
+        totalCount >= wrappedHabit.goalNumber
+    }
 }
 
 // MARK: Generated accessors for counts

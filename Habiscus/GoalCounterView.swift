@@ -124,11 +124,7 @@ struct GoalCounterView_Previews: PreviewProvider {
     static var previews: some View {
         let habit = Habit(context: moc)
         let count = Count(context: moc)
-        let streak = Streak(context: moc)
         let progress = Progress(context: moc)
-        streak.count = 0
-        streak.startDate = Date.now
-        streak.habit = habit
         progress.date = Date.now
         progress.isCompleted = false
         count.createdAt = Date.now
@@ -137,7 +133,6 @@ struct GoalCounterView_Previews: PreviewProvider {
         habit.createdAt = Date.now
         progress.addToCounts(count)
         habit.addToProgress(progress)
-        habit.addToStreaks(streak)
         habit.goal = 1
         habit.goalFrequency = 1
         return GoalCounterView(habit: habit, date: .constant(Date()))

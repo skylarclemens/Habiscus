@@ -13,11 +13,19 @@ struct HabitView: View {
     @ObservedObject var habit: Habit
     @Binding var date: Date
     private var progress: Progress? {
-        habit.findProgress(from: date)
+        return habit.findProgress(from: date)
     }
-
+    
     private var habitManager: HabitManager {
         HabitManager(context: moc, habit: habit)
+    }
+    
+    private var currentStreak: Int {
+        return habit.getCurrentStreak()
+    }
+    
+    private var longestStreak: Int {
+        return habit.getLongestStreak()
     }
     
     private var showEntries: Bool {
@@ -25,14 +33,6 @@ struct HabitView: View {
             return progress.countsArray.count > 0
         }
         return false
-    }
-    
-    private var currentStreakNumber: Int {
-        if let streak = habit.currentStreak {
-            return streak.countNumber
-        } else {
-            return 0
-        }
     }
     
     init(habit: Habit, date: Binding<Date>) {
@@ -75,7 +75,7 @@ struct HabitView: View {
                                     if let progress = progress {
                                         habitManager.addNewCount(progress: progress, date: date)
                                     } else {
-                                        habitManager.addNewProgressAndCount(date: date)
+                                        habitManager.addNewProgress(date: date)
                                     }
                                 } label: {
                                     Image(systemName: "plus")
@@ -113,7 +113,8 @@ struct HabitView: View {
                         VStack {
                             Text("Current streak")
                                 .font(.caption)
-                            Text("\(currentStreakNumber) \(currentStreakNumber == 1 ? "day" : "days")")
+                            
+                            Text("\(currentStreak) \(currentStreak == 1 ? "day" : "days")")
                                     .font(.system(.title, design: .rounded))
                                     .fontWeight(.medium)
                                     .foregroundColor(habit.habitColor)
@@ -128,17 +129,11 @@ struct HabitView: View {
                         VStack {
                             Text("Longest streak")
                                 .font(.caption)
-                            if let longestStreak = habit.longestStreak {
-                                Text("\(longestStreak.countNumber) \(longestStreak.countNumber == 1 ? "day" : "days")")
+    
+                                Text("\(longestStreak) \(longestStreak == 1 ? "day" : "days")")
                                     .font(.system(.title, design: .rounded))
                                     .fontWeight(.medium)
                                     .foregroundColor(habit.habitColor)
-                            } else {
-                                Text("0 days")
-                                    .font(.system(.title, design: .rounded))
-                                    .fontWeight(.medium)
-                                    .foregroundColor(habit.habitColor)
-                            }
                         }
                         .padding()
                         .background {
@@ -212,14 +207,10 @@ struct HabitView_Previews: PreviewProvider {
     static var previews: some View {
         let habit = Habit(context: moc)
         let count = Count(context: moc)
-        let streak = Streak(context: moc)
         let progress = Progress(context: moc)
-        streak.count = 1
-        streak.startDate = Date.now
-        streak.habit = habit
         progress.id = UUID()
         progress.date = Date.now
-        progress.isCompleted = false
+        progress.isCompleted = true
         count.id = UUID()
         count.createdAt = Date.now
         count.date = Date.now
@@ -228,7 +219,6 @@ struct HabitView_Previews: PreviewProvider {
         habit.name = "Test"
         habit.createdAt = Date.now
         habit.addToProgress(progress)
-        habit.addToStreaks(streak)
         habit.goal = 1
         habit.goalFrequency = 1
         

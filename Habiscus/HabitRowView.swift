@@ -7,27 +7,6 @@
 
 import SwiftUI
 
-extension Date {
-    func daysBetweenDates(to date: Date) -> Int? {
-        let dateFromComponent = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: self))
-        let dateToComponent = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: date))
-        let components = Calendar.current.dateComponents([.day], from: dateFromComponent ?? self, to: dateToComponent ?? date)
-        return components.day
-    }
-    
-    func dateIsAfter(_ date: Date) -> Bool {
-        let todayStartDate = Calendar.current.startOfDay(for: self)
-        let dateCompare = todayStartDate.daysBetweenDates(to: date)!
-        return dateCompare > 0
-    }
-    
-    func moreThanOneDayAfter(_ date: Date) -> Bool {
-        let startDate = Calendar.current.startOfDay(for: self)
-        let dateCompare = startDate.daysBetweenDates(to: date)!
-        return abs(dateCompare) > 1
-    }
-}
-
 struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
@@ -67,8 +46,10 @@ struct HabitRowView: View {
                     simpleSuccess()
                     if self.progress != Progress.None {
                         habitManager.addNewCount(progress: progress, date: date)
+                        print(true)
                     } else {
-                        habitManager.addNewProgressAndCount(date: date)
+                        habitManager.addNewProgress(date: date)
+                        print(false)
                     }
                 } label: {
                     Image(systemName: "plus")

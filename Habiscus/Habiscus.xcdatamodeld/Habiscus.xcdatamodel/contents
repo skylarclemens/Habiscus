@@ -15,7 +15,6 @@
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="progress" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Progress" inverseName="habit" inverseEntity="Progress"/>
-        <relationship name="streaks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Streak" inverseName="habit" inverseEntity="Streak"/>
     </entity>
     <entity name="Progress" representedClassName="Progress" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -24,12 +23,5 @@
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="counts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Count" inverseName="progress" inverseEntity="Count"/>
         <relationship name="habit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Habit" inverseName="progress" inverseEntity="Habit"/>
-    </entity>
-    <entity name="Streak" representedClassName="Streak" syncable="YES">
-        <attribute name="count" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="lastDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="habit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Habit" inverseName="streaks" inverseEntity="Habit"/>
     </entity>
 </model>
