@@ -161,6 +161,13 @@ struct HabitView: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     
+                    VStack {
+                        CountGridView(habit: habit, size: 14, spacing: 4)
+                            .padding(.vertical, 20)
+                            .background(.black.opacity(0.03))
+                    }
+                    .frame(maxWidth: .infinity)
+                    
                     
                     WeekView(selectedDate: $date)
                         .frame(height: 80)
