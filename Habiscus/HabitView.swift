@@ -141,6 +141,22 @@ struct HabitView: View {
                                 .fill(.regularMaterial)
                                 .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                         }
+                        
+                        VStack {
+                            Text("Success %")
+                                .font(.caption)
+
+                            Text("\(Int(habit.successPercentage))%")
+                                    .font(.system(.title, design: .rounded))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(habit.habitColor)
+                        }
+                        .padding()
+                        .background {
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(.regularMaterial)
+                                .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                        }
                     }
                     .frame(maxWidth: .infinity)
                     .padding()

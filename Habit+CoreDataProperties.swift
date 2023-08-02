@@ -29,6 +29,10 @@ extension Habit {
         name ?? "Unkown name"
     }
     
+    public var createdDate: Date {
+            createdAt ?? Date()
+        }
+    
     public var formattedCreatedDate: String {
         createdAt?.formatted(.dateTime.day().month().year()) ?? "Date not found"
     }
@@ -69,6 +73,19 @@ extension Habit {
             }
         }
         return tempCountArray
+    }
+    
+    // Compares day the habit was first created and day since first progress to find starting day
+    // Divides total completed progress count over number of days since each day has one progress object
+    // Returns percentage
+    public var successPercentage: Double {
+        let daysSinceCreated = abs(self.createdDate.daysBetween(Date()) ?? 0)
+        let daysSinceFirstProgress = abs(self.progressArray.first?.wrappedDate.daysBetween(Date()) ?? 0)
+        let progressDays = max(daysSinceCreated, daysSinceFirstProgress)
+        
+        let completedProgress = progressArray.filter { $0.isCompleted }.count
+        
+        return (Double(completedProgress) / Double(max(progressDays, 1))) * 100
     }
     
     public func findProgress(from date: Date) -> Progress? {
@@ -112,21 +129,16 @@ extension Habit {
         return streaks.first ?? 0
     }
     
-    // Adds to streak if compared dates are one day apart
+    // Adds to streak if compared dates are completed and one day apart
     // Returns array of all streaks
     public func calculateStreaksArray(from: [Progress]? = nil) -> [Int] {
         let refArray: [Progress] = from ?? self.progressArray
         var streakArray: [Int] = []
         var streak = 0
-        print(refArray)
         
         for (progress, refProgress) in zip(refArray.dropFirst(), refArray) {
-            print("\n")
-            print("\(progress), \(refProgress)")
-            print("===========")
             if progress.isCompleted, refProgress.isCompleted, abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 {
                 streak += 1
-                print("Both completed, one day apart")
             } else {
                 if streak > 0 || refProgress.isCompleted {
                     streakArray.append(streak + 1)
@@ -139,43 +151,7 @@ extension Habit {
             streakArray.append(streak + 1)
         }
         
-        print("\n")
-        print("streakArray: \(streakArray)")
-        print("\n")
-        
         return streakArray
-        
-        /*return .reduce(into: [Int]()) { result, pair in
-            print(pair)
-            let (progress, refProgress) = pair
-            if progress.isCompleted, refProgress.isCompleted, abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 {
-                streak += 1
-                print("Both completed, one day apart")
-            } else {
-                streak = progress.isCompleted ? 1 : 0
-                print("Progress completed: \(progress.isCompleted)")
-            }
-            result.append(streak)
-            print("Appended \(streak)")
-        }*/
-        
-        /*var refProgress = refArray.first ?? Progress()
-        for progress in refArray.dropFirst() {
-            if progress.isCompleted && refProgress.isCompleted && abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 {
-                streak += 1
-                if progress == refArray.last {
-                    streakArray.append(streak)
-                }
-            } else if progress.isCompleted && !refProgress.isCompleted {
-                refProgress = progress
-                continue
-            } else {
-                streakArray.append(streak)
-                streak = 1
-            }
-            refProgress = progress
-        }*/
-        
     }
     
     // Gets the highest number in the streak array
