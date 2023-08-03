@@ -15,11 +15,13 @@ extension Calendar {
     func firstWeekday(_ date: Date) -> Int {
         return self.component(.weekday, from: self.startOfMonth(date))
     }
+    
+    static let shortWeekdaySymbols = Calendar.current.shortWeekdaySymbols
 }
 
 struct CalendarDay: Identifiable, Hashable {
     let id = UUID()
-    var date: Date
+    let date: Date
     var dayOfWeek: String {
         date.formatted(Date.FormatStyle().weekday(.abbreviated))
     }
@@ -30,8 +32,8 @@ struct CalendarDay: Identifiable, Hashable {
 }
 
 struct CalendarMonth: Equatable {
-    var date: Date
-    var habit: Habit?
+    let date: Date
+    let habit: Habit?
     var monthComponent: DateComponents {
         Calendar.current.dateComponents([.month], from: date)
     }
@@ -69,6 +71,11 @@ struct CalendarMonth: Equatable {
         return daysArray
     }
     
+    func calculateOpacity(for day: CalendarDay) -> Double {
+        guard let habit = habit else { return 0.0 }
+        return Double(day.count) / Double(habit.goalNumber)
+    }
+    
     static func ==(lhs: CalendarMonth, rhs: CalendarMonth) -> Bool {
         lhs.monthNum == rhs.monthNum
     }
@@ -87,8 +94,6 @@ struct CalendarView: View {
         Array(repeating: .init(.flexible()), count: 7)
     }
     
-    private let weekdays: [String] = DateFormatter().shortWeekdaySymbols
-    
     init(habit: Habit, date: Binding<Date>, size: CGFloat = 36, spacing: CGFloat = 16, color: Color = .pink) {
         self.habit = habit
         self._date = date
@@ -102,10 +107,8 @@ struct CalendarView: View {
         VStack {
             HStack {
                 Button {
-                        let prevMonthDate = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth.date)!
-                        let prevMonth = CalendarMonth(date: prevMonthDate, habit: habit)
                     withAnimation(.easeInOut) {
-                        selectedMonth = prevMonth
+                        showPreviousMonth()
                     }
                 } label: {
                     Image(systemName: "chevron.left")
@@ -122,11 +125,13 @@ struct CalendarView: View {
                         .foregroundColor(.secondary)
                 }
                 .frame(maxWidth: .infinity)
+                .onTapGesture {
+                    date = Date()
+                    selectedMonth = CalendarMonth(date: date, habit: habit)
+                }
                 Button {
-                        let nextMonthDate = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth.date)!
-                        let nextMonth = CalendarMonth(date: nextMonthDate, habit: habit)
                     withAnimation(.easeInOut) {
-                        selectedMonth = nextMonth
+                        showNextMonth()
                     }
                 } label: {
                     Image(systemName: "chevron.right")
@@ -138,7 +143,7 @@ struct CalendarView: View {
             .padding(.bottom)
             
             LazyVGrid(columns: columns) {
-                ForEach(weekdays, id: \.self) { weekday in
+                ForEach(Calendar.shortWeekdaySymbols, id: \.self) { weekday in
                     Text(weekday)
                         .font(.caption)
                         .bold()
@@ -148,7 +153,7 @@ struct CalendarView: View {
                     Rectangle()
                         .fill(.clear)
                 }
-                ForEach(selectedMonth.days, id: \.self) { day in
+                ForEach(selectedMonth.days, id: \.id) { day in
                     let dayIsToday = Calendar.current.isDate(day.date, inSameDayAs: Date())
                     let dateIsSelected = Calendar.current.isDate(day.date, inSameDayAs: date)
                     ZStack {
@@ -162,7 +167,7 @@ struct CalendarView: View {
                             .bold(dateIsSelected || dayIsToday)
                         Circle()
                             .fill(color)
-                            .opacity(calculateOpacity(from: day))
+                            .opacity(selectedMonth.calculateOpacity(for: day))
                             .frame(width: 5)
                             .position(x: size/2, y: size-3)
                     }
@@ -174,10 +179,27 @@ struct CalendarView: View {
             }
         }
         .padding()
+        .gesture(
+            DragGesture().onEnded { gesture in
+                withAnimation(.easeInOut) {
+                    if gesture.translation.width > 0 {
+                        showPreviousMonth()
+                    } else {
+                        showNextMonth()
+                    }
+                }
+            }
+        )
     }
     
-    func calculateOpacity(from day: CalendarDay) -> Double {
-        Double(day.count) / Double(habit.goalNumber)
+    private func showPreviousMonth() {
+        let prevMonthDate = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth.date)!
+        selectedMonth = CalendarMonth(date: prevMonthDate, habit: habit)
+    }
+
+    private func showNextMonth() {
+        let nextMonthDate = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth.date)!
+        selectedMonth = CalendarMonth(date: nextMonthDate, habit: habit)
     }
 }
 
