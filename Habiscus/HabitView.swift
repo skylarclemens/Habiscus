@@ -45,7 +45,7 @@ struct HabitView: View {
             Rectangle()
                 .fill(Color(UIColor.secondarySystemBackground))
                 .ignoresSafeArea()
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     HStack {
                         VStack(alignment: .leading) {
@@ -162,7 +162,13 @@ struct HabitView: View {
                     .padding()
                     
                     VStack {
-                        CalendarView(habit: habit, date: $date)
+                        CalendarView(habit: habit, date: $date, size: 40, color: habit.habitColor)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(.regularMaterial)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                            )
+                            .padding(.horizontal)
                     }
                     
                     VStack {
@@ -177,10 +183,6 @@ struct HabitView: View {
                     }
                     .frame(maxWidth: .infinity)
                     
-                    
-                    WeekView(selectedDate: $date)
-                        .frame(height: 80)
-                        .padding(.top, 16)
                     VStack {
                         if showEntries {
                             VStack(alignment: .leading) {
