@@ -30,6 +30,7 @@
 		7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */; };
 		7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */; };
 		7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */; };
+		7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRowView.swift; sourceTree = "<group>"; };
+		7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */,
 				7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */,
 				7E67A7A12A6B52B9001E0C23 /* ContentView.swift */,
+				7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */,
 				7E83225C2A72F3E200042486 /* HabitListView.swift */,
 				7EA6C3EC2A72950C00DA4C41 /* WeekView.swift */,
 				7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */,
@@ -200,6 +203,7 @@
 				7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */,
 				7EA6C3ED2A72950C00DA4C41 /* WeekView.swift in Sources */,
 				7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */,
+				7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */,
 				7E3B01982A6D9A2900223905 /* HabitView.swift in Sources */,
 				7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,

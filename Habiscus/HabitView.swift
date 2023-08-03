@@ -162,9 +162,18 @@ struct HabitView: View {
                     .padding()
                     
                     VStack {
+                        CalendarView(habit: habit, date: $date)
+                    }
+                    
+                    VStack {
                         CountGridView(habit: habit, size: 14, spacing: 4)
                             .padding(.vertical, 20)
-                            .background(.black.opacity(0.03))
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(.regularMaterial)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                            )
+                            .padding()
                     }
                     .frame(maxWidth: .infinity)
                     
