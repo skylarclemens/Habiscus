@@ -11,26 +11,29 @@ import UserNotifications
 
 struct CustomColorPicker: View {
     @Binding var selection: String
-    @Environment(\.dismiss) var dismiss
     let colorOptions = ["pink", "blue", "green", "purple"]
     
     var body: some View {
-        HStack(spacing: 20) {
-            ForEach(colorOptions, id: \.self) { color in
-                Button {
-                    selection = color
-                    dismiss()
-                } label: {
-                    Image(systemName: selection == color ? "checkmark.circle.fill" : "circle.fill")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .foregroundStyle(selection == color ? .white : Color(color), Color(color))
-                        .overlay(
+        ScrollView(.horizontal) {
+            HStack(spacing: 12) {
+                ForEach(colorOptions, id: \.self) { color in
+                    Button {
+                        selection = color
+                    } label: {
+                        if selection == color {
                             Circle()
-                                .stroke(Color.white.opacity(0.5), lineWidth: selection == color ? 3 : 0)
-                        )
+                                .strokeBorder(Color(color), lineWidth: 6)
+                                .frame(width: 30, height: 30)
+                        } else {
+                            Circle()
+                                .fill(Color(color))
+                                .frame(width: 30, height: 30)
+                        }
+                    }
                 }
             }
+            .padding(.horizontal)
+            .padding(.vertical, 12)
         }
     }
 }
@@ -76,8 +79,7 @@ struct AddHabitView: View {
     @Environment(\.dismiss) var dismiss
     @State private var name: String = ""
     @State private var color: String = "pink"
-    @State private var openColorSheet = false
-    
+
     @State private var repeatValue = "Daily"
     @State private var selectedDateTime = Date.now
     @State private var selectedDay: Day = .Monday
@@ -92,32 +94,10 @@ struct AddHabitView: View {
                 Section("Name your habit") {
                     TextField("Meditate, Drink water, etc.", text: $name)
                 }
-                Section {
-                    Button {
-                        openColorSheet.toggle()
-                    } label: {
-                        HStack {
-                            VStack {
-                                Circle()
-                                    .fill(Color(color))
-                                    .frame(width: 40, height: 40)
-                                    .padding(10)
-                                    .background(.ultraThinMaterial)
-                                    .cornerRadius(16)
-                            }
-                            
-                            Text("COLOR")
-                                .font(.system(size: 14))
-                                .foregroundColor(Color.secondary)
-                        }
-                        .padding([.vertical, .leading], 8)
-                        .padding(.trailing, 16)
-                        .background(Color(UIColor.tertiarySystemBackground))
-                        .cornerRadius(16)
-                    }
-                    .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+                Section("Color") {
+                    CustomColorPicker(selection: $color)
                 }
-                .listRowBackground(Color(UIColor.systemGroupedBackground))
+                .listRowInsets(EdgeInsets())
                 Section("Goal") {
                     VStack {
                         Picker("Repeat", selection: $goalRepeat) {
@@ -162,11 +142,6 @@ struct AddHabitView: View {
                 }
             }
             .tint(.pink)
-            .sheet(isPresented: $openColorSheet) {
-                CustomColorPicker(selection: $color)
-                    .presentationDetents([.height(200)])
-                    .presentationDragIndicator(.visible)
-            }
         }
     }
     

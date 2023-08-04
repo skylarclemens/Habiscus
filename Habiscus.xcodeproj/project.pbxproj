@@ -22,6 +22,7 @@
 		7EA68A782A79555A001C6067 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA68A772A79555A001C6067 /* Date.swift */; };
 		7EA6C3ED2A72950C00DA4C41 /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6C3EC2A72950C00DA4C41 /* WeekView.swift */; };
 		7EA6C3EF2A7295C100DA4C41 /* Week.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6C3EE2A7295C100DA4C41 /* Week.swift */; };
+		7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */; };
 		7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */; };
 		7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */; };
 		7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */; };
@@ -50,6 +51,7 @@
 		7EA68A772A79555A001C6067 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7EA6C3EC2A72950C00DA4C41 /* WeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekView.swift; sourceTree = "<group>"; };
 		7EA6C3EE2A7295C100DA4C41 /* Week.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Week.swift; sourceTree = "<group>"; };
+		7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
 		7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountGridView.swift; sourceTree = "<group>"; };
 		7EE77DE92A6DDBC90058CDF8 /* Habiscus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Habiscus.xcdatamodel; sourceTree = "<group>"; };
 		7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */,
 				7E67A7A12A6B52B9001E0C23 /* ContentView.swift */,
 				7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */,
+				7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */,
 				7E83225C2A72F3E200042486 /* HabitListView.swift */,
 				7EA6C3EC2A72950C00DA4C41 /* WeekView.swift */,
 				7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */,
@@ -206,6 +209,7 @@
 				7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */,
 				7E3B01982A6D9A2900223905 /* HabitView.swift in Sources */,
 				7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */,
+				7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,
 				7E1261622A742200009F15C9 /* HabitManager.swift in Sources */,
 				7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */,
