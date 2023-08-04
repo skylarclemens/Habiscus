@@ -128,7 +128,7 @@ struct AddHabitView: View {
                         newHabit.goal = Int16(goalCount)
                         newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
                         try? moc.save()
-                        setReminderNotification()
+                        setReminderNotification(id: newHabit.id!)
                         
                         dismiss()
                     }
@@ -151,7 +151,7 @@ struct AddHabitView: View {
         }
     }
     
-    func setReminderNotification() {
+    func setReminderNotification(id habitId: UUID) {
         let center = UNUserNotificationCenter.current()
         var dateComponents = DateComponents()
         if repeatValue == "Once" {
@@ -172,7 +172,7 @@ struct AddHabitView: View {
         content.title = "Reminder"
         content.body = "Time to complete \(name)!"
         
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: habitId.uuidString, content: content, trigger: trigger)
         center.add(request) { (error) in
             if error != nil {
                 print(error!.localizedDescription)

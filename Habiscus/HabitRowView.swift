@@ -78,7 +78,7 @@ struct HabitRowView: View {
         .contextMenu {
             Group {
                 Button {
-                    habitManager.undoLastCount()
+                    habitManager.undoLastCount(from: date)
                 } label: {
                     Label("Undo last count", systemImage: "arrow.uturn.backward")
                 }

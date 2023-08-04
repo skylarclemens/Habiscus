@@ -59,7 +59,7 @@ struct HabitView: View {
                         VStack {
                             HStack {
                                 Button {
-                                    habitManager.undoLastCount()
+                                    habitManager.undoLastCount(from: date)
                                 } label: {
                                     Image(systemName: "arrow.uturn.backward.circle.fill")
                                         .renderingMode(.original)

@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import UserNotifications
 
 struct HabitManager {
     private let moc: NSManagedObjectContext
@@ -60,16 +61,16 @@ struct HabitManager {
         addNewCount(progress: newProgress, date: date)
     }
     
-    func undoLastCount(_ habit: Habit? = nil) {
+    func undoLastCount(_ habit: Habit? = nil, from date: Date) {
         guard let habit = getHabit(habit),
-              let mostRecentCount = habit.mostRecentCount(),
-              let lastUpdatedProgress = mostRecentCount.progress else {
+              let mostRecentCount = habit.mostRecentCount(from: date),
+              let currentProgress = mostRecentCount.progress else {
             return
         }
-        lastUpdatedProgress.removeFromCounts(mostRecentCount)
+        currentProgress.removeFromCounts(mostRecentCount)
         moc.delete(mostRecentCount)
         
-        lastUpdatedProgress.isCompleted = lastUpdatedProgress.checkCompleted()
+        currentProgress.isCompleted = currentProgress.checkCompleted()
         
         habit.lastUpdated = Date()
         
@@ -82,6 +83,7 @@ struct HabitManager {
         }
         moc.delete(habit)
         try? moc.save()
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [habit.id!.uuidString])
     }
     
     // MARK: - Private methods
