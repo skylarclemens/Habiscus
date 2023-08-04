@@ -45,7 +45,7 @@ struct HabitView: View {
             Rectangle()
                 .fill(Color(UIColor.secondarySystemBackground))
                 .ignoresSafeArea()
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
                     HStack {
                         VStack(alignment: .leading) {
@@ -141,14 +141,48 @@ struct HabitView: View {
                                 .fill(.regularMaterial)
                                 .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                         }
+                        
+                        VStack {
+                            Text("Success %")
+                                .font(.caption)
+
+                            Text("\(Int(habit.successPercentage))%")
+                                    .font(.system(.title, design: .rounded))
+                                    .fontWeight(.medium)
+                                    .foregroundColor(habit.habitColor)
+                        }
+                        .padding()
+                        .background {
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(.regularMaterial)
+                                .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                        }
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
                     
+                    VStack {
+                        CalendarView(habit: habit, date: $date, size: 40, color: habit.habitColor)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(.regularMaterial)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                            )
+                            .padding(.horizontal)
+                    }
                     
-                    WeekView(selectedDate: $date)
-                        .frame(height: 80)
-                        .padding(.top, 16)
+                    VStack {
+                        CountGridView(habit: habit, size: 14, spacing: 4)
+                            .padding(.vertical, 20)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(.regularMaterial)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                            )
+                            .padding()
+                    }
+                    .frame(maxWidth: .infinity)
+                    
                     VStack {
                         if showEntries {
                             VStack(alignment: .leading) {

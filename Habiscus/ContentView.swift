@@ -29,6 +29,9 @@ struct ContentView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal)
                         }
+                        .onTapGesture {
+                            dateSelected = Date()
+                        }
                         .animation(.spring(), value: dateSelected)
                         WeekView(selectedDate: $dateSelected)
                             .frame(height: 60)
