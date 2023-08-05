@@ -25,9 +25,9 @@ struct HabitManager {
     
     // Makes sure the date is today or earlier
     // Creates a new count and adds it to progress
-    func addNewCount(progress: Progress, date: Date) {
+    func addNewCount(progress: Progress, date: Date, habit: Habit? = nil) -> Bool {
         guard !date.isAfter(Date()) else {
-            return
+            return false
         }
         
         let newCount = Count(context: moc)
@@ -39,26 +39,33 @@ struct HabitManager {
         
         updateProgress(progress)
         try? moc.save()
+        
+        var progressJustCompleted = false
+        if let habit = habit {
+            progressJustCompleted = progress.countsArray.count == habit.goalNumber
+        }
+        
+        return progressJustCompleted
     }
     
     // Makes sure the date is today or earlier
     // Creates a new Progress entity and adds a new count
-    func addNewProgress(habit: Habit? = nil, date: Date) {
+    func addNewProgress(habit: Habit? = nil, date: Date) -> Bool {
         guard !date.isAfter(Date()) else {
-            return
+            return false
         }
         guard let habit = getHabit(habit) else {
-            return
+            return false
         }
         let newProgress = Progress(context: moc)
         newProgress.id = UUID()
         newProgress.date = date
-        newProgress.isCompleted = habit.goalNumber == 1 ? true : false
+        newProgress.isCompleted = habit.goalNumber == 1
         newProgress.lastUpdated = Date()
         newProgress.habit = habit
         habit.addToProgress(newProgress)
         
-        addNewCount(progress: newProgress, date: date)
+        return addNewCount(progress: newProgress, date: date, habit: habit)
     }
     
     func undoLastCount(_ habit: Habit? = nil, from date: Date) {

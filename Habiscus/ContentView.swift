@@ -7,9 +7,11 @@
 
 import SwiftUI
 import UserNotifications
+import CoreHaptics
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
+    
     @State private var addHabitOpen = false
     @State private var dateSelected: Date = Date()
     
@@ -54,6 +56,9 @@ struct ContentView: View {
             }
         }
         .tint(.pink)
+        .onAppear {
+            HapticManager.instance.prepareHaptics()
+        }
     }
     
     func checkCloseDate() -> String {
@@ -73,6 +78,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var dataController = DataController()
+    static var hapticManager = HapticManager()
     static var previews: some View {
         ContentView()
             .environment(\.managedObjectContext, dataController.container.viewContext)
