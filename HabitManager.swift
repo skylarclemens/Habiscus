@@ -88,9 +88,9 @@ struct HabitManager {
         guard let habit = getHabit(habit) else {
             return
         }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [habit.id!.uuidString])
         moc.delete(habit)
         try? moc.save()
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [habit.id!.uuidString])
     }
     
     // MARK: - Private methods

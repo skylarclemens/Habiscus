@@ -20,7 +20,7 @@ struct ContentView: View {
             ZStack {
                 Rectangle()
                     .fill(Color(UIColor.secondarySystemBackground))
-                    . ignoresSafeArea()
+                    .ignoresSafeArea()
                 VStack {
                     VStack {
                         VStack(spacing: 0) {
@@ -41,7 +41,7 @@ struct ContentView: View {
                             .padding(.bottom, 16)
                             .offset(y: -15)
                     }
-                    HabitListView(dateSelected: $dateSelected)
+                    HabitListView(dateSelected: $dateSelected, addHabitOpen: $addHabitOpen)
                 }
                 .toolbar {
                     Button {
