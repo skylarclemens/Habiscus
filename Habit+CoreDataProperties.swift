@@ -104,8 +104,10 @@ extension Habit {
         })
     }
     
-    public func mostRecentCount() -> Count? {
-        let progress = lastUpdatedProgress()
+    public func mostRecentCount(from date: Date) -> Count? {
+        guard let progress = findProgress(from: date) else {
+            return nil
+        }
         
         if progress.countsArray.count > 0 {
             return progress.countsArray.reduce(progress.countsArray[0], {

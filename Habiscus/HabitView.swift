@@ -59,7 +59,8 @@ struct HabitView: View {
                         VStack {
                             HStack {
                                 Button {
-                                    habitManager.undoLastCount()
+                                    simpleUndo()
+                                    habitManager.undoLastCount(from: date)
                                 } label: {
                                     Image(systemName: "arrow.uturn.backward.circle.fill")
                                         .renderingMode(.original)
@@ -71,11 +72,19 @@ struct HabitView: View {
                                 .accessibilityLabel("Undo last count")
                                 GoalCounterView(habit: habit, size: 60, date: $date)
                                 Button {
-                                    simpleSuccess()
+                                    var wasProgressJustCompleted = false
+                                    
                                     if let progress = progress {
-                                        habitManager.addNewCount(progress: progress, date: date)
+                                        wasProgressJustCompleted = habitManager.addNewCount(progress: progress, date: date, habit: habit)
                                     } else {
-                                        habitManager.addNewProgress(date: date)
+                                        wasProgressJustCompleted = habitManager.addNewProgress(date: date)
+                                    }
+                                    
+                                    if wasProgressJustCompleted {
+                                        HapticManager.instance.completionSuccess()
+                                        SoundManager.instance.playCompleteSound(sound: .complete)
+                                    } else {
+                                        simpleSuccess()
                                     }
                                 } label: {
                                     Image(systemName: "plus")
@@ -232,6 +241,14 @@ struct HabitView: View {
     func simpleSuccess() {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
+    }
+    func simpleUndo() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.warning)
+    }
+    
+    func completeHaptic() {
+        
     }
 }
 

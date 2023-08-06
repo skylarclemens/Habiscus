@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import UserNotifications
+import CoreHaptics
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
+    
     @State private var addHabitOpen = false
     @State private var dateSelected: Date = Date()
     
@@ -17,7 +20,7 @@ struct ContentView: View {
             ZStack {
                 Rectangle()
                     .fill(Color(UIColor.secondarySystemBackground))
-                    . ignoresSafeArea()
+                    .ignoresSafeArea()
                 VStack {
                     VStack {
                         VStack(spacing: 0) {
@@ -38,7 +41,7 @@ struct ContentView: View {
                             .padding(.bottom, 16)
                             .offset(y: -15)
                     }
-                    HabitListView(dateSelected: $dateSelected)
+                    HabitListView(dateSelected: $dateSelected, addHabitOpen: $addHabitOpen)
                 }
                 .toolbar {
                     Button {
@@ -53,6 +56,9 @@ struct ContentView: View {
             }
         }
         .tint(.pink)
+        .onAppear {
+            HapticManager.instance.prepareHaptics()
+        }
     }
     
     func checkCloseDate() -> String {
@@ -72,6 +78,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var dataController = DataController()
+    static var hapticManager = HapticManager()
     static var previews: some View {
         ContentView()
             .environment(\.managedObjectContext, dataController.container.viewContext)

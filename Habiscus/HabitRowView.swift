@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject private var hapticManager: HapticManager
     @ObservedObject var habit: Habit
     @ObservedObject var progress: Progress
     @State private var animated: Bool = false
@@ -43,13 +44,19 @@ struct HabitRowView: View {
                     .foregroundColor(.white)
                 Spacer()
                 Button {
-                    simpleSuccess()
+                    var wasProgressJustCompleted = false
+                    
                     if self.progress != Progress.None {
-                        habitManager.addNewCount(progress: progress, date: date)
-                        print(true)
+                        wasProgressJustCompleted = habitManager.addNewCount(progress: progress, date: date, habit: habit)
                     } else {
-                        habitManager.addNewProgress(date: date)
-                        print(false)
+                        wasProgressJustCompleted = habitManager.addNewProgress(date: date)
+                    }
+                    
+                    if wasProgressJustCompleted {
+                        HapticManager.instance.completionSuccess()
+                        SoundManager.instance.playCompleteSound(sound: .complete)
+                    } else {
+                        simpleSuccess()
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -78,7 +85,7 @@ struct HabitRowView: View {
         .contextMenu {
             Group {
                 Button {
-                    habitManager.undoLastCount()
+                    habitManager.undoLastCount(from: date)
                 } label: {
                     Label("Undo last count", systemImage: "arrow.uturn.backward")
                 }

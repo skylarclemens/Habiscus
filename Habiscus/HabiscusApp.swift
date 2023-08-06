@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct HabiscusApp: App {
     @StateObject private var dataController = DataController()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
