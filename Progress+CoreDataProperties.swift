@@ -2,7 +2,7 @@
 //  Progress+CoreDataProperties.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 7/29/23.
+//  Created by Skylar Clemens on 8/6/23.
 //
 //
 
@@ -17,39 +17,38 @@ extension Progress {
     }
 
     @NSManaged public var date: Date?
-    @NSManaged public var lastUpdated: Date?
     @NSManaged public var id: UUID?
     @NSManaged public var isCompleted: Bool
+    @NSManaged public var lastUpdated: Date?
+    @NSManaged public var isSkipped: Bool
     @NSManaged public var counts: NSSet?
     @NSManaged public var habit: Habit?
     
     public var wrappedDate: Date {
         date ?? Date.now
     }
-    
-    
-    
+
     public var wrappedLastUpdated: Date {
         lastUpdated ?? Date.now
     }
-    
+
     public var countsArray: [Count] {
         let set = counts as? Set<Count> ?? []
         return set.sorted {
             $0.wrappedCreatedDate < $1.wrappedCreatedDate
         }
     }
-    
+
     public var totalCount: Int {
         countsArray.count
     }
-    
+
     public var wrappedHabit: Habit {
         habit ?? Habit()
     }
-    
+
     static let None = Progress()
-    
+
     public func checkCompleted() -> Bool {
         totalCount >= wrappedHabit.goalNumber
     }
