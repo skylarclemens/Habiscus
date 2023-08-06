@@ -84,6 +84,15 @@ struct HabitManager {
         try? moc.save()
     }
     
+    func archiveHabit(_ habit: Habit? = nil) {
+        guard let habit = getHabit(habit) else {
+            return
+        }
+        habit.isArchived = true
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [habit.id!.uuidString])
+        try? moc.save()
+    }
+    
     func removeHabit(_ habit: Habit? = nil) {
         guard let habit = getHabit(habit) else {
             return

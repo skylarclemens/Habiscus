@@ -25,6 +25,10 @@ struct HabitRowView: View {
         progress != Progress.None ? progress.isCompleted : false
     }
     
+    var isProgressEmpty: Bool {
+        progress != Progress.None ? progress.countsArray.isEmpty : true
+    }
+    
     private var habitManager: HabitManager {
         HabitManager(context: moc, habit: habit)
     }
@@ -88,6 +92,13 @@ struct HabitRowView: View {
                     habitManager.undoLastCount(from: date)
                 } label: {
                     Label("Undo last count", systemImage: "arrow.uturn.backward")
+                        .foregroundColor(isProgressEmpty ? .secondary : .primary)
+                }
+                .disabled(isProgressEmpty)
+                Button {
+                    habitManager.archiveHabit()
+                } label: {
+                    Label("Archive", systemImage: "archivebox")
                 }
                 Button(role: .destructive) {
                     habitManager.removeHabit()
@@ -122,7 +133,7 @@ struct HabitRowView_Previews: PreviewProvider {
         habit.goal = 1
         habit.goalFrequency = 1
         return List {
-            HabitRowView(habit: habit, date: .constant(Date()))
+            HabitRowView(habit: habit, date: .constant(Date()), progress: progress)
                 .swipeActions {
                     Button("Delete", role: .destructive) {
                         

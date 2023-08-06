@@ -126,6 +126,7 @@ struct AddHabitView: View {
                         newHabit.color = color
                         newHabit.createdAt = Date.now
                         newHabit.goal = Int16(goalCount)
+                        newHabit.isArchived = false
                         newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
                         try? moc.save()
                         setReminderNotification(id: newHabit.id!)
@@ -152,6 +153,10 @@ struct AddHabitView: View {
     }
     
     func setReminderNotification(id habitId: UUID) {
+        if repeatValue == "None" {
+            return
+        }
+        
         let center = UNUserNotificationCenter.current()
         var dateComponents = DateComponents()
         if repeatValue == "Once" {

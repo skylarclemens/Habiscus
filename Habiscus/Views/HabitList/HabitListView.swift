@@ -36,7 +36,7 @@ struct HabitListView: View {
 
     @FetchRequest(sortDescriptors: [
         SortDescriptor(\.createdAt, order: .reverse)
-    ], animation: .default) var habits: FetchedResults<Habit>
+    ], predicate: NSPredicate(format: "isArchived == NO"), animation: .default) var habits: FetchedResults<Habit>
     
     var openHabits: [Habit] {
         habits.filter {
