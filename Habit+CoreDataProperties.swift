@@ -101,19 +101,6 @@ extension Habit {
         return tempCountArray
     }
 
-    // Compares day the habit was first created and day since first progress to find starting day
-    // Divides total completed progress count over number of days since each day has one progress object
-    // Returns percentage
-    public var successPercentage: Double {
-        let daysSinceCreated = abs(self.createdDate.daysBetween(Date()) ?? 0)
-        let daysSinceFirstProgress = abs(self.activeProgressArray.first?.wrappedDate.daysBetween(Date()) ?? 0)
-        let progressDays = max(daysSinceCreated, daysSinceFirstProgress)
-        
-        let completedProgress = activeProgressArray.filter { $0.isCompleted }.count
-        
-        return (Double(completedProgress) / Double(max(progressDays, 1))) * 100
-    }
-
     public func findProgress(from date: Date) -> Progress? {
         if let progressObjects = self.progress?.allObjects as? [Progress],
             let progressOnDate = progressObjects.first(where: {
@@ -142,6 +129,19 @@ extension Habit {
         }
         return nil
     }
+    
+    // Compares day the habit was first created and day since first progress to find starting day
+    // Divides total completed progress count over number of days since each day has one progress object
+    // Returns percentage
+    public var successPercentage: Double {
+        let daysSinceCreated = abs(self.createdDate.daysBetween(Date()) ?? 0)
+        let daysSinceFirstProgress = abs(self.activeProgressArray.first?.wrappedDate.daysBetween(Date()) ?? 0)
+        let progressDays = max(daysSinceCreated, daysSinceFirstProgress)
+        
+        let completedProgress = activeProgressArray.filter { $0.isCompleted }.count
+        
+        return (Double(completedProgress) / Double(progressDays + 1)) * 100
+    }
 
     // Starts progress array at most recent, assumed that progress is array is already sorted
     // If first progress is not completed or is more than one day from today, returns a streak of 0
@@ -152,7 +152,7 @@ extension Habit {
         }
 
         let streaks = calculateStreaksArray(from: progressArray.reversed())
-        return streaks.last ?? 0
+        return streaks.first ?? 0
     }
 
     // Adds to streak if compared dates are completed and one day apart
@@ -179,7 +179,7 @@ extension Habit {
             }
         }
         
-        if (refArray.last?.isCompleted ?? false) && !(refArray.last?.isSkipped ?? true) {
+        if (refArray.first?.isCompleted ?? false) && !(refArray.first?.isSkipped ?? true) {
             streakArray.append(streak + 1)
         } else if streak > 0 {
             streakArray.append(streak)
