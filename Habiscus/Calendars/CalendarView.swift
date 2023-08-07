@@ -29,6 +29,7 @@ struct CalendarDay: Identifiable, Hashable {
         Calendar.current.dateComponents([.day], from: date).day!
     }
     var count: Int
+    var skipped: Bool = false
 }
 
 struct CalendarMonth: Equatable, Hashable {
@@ -61,11 +62,14 @@ struct CalendarMonth: Equatable, Hashable {
         var day = date.startOfMonth()
         for _ in self.dateRange {
             var progressTotalCounts = 0
+            var progressIsSkipped = false
             if let habit = habit {
-                progressTotalCounts = habit.progressArray.first(where: {
-                    Calendar.current.isDate($0.wrappedDate, inSameDayAs: day) })?.totalCount ?? 0
+                let currentProgress = habit.progressArray.first(where: {
+                    Calendar.current.isDate($0.wrappedDate, inSameDayAs: day) })
+                progressTotalCounts = currentProgress?.totalCount ?? 0
+                progressIsSkipped = currentProgress?.isSkipped ?? false
             }
-            let dayObject = CalendarDay(date: day, count: progressTotalCounts)
+            let dayObject = CalendarDay(date: day, count: progressTotalCounts, skipped: progressIsSkipped)
             daysArray.append(dayObject)
             day = Calendar.current.date(byAdding: .day, value: 1, to: day)!
         }
