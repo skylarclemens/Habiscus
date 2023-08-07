@@ -62,6 +62,13 @@ extension Habit {
             $0.wrappedDate < $1.wrappedDate
         }
     }
+    
+    //Filter for progress that is not skipped
+    public var activeProgressArray: [Progress] {
+        progressArray.filter {
+            !$0.isSkipped && !$0.countsArray.isEmpty
+        }
+    }
 
     public var lastUpdatedDate: Date {
         lastUpdated ?? Date()
@@ -99,10 +106,10 @@ extension Habit {
     // Returns percentage
     public var successPercentage: Double {
         let daysSinceCreated = abs(self.createdDate.daysBetween(Date()) ?? 0)
-        let daysSinceFirstProgress = abs(self.progressArray.first?.wrappedDate.daysBetween(Date()) ?? 0)
+        let daysSinceFirstProgress = abs(self.activeProgressArray.first?.wrappedDate.daysBetween(Date()) ?? 0)
         let progressDays = max(daysSinceCreated, daysSinceFirstProgress)
         
-        let completedProgress = progressArray.filter { $0.isCompleted }.count
+        let completedProgress = activeProgressArray.filter { $0.isCompleted }.count
         
         return (Double(completedProgress) / Double(max(progressDays, 1))) * 100
     }
@@ -140,14 +147,12 @@ extension Habit {
     // If first progress is not completed or is more than one day from today, returns a streak of 0
     // Returns first, most recent, streak of streak array
     public func getCurrentStreak() -> Int {
-        guard let latestProgress = progressArray.last,
-              latestProgress.isCompleted,
-              !Date().isMoreThanOneDayFrom(latestProgress.wrappedDate) else {
+        guard progressArray.last(where: { $0.isCompleted && !$0.isSkipped }) != nil else {
             return 0
         }
 
         let streaks = calculateStreaksArray(from: progressArray.reversed())
-        return streaks.first ?? 0
+        return streaks.last ?? 0
     }
 
     // Adds to streak if compared dates are completed and one day apart
@@ -158,18 +163,26 @@ extension Habit {
         var streak = 0
         
         for (progress, refProgress) in zip(refArray.dropFirst(), refArray) {
-            if progress.isCompleted, refProgress.isCompleted, abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 {
+            if refProgress.isSkipped { continue }
+            
+            if progress.isSkipped {
+                if abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 && refProgress.isCompleted {
+                    streak += 1
+                }
+            } else if progress.isCompleted, refProgress.isCompleted, abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 {
                 streak += 1
             } else {
-                if streak > 0 || refProgress.isCompleted {
+                if streak > 0 || progress.isCompleted {
                     streakArray.append(streak + 1)
                 }
                 streak = 0
             }
         }
         
-        if streak > 0 || (refArray.last?.isCompleted ?? false) {
+        if (refArray.last?.isCompleted ?? false) && !(refArray.last?.isSkipped ?? true) {
             streakArray.append(streak + 1)
+        } else if streak > 0 {
+            streakArray.append(streak)
         }
         
         return streakArray
@@ -177,7 +190,7 @@ extension Habit {
 
     // Gets the highest number in the streak array
     public func getLongestStreak() -> Int {
-        calculateStreaksArray().max() ?? 0
+        calculateStreaksArray(from: progressArray.reversed()).max() ?? 0
     }
 
 }

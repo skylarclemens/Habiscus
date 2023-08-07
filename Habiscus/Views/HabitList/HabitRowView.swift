@@ -89,6 +89,7 @@ struct HabitRowView: View {
             withAnimation(.spring(response: 1.5, dampingFraction: 1.5)) {
                 animated = true
             }
+            print(progress)
         }
         .contextMenu {
             Group {

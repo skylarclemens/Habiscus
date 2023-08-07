@@ -57,8 +57,8 @@ struct HabitManager {
         let newProgress = Progress(context: moc)
         newProgress.id = UUID()
         newProgress.date = date
-        newProgress.isCompleted = habit.goalNumber == 1
         newProgress.lastUpdated = Date()
+        newProgress.isCompleted = habit.goalNumber == 1
         newProgress.isSkipped = skip
         newProgress.habit = habit
         habit.addToProgress(newProgress)
@@ -73,25 +73,11 @@ struct HabitManager {
         let newProgress = Progress(context: moc)
         newProgress.id = UUID()
         newProgress.date = date
-        newProgress.isCompleted = habit.goalNumber == 1
         newProgress.lastUpdated = Date()
+        newProgress.isCompleted = false
         newProgress.isSkipped = true
         newProgress.habit = habit
         habit.addToProgress(newProgress)
-        habit.lastUpdated = Date()
-    }
-    
-    func undoLastCount(_ habit: Habit? = nil, from date: Date) {
-        guard let habit = getHabit(habit),
-              let mostRecentCount = habit.mostRecentCount(from: date),
-              let currentProgress = mostRecentCount.progress else {
-            return
-        }
-        currentProgress.removeFromCounts(mostRecentCount)
-        moc.delete(mostRecentCount)
-        
-        currentProgress.isCompleted = currentProgress.checkCompleted()
-        
         habit.lastUpdated = Date()
         
         try? moc.save()
@@ -109,6 +95,22 @@ struct HabitManager {
     func skipNewProgress(_ habit: Habit? = nil, on date: Date) {
         guard let habit = getHabit(habit) else { return }
         addNewSkippedProgress(habit: habit, date: date)
+    }
+    
+    func undoLastCount(_ habit: Habit? = nil, from date: Date) {
+        guard let habit = getHabit(habit),
+              let mostRecentCount = habit.mostRecentCount(from: date),
+              let currentProgress = mostRecentCount.progress else {
+            return
+        }
+        currentProgress.removeFromCounts(mostRecentCount)
+        moc.delete(mostRecentCount)
+        
+        currentProgress.isCompleted = currentProgress.checkCompleted()
+        
+        habit.lastUpdated = Date()
+        
+        try? moc.save()
     }
     
     func archiveHabit(_ habit: Habit? = nil) {
