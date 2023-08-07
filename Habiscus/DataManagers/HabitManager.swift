@@ -50,22 +50,51 @@ struct HabitManager {
     
     // Makes sure the date is today or earlier
     // Creates a new Progress entity and adds a new count
-    func addNewProgress(habit: Habit? = nil, date: Date) -> Bool {
-        guard !date.isAfter(Date()) else {
-            return false
-        }
-        guard let habit = getHabit(habit) else {
-            return false
-        }
+    // Returns whether the progress was just completed or not
+    func addNewProgress(habit: Habit? = nil, date: Date, skip: Bool = false) -> Bool {
+        guard !date.isAfter(Date()) else { return false }
+        guard let habit = getHabit(habit) else { return false }
         let newProgress = Progress(context: moc)
         newProgress.id = UUID()
         newProgress.date = date
-        newProgress.isCompleted = habit.goalNumber == 1
         newProgress.lastUpdated = Date()
+        newProgress.isCompleted = habit.goalNumber == 1
+        newProgress.isSkipped = skip
         newProgress.habit = habit
         habit.addToProgress(newProgress)
         
+        if skip { return false }
+        
         return addNewCount(progress: newProgress, date: date, habit: habit)
+    }
+    
+    func addNewSkippedProgress(habit: Habit? = nil, date: Date) {
+        guard let habit = getHabit(habit) else { return }
+        let newProgress = Progress(context: moc)
+        newProgress.id = UUID()
+        newProgress.date = date
+        newProgress.lastUpdated = Date()
+        newProgress.isCompleted = false
+        newProgress.isSkipped = true
+        newProgress.habit = habit
+        habit.addToProgress(newProgress)
+        habit.lastUpdated = Date()
+        
+        try? moc.save()
+    }
+    
+    func setProgressSkip(_ habit: Habit? = nil, progress: Progress, skip: Bool) {
+        guard let habit = getHabit(habit) else { return }
+        progress.isSkipped = skip
+        progress.lastUpdated = Date()
+        habit.lastUpdated = Date()
+        
+        try? moc.save()
+    }
+    
+    func skipNewProgress(_ habit: Habit? = nil, on date: Date) {
+        guard let habit = getHabit(habit) else { return }
+        addNewSkippedProgress(habit: habit, date: date)
     }
     
     func undoLastCount(_ habit: Habit? = nil, from date: Date) {
@@ -81,6 +110,15 @@ struct HabitManager {
         
         habit.lastUpdated = Date()
         
+        try? moc.save()
+    }
+    
+    func archiveHabit(_ habit: Habit? = nil) {
+        guard let habit = getHabit(habit) else {
+            return
+        }
+        habit.isArchived = true
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [habit.id!.uuidString])
         try? moc.save()
     }
     

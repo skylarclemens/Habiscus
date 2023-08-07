@@ -25,6 +25,14 @@ struct HabitRowView: View {
         progress != Progress.None ? progress.isCompleted : false
     }
     
+    var isSkipped: Bool {
+        progress != Progress.None ? progress.isSkipped : false
+    }
+    
+    var isProgressEmpty: Bool {
+        progress != Progress.None ? progress.countsArray.isEmpty : true
+    }
+    
     private var habitManager: HabitManager {
         HabitManager(context: moc, habit: habit)
     }
@@ -33,8 +41,8 @@ struct HabitRowView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(habit.habitColor)
-                .shadow(color: .black.opacity(isCompleted ? 0 : 0.1), radius: 6, y: 3)
-                .shadow(color: habit.habitColor.opacity(isCompleted ? 0 : 0.5), radius: 4, y: 3)
+                .shadow(color: .black.opacity(isCompleted || isSkipped ? 0 : 0.1), radius: 6, y: 3)
+                .shadow(color: habit.habitColor.opacity(isCompleted || isSkipped ? 0 : 0.5), radius: 4, y: 3)
                 .padding(.vertical, 2)
             HStack {
                 GoalCounterView(habit: habit, date: $date)
@@ -75,7 +83,7 @@ struct HabitRowView: View {
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 2, trailing: 16))
-        .opacity(isCompleted ? 0.5 : 1)
+        .opacity(isCompleted || isSkipped ? 0.5 : 1)
         .opacity(animated ? 1 : 0)
         .onAppear {
             withAnimation(.spring(response: 1.5, dampingFraction: 1.5)) {
@@ -88,6 +96,32 @@ struct HabitRowView: View {
                     habitManager.undoLastCount(from: date)
                 } label: {
                     Label("Undo last count", systemImage: "arrow.uturn.backward")
+                        .foregroundColor(isProgressEmpty ? .secondary : .primary)
+                }
+                .disabled(isProgressEmpty)
+                if !isSkipped {
+                    Button {
+                        if progress != Progress.None {
+                            habitManager.setProgressSkip(progress: progress, skip: true)
+                        } else {
+                            habitManager.addNewSkippedProgress(date: date)
+                        }
+                    } label: {
+                        Label("Skip", systemImage: "forward.end")
+                    }
+                } else {
+                    Button {
+                        if progress != Progress.None {
+                            habitManager.setProgressSkip(progress: progress, skip: false)
+                        }
+                    } label: {
+                        Label("Undo skip", systemImage: "backward.end")
+                    }
+                }
+                Button {
+                    habitManager.archiveHabit()
+                } label: {
+                    Label("Archive", systemImage: "archivebox")
                 }
                 Button(role: .destructive) {
                     habitManager.removeHabit()
@@ -122,7 +156,7 @@ struct HabitRowView_Previews: PreviewProvider {
         habit.goal = 1
         habit.goalFrequency = 1
         return List {
-            HabitRowView(habit: habit, date: .constant(Date()))
+            HabitRowView(habit: habit, date: .constant(Date()), progress: progress)
                 .swipeActions {
                     Button("Delete", role: .destructive) {
                         

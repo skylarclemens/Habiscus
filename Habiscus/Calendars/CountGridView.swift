@@ -10,7 +10,17 @@ import SwiftUI
 struct Contribution: Identifiable {
     let id = UUID()
     let date: Date
-    let count: Int
+    let habit: Habit?
+    var relatedProgress: Progress? {
+        habit?.progressArray.first(where: {
+            Calendar.current.isDate($0.wrappedDate, inSameDayAs: date) })
+    }
+    var count: Int {
+        relatedProgress?.totalCount ?? 0
+    }
+    var skipped: Bool {
+        relatedProgress?.isSkipped ?? false
+    }
 }
 
 struct CountGridView: View {
@@ -56,10 +66,17 @@ struct CountGridView: View {
                                     RoundedRectangle(cornerRadius: 3, style: .continuous)
                                         .fill(.black.opacity(0.08))
                                         .frame(width: size, height: size)
-                                    Rectangle()
-                                        .fill(.green)
-                                        .frame(width: size, height: size)
-                                        .opacity(calculateOpacity(from: contribution))
+                                    
+                                    if !contribution.skipped {
+                                        Rectangle()
+                                            .fill(.green)
+                                            .frame(width: size, height: size)
+                                            .opacity(calculateOpacity(from: contribution))
+                                    } else {
+                                        Rectangle()
+                                            .fill(.black.opacity(0.15))
+                                            .frame(width: size, height: size)
+                                    }
                                 }
                                 .clipShape(RoundedRectangle(cornerRadius: 3, style: .continuous))
                             }
@@ -100,9 +117,7 @@ struct CountGridView: View {
                 if iteratedDate > Date() {
                     break
                 }
-                let progressTotalCounts = habit.progressArray.first(where: {
-                    calendar.isDate($0.wrappedDate, inSameDayAs: iteratedDate) })?.totalCount
-                let contribution = Contribution(date: iteratedDate, count: progressTotalCounts ?? 0)
+                let contribution = Contribution(date: iteratedDate, habit: habit)
                 allContributions.append(contribution)
             }
         }
@@ -122,8 +137,9 @@ struct CountGridView_Previews: PreviewProvider {
         count.id = UUID()
         count.createdAt = Date.now
         count.date = Date.now
-        count.progress = progress
-        progress.addToCounts(count)
+        //count.progress = progress
+        //progress.addToCounts(count)
+        progress.isSkipped = true
         habit.name = "Test"
         habit.createdAt = Date.now
         habit.addToProgress(progress)

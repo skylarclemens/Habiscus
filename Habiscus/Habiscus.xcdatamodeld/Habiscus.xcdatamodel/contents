@@ -12,6 +12,7 @@
         <attribute name="goal" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="goalFrequency" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isArchived" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="progress" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Progress" inverseName="habit" inverseEntity="Progress"/>
@@ -20,6 +21,7 @@
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isSkipped" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="counts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Count" inverseName="progress" inverseEntity="Count"/>
         <relationship name="habit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Habit" inverseName="progress" inverseEntity="Habit"/>

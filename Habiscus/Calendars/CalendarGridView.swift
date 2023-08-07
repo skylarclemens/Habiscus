@@ -48,13 +48,19 @@ struct CalendarGridView: View {
                     }
                     Text("\(day.day)")
                         .font(.system(.callout, design: .rounded))
-                        .foregroundColor(dateIsSelected ? Color(UIColor.systemBackground) : (dayIsToday ? color : .primary))
+                        .foregroundColor(dateIsSelected ? .white : (dayIsToday ? color : .primary))
                         .bold(dateIsSelected || dayIsToday)
                     Circle()
                         .fill(color)
                         .opacity(selectedMonth.calculateOpacity(for: day))
                         .frame(width: 5)
                         .position(x: size/2, y: size-3)
+                    if day.skipped {
+                        Circle()
+                            .fill(dateIsSelected ? .clear : Color(UIColor.tertiaryLabel))
+                            .frame(width: 5)
+                            .position(x: size/2, y: size-3)
+                    }
                 }
                 .frame(width: size, height: size)
                 .onTapGesture {
@@ -79,8 +85,9 @@ struct CalendarGridView_Previews: PreviewProvider {
         count.id = UUID()
         count.createdAt = countDate
         count.date = Date()
-        count.progress = progress
-        progress.addToCounts(count)
+        //count.progress = progress
+        //progress.addToCounts(count)
+        progress.isSkipped = true
         habit.name = "Test"
         habit.createdAt = countDate
         habit.addToProgress(progress)

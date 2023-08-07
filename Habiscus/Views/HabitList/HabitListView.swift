@@ -36,12 +36,12 @@ struct HabitListView: View {
 
     @FetchRequest(sortDescriptors: [
         SortDescriptor(\.createdAt, order: .reverse)
-    ], animation: .default) var habits: FetchedResults<Habit>
+    ], predicate: NSPredicate(format: "isArchived == NO"), animation: .default) var habits: FetchedResults<Habit>
     
     var openHabits: [Habit] {
         habits.filter {
             if let progress = $0.findProgress(from: dateSelected) {
-                return progress.totalCount < $0.goalNumber
+                return !progress.isSkipped && (progress.totalCount < $0.goalNumber)
             }
             return true
         }
@@ -49,7 +49,15 @@ struct HabitListView: View {
     var completedHabits: [Habit] {
         habits.filter {
             if let progress = $0.findProgress(from: dateSelected) {
-                return progress.totalCount >= $0.goalNumber
+                return !progress.isSkipped && (progress.totalCount >= $0.goalNumber)
+            }
+            return false
+        }
+    }
+    var skippedHabits: [Habit] {
+        habits.filter {
+            if let progress = $0.findProgress(from: dateSelected) {
+                return progress.isSkipped
             }
             return false
         }
@@ -91,6 +99,27 @@ struct HabitListView: View {
                         }
                     } header: {
                         Text("Complete")
+                            .font(.system(.title2 , design: .rounded))
+                            .textCase(nil)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                if skippedHabits.count > 0 {
+                    Section {
+                        ForEach(skippedHabits) { habit in
+                            HabitRowView(habit: habit, date: $dateSelected, progress:
+                                            habit.findProgress(from: dateSelected))
+                            .overlay(
+                                NavigationLink {
+                                    HabitView(habit: habit, date: $dateSelected)
+                                } label: {
+                                    EmptyView()
+                                }.opacity(0)
+                            )
+                        }
+                    } header: {
+                        Text("Skipped")
                             .font(.system(.title2 , design: .rounded))
                             .textCase(nil)
                             .foregroundColor(.secondary)
