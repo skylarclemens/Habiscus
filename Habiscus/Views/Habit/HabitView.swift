@@ -113,13 +113,13 @@ struct HabitView: View {
                     )
                     .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
                     .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
-                    .blur(radius: !isSkipped ? 0 : 3)
+                    .blur(radius: !isSkipped ? 0 : 5)
                     .disabled(isSkipped)
                     .overlay(
                         ZStack {
                             if isSkipped {
                                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .fill(.ultraThinMaterial)
+                                    .fill(Color(UIColor.secondarySystemBackground).opacity(0.33))
                                     .opacity(0.8)
                                 Text("Skipped today")
                                     .font(.headline)
@@ -128,8 +128,24 @@ struct HabitView: View {
                                     .shadow(color: .black, radius: 10)
                             }
                         }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 16))
+                        .contextMenu {
+                            Button {
+                                
+                            } label: {
+                                Button {
+                                    if let progress = progress {
+                                        habitManager.setProgressSkip(progress: progress, skip: false)
+                                    }
+                                } label: {
+                                    Label("Undo skip", systemImage: "backward.end")
+                                }
+                            }
+                        }
                         .opacity(isSkipped ? 1 : 0)
                         .animation(.default, value: isSkipped)
+                        
                     )
                 }
                 .frame(maxWidth: .infinity)

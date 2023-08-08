@@ -11,26 +11,35 @@ struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject private var hapticManager: HapticManager
     @ObservedObject var habit: Habit
-    @ObservedObject var progress: Progress
+    var progress: Progress?
     @State private var animated: Bool = false
     @Binding var date: Date
     
     init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
         self.habit = habit
         self._date = date
-        self.progress = progress ?? Progress.None
+        self.progress = progress
     }
     
     var isCompleted: Bool {
-        progress != Progress.None ? progress.isCompleted : false
+        if let progress = progress {
+            return progress.isCompleted
+        }
+        return false
     }
     
     var isSkipped: Bool {
-        progress != Progress.None ? progress.isSkipped : false
+        if let progress = progress {
+            return progress.isSkipped
+        }
+        return false
     }
     
     var isProgressEmpty: Bool {
-        progress != Progress.None ? progress.countsArray.isEmpty : true
+        if let progress = progress {
+            return progress.countsArray.isEmpty
+        }
+        return true
     }
     
     private var habitManager: HabitManager {
@@ -54,7 +63,7 @@ struct HabitRowView: View {
                 Button {
                     var wasProgressJustCompleted = false
                     
-                    if self.progress != Progress.None {
+                    if let progress = progress {
                         wasProgressJustCompleted = habitManager.addNewCount(progress: progress, date: date, habit: habit)
                     } else {
                         wasProgressJustCompleted = habitManager.addNewProgress(date: date)
@@ -92,16 +101,16 @@ struct HabitRowView: View {
         }
         .contextMenu {
             Group {
-                Button {
-                    habitManager.undoLastCount(from: date)
-                } label: {
-                    Label("Undo last count", systemImage: "arrow.uturn.backward")
-                        .foregroundColor(isProgressEmpty ? .secondary : .primary)
+                if !isProgressEmpty {
+                    Button {
+                        habitManager.undoLastCount(from: date)
+                    } label: {
+                        Label("Undo last count", systemImage: "arrow.uturn.backward")
+                    }
                 }
-                .disabled(isProgressEmpty)
                 if !isSkipped {
                     Button {
-                        if progress != Progress.None {
+                        if let progress = progress {
                             habitManager.setProgressSkip(progress: progress, skip: true)
                         } else {
                             habitManager.addNewSkippedProgress(date: date)
@@ -111,7 +120,7 @@ struct HabitRowView: View {
                     }
                 } else {
                     Button {
-                        if progress != Progress.None {
+                        if let progress = progress {
                             habitManager.setProgressSkip(progress: progress, skip: false)
                         }
                     } label: {
