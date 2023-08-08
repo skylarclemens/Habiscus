@@ -47,8 +47,6 @@ extension Progress {
         habit ?? Habit()
     }
 
-    static let None = Progress()
-
     public func checkCompleted() -> Bool {
         totalCount >= wrappedHabit.goalNumber
     }
