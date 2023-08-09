@@ -10,6 +10,9 @@
 		7E1261622A742200009F15C9 /* HabitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1261612A742200009F15C9 /* HabitManager.swift */; };
 		7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */; };
 		7E1261702A7446B3009F15C9 /* Progress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */; };
+		7E34D8762A82EE9700A7D649 /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D8752A82EE9700A7D649 /* IconPickerView.swift */; };
+		7E34D87C2A82F3F200A7D649 /* emoji.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E34D87B2A82F3F200A7D649 /* emoji.json */; };
+		7E34D87E2A82F47300A7D649 /* EmojiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D87D2A82F47300A7D649 /* EmojiManager.swift */; };
 		7E3B01982A6D9A2900223905 /* HabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3B01972A6D9A2900223905 /* HabitView.swift */; };
 		7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */; };
 		7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7A12A6B52B9001E0C23 /* ContentView.swift */; };
@@ -25,6 +28,7 @@
 		7EA68A782A79555A001C6067 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA68A772A79555A001C6067 /* Date.swift */; };
 		7EA6C3ED2A72950C00DA4C41 /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6C3EC2A72950C00DA4C41 /* WeekView.swift */; };
 		7EA6C3EF2A7295C100DA4C41 /* Week.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6C3EE2A7295C100DA4C41 /* Week.swift */; };
+		7EA9FEAA2A82F6960084A843 /* Bundle-Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA9FEA92A82F6960084A843 /* Bundle-Decodable.swift */; };
 		7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */; };
 		7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */; };
 		7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */; };
@@ -41,6 +45,9 @@
 		7E1261612A742200009F15C9 /* HabitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitManager.swift; sourceTree = "<group>"; };
 		7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7E34D8752A82EE9700A7D649 /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
+		7E34D87B2A82F3F200A7D649 /* emoji.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
+		7E34D87D2A82F47300A7D649 /* EmojiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiManager.swift; sourceTree = "<group>"; };
 		7E3B01972A6D9A2900223905 /* HabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitView.swift; sourceTree = "<group>"; };
 		7E67A79C2A6B52B9001E0C23 /* Habiscus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habiscus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusApp.swift; sourceTree = "<group>"; };
@@ -57,6 +64,7 @@
 		7EA68A772A79555A001C6067 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7EA6C3EC2A72950C00DA4C41 /* WeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekView.swift; sourceTree = "<group>"; };
 		7EA6C3EE2A7295C100DA4C41 /* Week.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Week.swift; sourceTree = "<group>"; };
+		7EA9FEA92A82F6960084A843 /* Bundle-Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle-Decodable.swift"; sourceTree = "<group>"; };
 		7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
 		7ED7BFE42A82BB6C00952EFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountGridView.swift; sourceTree = "<group>"; };
@@ -109,6 +117,7 @@
 				7ED7BFE42A82BB6C00952EFD /* Info.plist */,
 				7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */,
 				7E67A7A12A6B52B9001E0C23 /* ContentView.swift */,
+				7E34D8752A82EE9700A7D649 /* IconPickerView.swift */,
 				7EFA41942A80222C00D2F8E3 /* Calendars */,
 				7EFA41912A80220200D2F8E3 /* Views */,
 				7EFA41902A8021CD00D2F8E3 /* DataManagers */,
@@ -123,6 +132,7 @@
 		7E67A7A52A6B52BA001E0C23 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				7E34D87B2A82F3F200A7D649 /* emoji.json */,
 				7E67A7A62A6B52BA001E0C23 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -139,6 +149,8 @@
 		7EFA41902A8021CD00D2F8E3 /* DataManagers */ = {
 			isa = PBXGroup;
 			children = (
+				7EA9FEA92A82F6960084A843 /* Bundle-Decodable.swift */,
+				7E34D87D2A82F47300A7D649 /* EmojiManager.swift */,
 				7E1261612A742200009F15C9 /* HabitManager.swift */,
 				7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */,
 				7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */,
@@ -257,6 +269,7 @@
 			files = (
 				7E67A7A72A6B52BA001E0C23 /* Preview Assets.xcassets in Resources */,
 				7E80A7EB2A7D9CC90035F658 /* complete.mp3 in Resources */,
+				7E34D87C2A82F3F200A7D649 /* emoji.json in Resources */,
 				7E67A7A42A6B52BA001E0C23 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -281,11 +294,13 @@
 				7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */,
 				7E93174F2A7D84160074E210 /* HapticManager.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,
+				7E34D87E2A82F47300A7D649 /* EmojiManager.swift in Sources */,
 				7E1261622A742200009F15C9 /* HabitManager.swift in Sources */,
 				7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */,
 				7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */,
 				7EA6C3EF2A7295C100DA4C41 /* Week.swift in Sources */,
 				7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */,
+				7EA9FEAA2A82F6960084A843 /* Bundle-Decodable.swift in Sources */,
 				7E1261702A7446B3009F15C9 /* Progress+CoreDataProperties.swift in Sources */,
 				7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */,
 				7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */,
@@ -293,6 +308,7 @@
 				7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */,
 				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
 				7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */,
+				7E34D8762A82EE9700A7D649 /* IconPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
