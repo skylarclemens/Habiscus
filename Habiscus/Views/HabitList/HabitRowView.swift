@@ -54,11 +54,18 @@ struct HabitRowView: View {
                 .shadow(color: habit.habitColor.opacity(isCompleted || isSkipped ? 0 : 0.5), radius: 4, y: 3)
                 .padding(.vertical, 2)
             HStack {
-                GoalCounterView(habit: habit, date: $date)
-                Text(habit.wrappedName)
-                    .font(.title2)
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
+                GoalCounterView(habit: habit, date: $date, showIcon: true)
+                VStack(alignment: .leading) {
+                    Text(habit.wrappedName)
+                        .font(.title2)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                    if habit.icon != nil {
+                        Text("\(progress?.totalCount ?? 0) / \(habit.goalFrequencyNumber)")
+                            .font(.system(.callout, design: .rounded))
+                            .foregroundColor(.white)
+                    }
+                }
                 Spacer()
                 Button {
                     var wasProgressJustCompleted = false
@@ -159,6 +166,7 @@ struct HabitRowView_Previews: PreviewProvider {
         count.createdAt = Date.now
         count.progress = progress
         habit.name = "Test"
+        habit.icon = "🤩"
         habit.createdAt = Date.now
         progress.addToCounts(count)
         habit.addToProgress(progress)

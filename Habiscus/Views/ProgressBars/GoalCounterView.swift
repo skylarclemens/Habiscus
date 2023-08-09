@@ -11,12 +11,12 @@ struct GoalCounterView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     var size: CGFloat = 50
+    @Binding var date: Date
+    var showIcon: Bool = false
     
-    //@State private var currentGoalCount: Int = 0
     private var goalCompletion: Double {
         Double(currentGoalCount) / Double(habit.goalNumber)
     }
-    @Binding var date: Date
     private var currentGoalCount: Int {
         if let progress = habit.findProgress(from: date) {
             return progress.countsArray.count
@@ -30,10 +30,15 @@ struct GoalCounterView: View {
                 if goalCompletion >= 1 {
                     AnimatedCheckmark(animationDuration: 1.25)
                 } else {
-                    Text(currentGoalCount, format: .number)
-                        .font(.system(.title2, design: .rounded))
-                        .bold()
-                        .foregroundColor(.white)
+                    if let char = habit.icon,
+                       showIcon {
+                        IconView(char: char)
+                    } else {
+                        Text(currentGoalCount, format: .number)
+                            .font(.system(.title2, design: .rounded))
+                            .bold()
+                            .foregroundColor(.white)
+                    }
                 }
             }
             ProgressView(value: goalCompletion > 1 ? 1.0 : goalCompletion, total: 1.0)
@@ -130,11 +135,12 @@ struct GoalCounterView_Previews: PreviewProvider {
         count.createdAt = Date.now
         count.progress = progress
         habit.name = "Test"
+        habit.icon = "🤩"
         habit.createdAt = Date.now
         progress.addToCounts(count)
         habit.addToProgress(progress)
         habit.goal = 1
-        habit.goalFrequency = 1
+        habit.goalFrequency = 2
         return GoalCounterView(habit: habit, date: .constant(Date()))
             .padding()
             .background(

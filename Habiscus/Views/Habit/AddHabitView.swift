@@ -161,6 +161,7 @@ struct AddHabitView: View {
                         newHabit.id = UUID()
                         newHabit.name = name
                         newHabit.color = color
+                        newHabit.icon = selectedEmoji?.char
                         newHabit.createdAt = Date.now
                         newHabit.goal = Int16(goalCount)
                         newHabit.isArchived = false
