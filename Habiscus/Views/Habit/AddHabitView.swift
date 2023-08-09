@@ -87,17 +87,54 @@ struct AddHabitView: View {
     let goalRepeatOptions = ["Daily", "Weekly"]
     @State private var goalRepeat: String = "Daily"
     @State private var goalCount: Int = 1
+    @State var openEmojiPicker = false
+    @State var selectedEmoji: Emoji?
     
     var body: some View {
         NavigationStack {
             Form {
-                Section("Name your habit") {
+                
+                Section("Name") {
                     TextField("Meditate, Drink water, etc.", text: $name)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color(UIColor.secondarySystemGroupedBackground))
+                        )
+                        .listRowInsets(EdgeInsets())
                 }
-                Section("Color") {
-                    CustomColorPicker(selection: $color)
+                .listRowBackground(Color(UIColor.systemGroupedBackground))
+                Section("Icon and Color") {
+                    HStack(alignment: .center) {
+                        Button {
+                            openEmojiPicker = true
+                        } label: {
+                            VStack {
+                                if let selectedEmoji = selectedEmoji {
+                                    Text(selectedEmoji.char)
+                                        .font(.title)
+                                } else {
+                                    Image(systemName: "plus")
+                                        .font(.title)
+                                        .foregroundColor(Color(color))
+                                }
+                            }
+                            .frame(width: 65, height: 65)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(Color(color).opacity(0.1))
+                            )
+                        }
+                        CustomColorPicker(selection: $color)
+                            .padding(6)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
+                            )
+                    }
+                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                    .listRowInsets(EdgeInsets())
                 }
-                .listRowInsets(EdgeInsets())
                 Section("Goal") {
                     VStack {
                         Picker("Repeat", selection: $goalRepeat) {
@@ -139,10 +176,14 @@ struct AddHabitView: View {
                     Button("Cancel") {
                         dismiss()
                     }
-                    
                 }
             }
             .tint(.pink)
+            .sheet(isPresented: $openEmojiPicker) {
+                IconPickerView(selectedIcon: $selectedEmoji)
+                    .presentationDetents([.fraction(0.8), .large])
+                    .presentationDragIndicator(.visible)
+            }
         }
     }
     

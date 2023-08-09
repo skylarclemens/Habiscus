@@ -7,69 +7,105 @@
 
 import SwiftUI
 
-let categories: [String] = ["Smileys & Emotion", "People & Body", "Food & Drink", "Travel & Places", "Activities", "Objects", "Symbols", "Flags"]
-
 struct EmojiCategoryView: View {
     var emojis: [Emoji]
     var group: EmojiGroup
     private var columns: [GridItem] {
-        Array(repeating: .init(.flexible()), count: 5)
+        Array(repeating: .init(.flexible()), count: 6)
     }
-    @Binding var searchingString: String
-    @Binding var selected: Emoji
-    var currentTag: String
-    
-    private var searchResults: [Emoji] {
-        if searchingString.isEmpty || currentTag != group.id {
-            return emojis
-        } else {
-            return emojis.filter { $0.name.localizedCaseInsensitiveContains(searchingString)}
-        }
-    }
+    @Binding var selected: Emoji?
+    @Binding var currentTab: String
     
     var body: some View {
         List {
             Section {
-                LazyVGrid(columns: columns) {
-                    ForEach(searchResults) { emoji in
-                        Text(emoji.char)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(.secondary.opacity(0.125))
-                            )
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(emojis) { emoji in
+                            Text(emoji.char)
+                                .font(.system(size: 32))
+                                .onTapGesture {
+                                    selected = emoji
+                                }
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .fill(selected == emoji ? .pink.opacity(0.25) : .clear)
+                                        .frame(width: 45, height: 45)
+                                )
                     }
                 }
+                .padding(.vertical, 8)
             } header: {
                 Text(group.id)
             }
+            .listRowSeparator(.hidden)
         }
-        .frame(maxHeight: .infinity)
-        .listStyle(InsetGroupedListStyle())
-        .searchable(text: $searchingString, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for an emoji")
+        .listStyle(.plain)
+        .listSectionSeparator(.hidden)
+        .scrollIndicators(.hidden)
+        .ignoresSafeArea()
     }
 }
 
 struct IconPickerView: View {
+    @Environment(\.dismiss) var dismiss
     @StateObject var emojiManager = EmojiManager()
-    @State private var tabViewSelection = "Activity"
-    @State private var searchingString: String = ""
-    @Binding var currentIconSelected: Emoji
+    @State private var tabViewSelection = "Activities"
+    @State private var originalSelectedIcon: Emoji?
+    @Binding var selectedIcon: Emoji?
+    
+    init(selectedIcon: Binding<Emoji?>) {
+        self._selectedIcon = selectedIcon
+        self._originalSelectedIcon = State(initialValue: selectedIcon.wrappedValue)
+    }
     
     var body: some View {
         NavigationStack {
-            TabView(selection: $tabViewSelection) {
-                ForEach(groupByCategory(emojiManager.emojis), id: \.0) { pair in
-                    EmojiCategoryView(emojis: pair.1, group: pair.0, searchingString: $searchingString, selected: $currentIconSelected, currentTag: tabViewSelection)
-                        .tag(pair.0.id)
+            VStack {
+                VStack {
+                    if let selectedIcon = selectedIcon {
+                        Text(selectedIcon.char)
+                            .font(.largeTitle)
+                    } else {
+                        Image(systemName: "plus")
+                            .font(.largeTitle)
+                            .foregroundColor(.gray)
+                    }
                 }
+                .frame(width: 65, height: 65)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.regularMaterial)
+                )
+                TabView(selection: $tabViewSelection) {
+                    ForEach(emojisByGroup(emojiManager.emojis), id: \.0) { parts in
+                        let group = parts.0
+                        let emojis = parts.1
+                        EmojiCategoryView(emojis: emojis, group: group, selected: $selectedIcon, currentTab: $tabViewSelection)
+                            .tag(group.id)
+                    }
+                }
+                .ignoresSafeArea()
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            dismiss()
+                            selectedIcon = originalSelectedIcon
+                        }
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    }
+                }
+                .navigationTitle("Select icon")
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            .frame(maxHeight: .infinity)
         }
     }
     
-    func groupByCategory(_ emojis: [Emoji]) -> [(EmojiGroup, [Emoji])] {
+    func emojisByGroup(_ emojis: [Emoji]) -> [(EmojiGroup, [Emoji])] {
         let grouped = Dictionary(grouping: emojis, by: { $0.group })
         return grouped.sorted {
             $0.key.rawValue < $1.key.rawValue
@@ -79,6 +115,6 @@ struct IconPickerView: View {
 
 struct IconPickerView_Previews: PreviewProvider {
     static var previews: some View {
-        IconPickerView(currentIconSelected: .constant(Emoji.exampleEmoji))
+        IconPickerView(selectedIcon: .constant(Emoji.exampleEmoji2))
     }
 }
