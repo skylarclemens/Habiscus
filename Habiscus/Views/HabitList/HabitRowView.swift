@@ -57,13 +57,13 @@ struct HabitRowView: View {
                 GoalCounterView(habit: habit, date: $date, showIcon: true)
                 VStack(alignment: .leading) {
                     Text(habit.wrappedName)
-                        .font(.title2)
+                        .font(.system(.title2, design: .rounded))
                         .fontWeight(.medium)
                         .foregroundColor(.white)
                     if habit.icon != nil {
                         Text("\(progress?.totalCount ?? 0) / \(habit.goalFrequencyNumber)")
                             .font(.system(.callout, design: .rounded))
-                            .foregroundColor(.white)
+                            .foregroundColor(.white.opacity(0.75))
                     }
                 }
                 Spacer()

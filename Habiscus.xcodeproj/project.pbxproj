@@ -10,15 +10,16 @@
 		7E1261622A742200009F15C9 /* HabitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1261612A742200009F15C9 /* HabitManager.swift */; };
 		7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */; };
 		7E1261702A7446B3009F15C9 /* Progress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */; };
+		7E13C7562A8441EE006EBA82 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E13C7552A8441EE006EBA82 /* StatisticsView.swift */; };
 		7E34D8762A82EE9700A7D649 /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D8752A82EE9700A7D649 /* IconPickerView.swift */; };
 		7E34D87E2A82F47300A7D649 /* EmojiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D87D2A82F47300A7D649 /* EmojiManager.swift */; };
-		7E3B01982A6D9A2900223905 /* HabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3B01972A6D9A2900223905 /* HabitView.swift */; };
 		7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */; };
 		7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7A12A6B52B9001E0C23 /* ContentView.swift */; };
 		7E67A7A42A6B52BA001E0C23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */; };
 		7E67A7A72A6B52BA001E0C23 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E67A7A62A6B52BA001E0C23 /* Preview Assets.xcassets */; };
 		7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */; };
-		7E67A7B22A6B60CF001E0C23 /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7B12A6B60CF001E0C23 /* AddHabitView.swift */; };
+		7E697DD22A843B74000EC5D8 /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E697DD12A843B74000EC5D8 /* AddHabitView.swift */; };
+		7E697DD42A843B84000EC5D8 /* HabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E697DD32A843B84000EC5D8 /* HabitView.swift */; };
 		7E80A7EB2A7D9CC90035F658 /* complete.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7E80A7EA2A7D9CC90035F658 /* complete.mp3 */; };
 		7E80A7ED2A7D9CFB0035F658 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */; };
 		7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E83225C2A72F3E200042486 /* HabitListView.swift */; };
@@ -46,16 +47,17 @@
 		7E1261612A742200009F15C9 /* HabitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitManager.swift; sourceTree = "<group>"; };
 		7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7E13C7552A8441EE006EBA82 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		7E34D8752A82EE9700A7D649 /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
 		7E34D87D2A82F47300A7D649 /* EmojiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiManager.swift; sourceTree = "<group>"; };
-		7E3B01972A6D9A2900223905 /* HabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitView.swift; sourceTree = "<group>"; };
 		7E67A79C2A6B52B9001E0C23 /* Habiscus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habiscus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusApp.swift; sourceTree = "<group>"; };
 		7E67A7A12A6B52B9001E0C23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7E67A7A62A6B52BA001E0C23 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
-		7E67A7B12A6B60CF001E0C23 /* AddHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
+		7E697DD12A843B74000EC5D8 /* AddHabitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
+		7E697DD32A843B84000EC5D8 /* HabitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HabitView.swift; sourceTree = "<group>"; };
 		7E80A7EA2A7D9CC90035F658 /* complete.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = complete.mp3; sourceTree = "<group>"; };
 		7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		7E83225C2A72F3E200042486 /* HabitListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitListView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,16 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		7E697DD02A843B66000EC5D8 /* HabitView */ = {
+			isa = PBXGroup;
+			children = (
+				7E697DD12A843B74000EC5D8 /* AddHabitView.swift */,
+				7E697DD32A843B84000EC5D8 /* HabitView.swift */,
+				7E13C7552A8441EE006EBA82 /* StatisticsView.swift */,
+			);
+			path = HabitView;
+			sourceTree = "<group>";
+		};
 		7E80A7EE2A7D9E0F0035F658 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,8 +185,8 @@
 		7EFA41912A80220200D2F8E3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7E697DD02A843B66000EC5D8 /* HabitView */,
 				7EB7708E2A8423B000559D73 /* Components */,
-				7EFA41962A80229900D2F8E3 /* Habit */,
 				7EFA41932A80220E00D2F8E3 /* HabitList */,
 				7EFA41952A80227C00D2F8E3 /* ProgressBars */,
 			);
@@ -209,15 +221,6 @@
 				7E8C91222A7302EF0006055C /* GoalCounterView.swift */,
 			);
 			path = ProgressBars;
-			sourceTree = "<group>";
-		};
-		7EFA41962A80229900D2F8E3 /* Habit */ = {
-			isa = PBXGroup;
-			children = (
-				7E3B01972A6D9A2900223905 /* HabitView.swift */,
-				7E67A7B12A6B60CF001E0C23 /* AddHabitView.swift */,
-			);
-			path = Habit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,16 +296,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E80A7ED2A7D9CFB0035F658 /* SoundManager.swift in Sources */,
+				7E13C7562A8441EE006EBA82 /* StatisticsView.swift in Sources */,
 				7EA68A782A79555A001C6067 /* Date.swift in Sources */,
-				7E67A7B22A6B60CF001E0C23 /* AddHabitView.swift in Sources */,
 				7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */,
 				7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */,
 				7EA6C3ED2A72950C00DA4C41 /* WeekView.swift in Sources */,
 				7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */,
 				7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */,
-				7E3B01982A6D9A2900223905 /* HabitView.swift in Sources */,
+				7E697DD42A843B84000EC5D8 /* HabitView.swift in Sources */,
 				7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */,
 				7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */,
+				7E697DD22A843B74000EC5D8 /* AddHabitView.swift in Sources */,
 				7E93174F2A7D84160074E210 /* HapticManager.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,
 				7E34D87E2A82F47300A7D649 /* EmojiManager.swift in Sources */,
