@@ -16,9 +16,9 @@ class DataController: ObservableObject {
             if let error = error {
                 print("Core Data failed to load \(error.localizedDescription)")
             }
+            
+            self.container.viewContext.automaticallyMergesChangesFromParent = true
+            self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         }
-        
-        self.container.viewContext.automaticallyMergesChangesFromParent = true
-        self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     }
 }

@@ -77,6 +77,7 @@ enum Day: String, CaseIterable {
 struct AddHabitView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
+    
     @State private var name: String = ""
     @State private var color: String = "pink"
 
@@ -88,12 +89,11 @@ struct AddHabitView: View {
     @State private var goalRepeat: String = "Daily"
     @State private var goalCount: Int = 1
     @State var openEmojiPicker = false
-    @State var selectedEmoji: Emoji?
+    @State var selectedEmoji: Emoji? = nil
     
     var body: some View {
         NavigationStack {
             Form {
-                
                 Section("Name") {
                     TextField("Meditate, Drink water, etc.", text: $name)
                         .padding()
@@ -225,7 +225,7 @@ struct AddHabitView: View {
                 print(error!.localizedDescription)
             }
          }
-    }
+    }    
 }
 
 struct AddHabitView_Previews: PreviewProvider {
