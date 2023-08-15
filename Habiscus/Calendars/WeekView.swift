@@ -13,12 +13,13 @@ enum Weekday: String, CaseIterable {
 
 struct WeekView: View {
     private let weekdays: [String] = Calendar.current.weekdaySymbols
-    @Binding var selectedWeekdays: [Weekday : Bool]
+    @Binding var selectedWeekdays: Set<Weekday>
+    @Binding var frequency: String
     
     var body: some View {
         HStack {
             ForEach(Weekday.allCases, id: \.rawValue) { weekday in
-                let isSelectedDay: Bool = selectedWeekdays[weekday] == true
+                let isSelectedDay: Bool = selectedWeekdays.contains(weekday)
                 VStack {
                     Text(weekday.rawValue.localizedCapitalized.prefix(1))
                         .font(.system(size: 16, design: .rounded))
@@ -26,12 +27,17 @@ struct WeekView: View {
                 }
                 .foregroundColor(isSelectedDay ? .white : .primary)
                 .padding(8)
-                .frame(width: 42)
+                .frame(maxWidth: .infinity)
                 .background(isSelectedDay ? .pink : Color(UIColor.systemFill))
                 .opacity(isSelectedDay ? 1 : 0.75)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .onTapGesture {
-                    selectedWeekdays[weekday] = !selectedWeekdays[weekday]!
+                    if selectedWeekdays.count > 1 && selectedWeekdays.contains(weekday) {
+                        selectedWeekdays.remove(weekday)
+                    } else if !selectedWeekdays.contains(weekday) {
+                        selectedWeekdays.insert(weekday)
+                    }
+                    print(selectedWeekdays)
                 }
             }
         }
@@ -40,6 +46,6 @@ struct WeekView: View {
 
 struct WeekView_Previews: PreviewProvider {
     static var previews: some View {
-        WeekView(selectedWeekdays: .constant([.sunday: true, .monday: true, .tuesday: true, .wednesday: true, .thursday: true, .friday: true, .saturday: true]))
+        WeekView(selectedWeekdays: .constant([.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]), frequency: .constant("Daily"))
     }
 }

@@ -89,6 +89,7 @@ struct AddHabitView: View {
     @State private var goalRepeat: String = "Daily"
     @State private var goalCount: Int = 1
     @State private var metric: String = ""
+    @State private var goalWeekdays: Set<Weekday> = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     @State var openEmojiPicker = false
     @State var selectedEmoji: Emoji? = nil
     
@@ -105,7 +106,6 @@ struct AddHabitView: View {
                         .listRowInsets(EdgeInsets())
                         .submitLabel(.done)
                 }
-                .listRowBackground(Color(UIColor.systemGroupedBackground))
                 Section("Icon and Color") {
                     HStack(alignment: .center) {
                         Button {
@@ -137,7 +137,7 @@ struct AddHabitView: View {
                     .listRowBackground(Color(UIColor.systemGroupedBackground))
                     .listRowInsets(EdgeInsets())
                 }
-                Section("Goal") {
+                Section("Goal frequency") {
                     VStack {
                         Picker("Repeat", selection: $goalRepeat) {
                             ForEach(goalRepeatOptions, id: \.self) { option in
@@ -145,20 +145,41 @@ struct AddHabitView: View {
                             }
                         }
                         .pickerStyle(.segmented)
-                        
-                        
-                        
-                        Stepper("\(goalCount)", value: $goalCount, in: 1...1000)
-                        TextField("Time(s)", text: $metric)
+                        VStack {
+                            if goalRepeat == "Daily" {
+                                WeekView(selectedWeekdays: $goalWeekdays, frequency: $goalRepeat)
+                            } else {
+                                Text("Goal will be reset weekly")
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .padding(14)
+                        .frame(maxWidth: .infinity, minHeight: 64)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(.background)
+                        )
+                    }
+                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                    .listRowInsets(EdgeInsets())
+                }
+                
+                Section("Goal") {
+                    Stepper("\(goalCount)", value: $goalCount, in: 1...1000)
+                    HStack {
+                        TextField("time(s)", text: $metric)
                             .textFieldStyle(.roundedBorder)
                             .submitLabel(.done)
+                        Text("per \(goalRepeat == "Daily" ? "day" : "week")")
+                            .font(.callout)
+                            .foregroundColor(.secondary)
                     }
-                    
                 }
+                .listRowSeparator(.hidden)
+                
                 Section("Reminders") {
                     RemindersView(repeatValue: $repeatValue, selectedDateTime: $selectedDateTime, selectedDay: $selectedDay)
                 }
-                .listRowSeparator(.hidden)
             }
             .navigationTitle("New habit")
             .navigationBarTitleDisplayMode(.inline)
@@ -193,7 +214,27 @@ struct AddHabitView: View {
                     .presentationDetents([.fraction(0.8), .large])
                     .presentationDragIndicator(.visible)
             }
+            .onAppear {
+                print(calculateGoalFrequency())
+            }
         }
+    }
+    
+    func calculateGoalFrequency() -> Int {
+        var frequency: Int = 0
+        let daysSelected: Int = goalWeekdays.count
+        /*if goalRepeat == "Daily" {
+            for (_, selected) in goalWeekdays {
+                //print("day: \(day.rawValue)\n selected: \(selected)")
+                if selected {
+                    daysSelected += 1
+                }
+            }
+            frequency = daysSelected * goalCount
+        }*/
+        frequency = daysSelected * goalCount
+        
+        return frequency
     }
     
     func registerLocal(center: UNUserNotificationCenter) {
