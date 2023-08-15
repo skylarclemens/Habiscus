@@ -17,6 +17,7 @@
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="metric" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="weekdays" optional="YES" attributeType="String"/>
         <relationship name="progress" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Progress" inverseName="habit" inverseEntity="Progress"/>
     </entity>
     <entity name="Progress" representedClassName="Progress" syncable="YES">

@@ -21,6 +21,7 @@ extension Habit {
     @NSManaged public var goal: Int16
     @NSManaged public var goalFrequency: Int16
     @NSManaged public var metric: String?
+    @NSManaged public var weekdays: String?
     @NSManaged public var id: UUID?
     @NSManaged public var isArchived: Bool
     @NSManaged public var lastUpdated: Date?

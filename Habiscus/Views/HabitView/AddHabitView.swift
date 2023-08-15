@@ -51,22 +51,36 @@ struct RemindersView: View {
                 }
             }
             .pickerStyle(.segmented)
-            if repeatValue == "Once" {
-                DatePicker("When?", selection: $selectedDateTime)
-            } else if repeatValue == "Daily" {
-                DatePicker("What time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
-            } else if repeatValue == "Weekly" {
-                HStack {
-                    Picker("When?", selection: $selectedDay) {
-                        ForEach(Day.allCases, id: \.self) {
-                            Text($0.rawValue).tag($0)
+            VStack {
+                if repeatValue == "Once" {
+                    DatePicker("When?", selection: $selectedDateTime)
+                } else if repeatValue == "Daily" {
+                    DatePicker("What time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
+                } else if repeatValue == "Weekly" {
+                    HStack {
+                        Picker("When?", selection: $selectedDay) {
+                            ForEach(Day.allCases, id: \.self) {
+                                Text($0.rawValue).tag($0)
+                            }
                         }
+                        DatePicker("What day/time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
+                            .labelsHidden()
                     }
-                    DatePicker("What day/time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
+                } else {
+                    Text("No reminders set")
+                        .foregroundColor(.secondary)
                 }
             }
+            .padding(.vertical, 8)
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity, minHeight: 52)
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(.background)
+            )
         }
+        .listRowBackground(Color(UIColor.systemGroupedBackground))
+        .listRowInsets(EdgeInsets())
     }
 }
 
@@ -99,10 +113,6 @@ struct AddHabitView: View {
                 Section("Name") {
                     TextField("Meditate, Drink water, etc.", text: $name)
                         .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color(UIColor.secondarySystemGroupedBackground))
-                        )
                         .listRowInsets(EdgeInsets())
                         .submitLabel(.done)
                 }
@@ -137,7 +147,7 @@ struct AddHabitView: View {
                     .listRowBackground(Color(UIColor.systemGroupedBackground))
                     .listRowInsets(EdgeInsets())
                 }
-                Section("Goal frequency") {
+                Section("Repeat goal") {
                     VStack {
                         Picker("Repeat", selection: $goalRepeat) {
                             ForEach(goalRepeatOptions, id: \.self) { option in
@@ -187,11 +197,15 @@ struct AddHabitView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         let newHabit = Habit(context: moc)
+                        let daysSelectedArray = goalWeekdays.map { $0.rawValue.localizedCapitalized }
+                        let daysSelected = daysSelectedArray.joined(separator: ", ")
                         newHabit.id = UUID()
                         newHabit.name = name
                         newHabit.color = color
                         newHabit.icon = selectedEmoji?.char
                         newHabit.createdAt = Date.now
+                        newHabit.metric = metric.isEmpty ? "count" : metric
+                        newHabit.weekdays = daysSelected
                         newHabit.goal = Int16(goalCount)
                         newHabit.isArchived = false
                         newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
@@ -213,9 +227,6 @@ struct AddHabitView: View {
                 IconPickerView(selectedIcon: $selectedEmoji)
                     .presentationDetents([.fraction(0.8), .large])
                     .presentationDragIndicator(.visible)
-            }
-            .onAppear {
-                print(calculateGoalFrequency())
             }
         }
     }

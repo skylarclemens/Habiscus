@@ -37,7 +37,6 @@ struct WeekView: View {
                     } else if !selectedWeekdays.contains(weekday) {
                         selectedWeekdays.insert(weekday)
                     }
-                    print(selectedWeekdays)
                 }
             }
         }
