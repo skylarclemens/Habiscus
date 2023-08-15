@@ -91,6 +91,9 @@ enum Day: String, CaseIterable {
 struct AddHabitView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
+    enum FocusedField: Hashable {
+        case goalCountField
+    }
     
     @State private var name: String = ""
     @State private var color: String = "pink"
@@ -106,15 +109,26 @@ struct AddHabitView: View {
     @State private var goalWeekdays: Set<Weekday> = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     @State var openEmojiPicker = false
     @State var selectedEmoji: Emoji? = nil
+
+    
+    @FocusState private var focusedInput: FocusedField?
     
     var body: some View {
         NavigationStack {
             Form {
                 Section("Name") {
-                    TextField("Meditate, Drink water, etc.", text: $name)
-                        .padding()
-                        .listRowInsets(EdgeInsets())
-                        .submitLabel(.done)
+                    VStack {
+                        TextField("Meditate, Drink water, etc.", text: $name)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(.background)
+                            )
+                            .submitLabel(.done)
+                    }
+                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                    .listRowInsets(EdgeInsets())
                 }
                 Section("Icon and Color") {
                     HStack(alignment: .center) {
@@ -175,15 +189,32 @@ struct AddHabitView: View {
                 }
                 
                 Section("Goal") {
-                    Stepper("\(goalCount)", value: $goalCount, in: 1...1000)
                     HStack {
+                        TextField("count", value: $goalCount, format: .number)
+                            .keyboardType(.numberPad)
+                            .focused($focusedInput, equals: .goalCountField)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(.background)
+                            )
+                            .padding(4)
+                            .frame(maxWidth: 100)
                         TextField("time(s)", text: $metric)
-                            .textFieldStyle(.roundedBorder)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(.background)
+                            )
                             .submitLabel(.done)
                         Text("per \(goalRepeat == "Daily" ? "day" : "week")")
                             .font(.callout)
                             .foregroundColor(.secondary)
                     }
+                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                    .listRowInsets(EdgeInsets())
                 }
                 .listRowSeparator(.hidden)
                 
@@ -219,6 +250,14 @@ struct AddHabitView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
+                    }
+                }
+                ToolbarItemGroup(placement: .keyboard) {
+                    if focusedInput == .goalCountField {
+                        Spacer()
+                        Button("Done") {
+                            focusedInput = nil
+                        }
                     }
                 }
             }
@@ -290,6 +329,8 @@ struct AddHabitView: View {
 
 struct AddHabitView_Previews: PreviewProvider {
     static var previews: some View {
-        AddHabitView()
+        ZStack {
+            AddHabitView()
+        }
     }
 }
