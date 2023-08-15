@@ -15,6 +15,9 @@ struct HabitRowView: View {
     @State private var animated: Bool = false
     @Binding var date: Date
     
+    @State private var showAddCountAlert: Bool = false
+    @State private var countAmount: Int = 1
+    
     init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
         self.habit = habit
         self._date = date
@@ -61,27 +64,14 @@ struct HabitRowView: View {
                         .fontWeight(.medium)
                         .foregroundColor(.white)
                     if habit.icon != nil {
-                        Text("\(progress?.totalCount ?? 0) / \(habit.goalFrequencyNumber)")
+                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.goalMetric)")
                             .font(.system(.callout, design: .rounded))
                             .foregroundColor(.white.opacity(0.75))
                     }
                 }
                 Spacer()
                 Button {
-                    var wasProgressJustCompleted = false
-                    
-                    if let progress = progress {
-                        wasProgressJustCompleted = habitManager.addNewCount(progress: progress, date: date, habit: habit)
-                    } else {
-                        wasProgressJustCompleted = habitManager.addNewProgress(date: date)
-                    }
-                    
-                    if wasProgressJustCompleted {
-                        HapticManager.instance.completionSuccess()
-                        SoundManager.instance.playCompleteSound(sound: .complete)
-                    } else {
-                        simpleSuccess()
-                    }
+                    showAddCountAlert.toggle()
                 } label: {
                     Image(systemName: "plus")
                         .bold()
@@ -93,6 +83,19 @@ struct HabitRowView: View {
                         .fill(.white.opacity(0.25))
                 )
                 .buttonStyle(.plain)
+                .alert("Enter \(habit.goalMetric) amount", isPresented: $showAddCountAlert) {
+                    TextField("Enter count amount", value: $countAmount, format: .number)
+                        .keyboardType(.numberPad)
+                    Button("Cancel", role: .cancel) { }
+                    Button("OK") {
+                        if let progress = progress { habitManager.addNewCount(progress: progress, date: date, habit: habit, amount: countAmount)
+                        } else {
+                            habitManager.addNewProgress(date: date, amount: countAmount)
+                        }
+                        
+                        simpleSuccess()
+                    }
+                }
             }
             .padding()
         }
@@ -104,6 +107,9 @@ struct HabitRowView: View {
         .onAppear {
             withAnimation(.spring(response: 1.5, dampingFraction: 1.5)) {
                 animated = true
+            }
+            if let progress = progress {
+                print("\(habit.wrappedName): \(progress.totalCount)")
             }
         }
         .contextMenu {

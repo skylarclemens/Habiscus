@@ -64,7 +64,7 @@ struct HabitView: View {
                                         .bold()
                                         .foregroundColor(.white)
                                     if habit.icon != nil {
-                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalFrequencyNumber)")
+                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.goalMetric)")
                                             .font(.system(.callout, design: .rounded))
                                             .bold()
                                             .foregroundColor(.white.opacity(0.75))
@@ -72,20 +72,13 @@ struct HabitView: View {
                                 }
                                 Spacer()
                                 Button {
-                                    var wasProgressJustCompleted = false
-                                    
                                     if let progress = progress {
-                                        wasProgressJustCompleted = habitManager.addNewCount(progress: progress, date: date, habit: habit)
+                                        habitManager.addNewCount(progress: progress, date: date, habit: habit)
                                     } else {
-                                        wasProgressJustCompleted = habitManager.addNewProgress(date: date)
+                                        habitManager.addNewProgress(date: date)
                                     }
                                     
-                                    if wasProgressJustCompleted {
-                                        HapticManager.instance.completionSuccess()
-                                        SoundManager.instance.playCompleteSound(sound: .complete)
-                                    } else {
-                                        simpleSuccess()
-                                    }
+                                    simpleSuccess()
                                 } label: {
                                     Image(systemName: "plus")
                                         .bold()

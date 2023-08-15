@@ -40,7 +40,7 @@ extension Progress {
     }
 
     public var totalCount: Int {
-        countsArray.count
+        countsArray.map({Int($0.amount)}).reduce(0, +)
     }
 
     public var wrappedHabit: Habit {

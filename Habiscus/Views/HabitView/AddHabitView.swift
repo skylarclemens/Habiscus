@@ -109,7 +109,6 @@ struct AddHabitView: View {
     @State private var goalWeekdays: Set<Weekday> = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     @State var openEmojiPicker = false
     @State var selectedEmoji: Emoji? = nil
-
     
     @FocusState private var focusedInput: FocusedField?
     
@@ -119,6 +118,7 @@ struct AddHabitView: View {
                 Section("Name") {
                     VStack {
                         TextField("Meditate, Drink water, etc.", text: $name)
+                            .textInputAutocapitalization(.never)
                             .padding(.vertical, 10)
                             .padding(.horizontal)
                             .background(
@@ -171,7 +171,7 @@ struct AddHabitView: View {
                         .pickerStyle(.segmented)
                         VStack {
                             if goalRepeat == "Daily" {
-                                WeekView(selectedWeekdays: $goalWeekdays, frequency: $goalRepeat)
+                                WeekView(selectedWeekdays: $goalWeekdays)
                             } else {
                                 Text("Goal will be reset weekly")
                                     .foregroundColor(.secondary)
@@ -202,6 +202,7 @@ struct AddHabitView: View {
                             .padding(4)
                             .frame(maxWidth: 100)
                         TextField("time(s)", text: $metric)
+                            .textInputAutocapitalization(.never)
                             .padding(.vertical, 10)
                             .padding(.horizontal)
                             .background(
@@ -235,13 +236,15 @@ struct AddHabitView: View {
                         newHabit.color = color
                         newHabit.icon = selectedEmoji?.char
                         newHabit.createdAt = Date.now
-                        newHabit.metric = metric.isEmpty ? "count" : metric
                         newHabit.weekdays = daysSelected
                         newHabit.goal = Int16(goalCount)
+                        newHabit.metric = metric.isEmpty ? "count" : metric
                         newHabit.isArchived = false
                         newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
                         try? moc.save()
                         setReminderNotification(id: newHabit.id!)
+                        
+                        print(goalCount)
                         
                         dismiss()
                     }

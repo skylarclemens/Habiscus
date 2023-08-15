@@ -38,7 +38,7 @@ extension Habit {
     }
     
     public var goalMetric: String {
-        metric ?? "count"
+        metric ?? ""
     }
     
     public var emojiIcon: String {

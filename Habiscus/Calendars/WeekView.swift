@@ -14,7 +14,6 @@ enum Weekday: String, CaseIterable {
 struct WeekView: View {
     private let weekdays: [String] = Calendar.current.weekdaySymbols
     @Binding var selectedWeekdays: Set<Weekday>
-    @Binding var frequency: String
     
     var body: some View {
         HStack {
@@ -45,6 +44,6 @@ struct WeekView: View {
 
 struct WeekView_Previews: PreviewProvider {
     static var previews: some View {
-        WeekView(selectedWeekdays: .constant([.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]), frequency: .constant("Daily"))
+        WeekView(selectedWeekdays: .constant([.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]))
     }
 }

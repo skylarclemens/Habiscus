@@ -173,9 +173,9 @@
 		7EFA41902A8021CD00D2F8E3 /* DataManagers */ = {
 			isa = PBXGroup;
 			children = (
+				7E1261612A742200009F15C9 /* HabitManager.swift */,
 				7EA9FEA92A82F6960084A843 /* Bundle-Decodable.swift */,
 				7E34D87D2A82F47300A7D649 /* EmojiManager.swift */,
-				7E1261612A742200009F15C9 /* HabitManager.swift */,
 				7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */,
 				7E93174E2A7D84160074E210 /* HapticManager.swift */,
 				7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */,
