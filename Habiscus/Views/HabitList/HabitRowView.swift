@@ -15,9 +15,6 @@ struct HabitRowView: View {
     @State private var animated: Bool = false
     @Binding var date: Date
     
-    @State private var showAddCountAlert: Bool = false
-    @State private var countAmount: Int = 1
-    
     init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
         self.habit = habit
         self._date = date
@@ -70,32 +67,7 @@ struct HabitRowView: View {
                     }
                 }
                 Spacer()
-                Button {
-                    showAddCountAlert.toggle()
-                } label: {
-                    Image(systemName: "plus")
-                        .bold()
-                        .foregroundColor(.white)
-                }
-                .padding(10)
-                .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(.white.opacity(0.25))
-                )
-                .buttonStyle(.plain)
-                .alert("Enter \(habit.goalMetric) amount", isPresented: $showAddCountAlert) {
-                    TextField("Enter count amount", value: $countAmount, format: .number)
-                        .keyboardType(.numberPad)
-                    Button("Cancel", role: .cancel) { }
-                    Button("OK") {
-                        if let progress = progress { habitManager.addNewCount(progress: progress, date: date, habit: habit, amount: countAmount)
-                        } else {
-                            habitManager.addNewProgress(date: date, amount: countAmount)
-                        }
-                        
-                        simpleSuccess()
-                    }
-                }
+                AddCountView(habit: habit, progress: progress, date: $date)
             }
             .padding()
         }
@@ -152,11 +124,6 @@ struct HabitRowView: View {
                 }
             }
         }
-    }
-    
-    func simpleSuccess() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
     }
 }
 

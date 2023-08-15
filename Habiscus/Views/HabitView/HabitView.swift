@@ -71,25 +71,7 @@ struct HabitView: View {
                                     }
                                 }
                                 Spacer()
-                                Button {
-                                    if let progress = progress {
-                                        habitManager.addNewCount(progress: progress, date: date, habit: habit)
-                                    } else {
-                                        habitManager.addNewProgress(date: date)
-                                    }
-                                    
-                                    simpleSuccess()
-                                } label: {
-                                    Image(systemName: "plus")
-                                        .bold()
-                                        .foregroundColor(.white)
-                                }
-                                .padding(10)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                        .fill(.white.opacity(0.25))
-                                )
-                                .buttonStyle(.plain)
+                                AddCountView(habit: habit, progress: progress, date: $date)
                             }
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
