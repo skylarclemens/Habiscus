@@ -20,6 +20,7 @@ extension Habit {
     @NSManaged public var createdAt: Date?
     @NSManaged public var goal: Int16
     @NSManaged public var goalFrequency: Int16
+    @NSManaged public var metric: String?
     @NSManaged public var id: UUID?
     @NSManaged public var isArchived: Bool
     @NSManaged public var lastUpdated: Date?
@@ -33,6 +34,10 @@ extension Habit {
 
     public var createdDate: Date {
         createdAt ?? Date()
+    }
+    
+    public var goalMetric: String {
+        metric ?? "count"
     }
     
     public var emojiIcon: String {

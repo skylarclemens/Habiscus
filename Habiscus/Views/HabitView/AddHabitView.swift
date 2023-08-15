@@ -88,6 +88,7 @@ struct AddHabitView: View {
     let goalRepeatOptions = ["Daily", "Weekly"]
     @State private var goalRepeat: String = "Daily"
     @State private var goalCount: Int = 1
+    @State private var metric: String = ""
     @State var openEmojiPicker = false
     @State var selectedEmoji: Emoji? = nil
     
@@ -102,6 +103,7 @@ struct AddHabitView: View {
                                 .fill(Color(UIColor.secondarySystemGroupedBackground))
                         )
                         .listRowInsets(EdgeInsets())
+                        .submitLabel(.done)
                 }
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
                 Section("Icon and Color") {
@@ -143,7 +145,13 @@ struct AddHabitView: View {
                             }
                         }
                         .pickerStyle(.segmented)
-                        Stepper("\(goalCount) \(goalCount > 1 ? "times" : "time")", value: $goalCount, in: 1...1000)
+                        
+                        
+                        
+                        Stepper("\(goalCount)", value: $goalCount, in: 1...1000)
+                        TextField("Time(s)", text: $metric)
+                            .textFieldStyle(.roundedBorder)
+                            .submitLabel(.done)
                     }
                     
                 }

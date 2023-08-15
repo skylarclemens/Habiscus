@@ -36,7 +36,7 @@ struct ContentView: View {
                             dateSelected = Date()
                         }
                         .animation(.spring(), value: dateSelected)
-                        WeekView(selectedDate: $dateSelected)
+                        MultiWeekView(selectedDate: $dateSelected)
                             .frame(height: 60)
                             .padding(.bottom, 16)
                             .offset(y: -15)
