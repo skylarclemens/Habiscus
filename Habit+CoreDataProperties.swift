@@ -71,7 +71,7 @@ extension Habit {
     //Filter for progress that is not skipped
     public var activeProgressArray: [Progress] {
         progressArray.filter {
-            !$0.isSkipped && !$0.countsArray.isEmpty
+            !$0.isSkipped && $0.totalCount > 0 && weekdaysArray.contains($0.weekday!)
         }
     }
 
@@ -139,13 +139,14 @@ extension Habit {
     // Divides total completed progress count over number of days since each day has one progress object
     // Returns percentage
     public var successPercentage: Double {
-        let daysSinceCreated = abs(self.createdDate.daysBetween(Date()) ?? 0)
-        let daysSinceFirstProgress = abs(self.activeProgressArray.first?.wrappedDate.daysBetween(Date()) ?? 0)
-        let progressDays = max(daysSinceCreated, daysSinceFirstProgress)
+        let daysSinceCreated = abs(self.createdDate.validDaysBetween(Date(), in: self.weekdaysArray) ?? 0)
+        let daysSinceStarted = abs(self.startDate?.validDaysBetween(Date(), in: self.weekdaysArray) ?? daysSinceCreated)
+        let daysSinceFirstProgress = abs(self.activeProgressArray.first?.wrappedDate.validDaysBetween(Date(), in: self.weekdaysArray) ?? 0)
+        let progressDays = max(daysSinceStarted, daysSinceFirstProgress)
         
-        let completedProgress = activeProgressArray.filter { $0.isCompleted }.count
+        let completedProgress = progressArray.filter { $0.isCompleted }.count
         
-        return (Double(completedProgress) / Double(progressDays + 1)) * 100
+        return (Double(completedProgress) / Double(progressDays) * 100)
     }
 
     // Starts progress array at most recent, assumed that progress is array is already sorted

@@ -27,6 +27,32 @@ extension Date {
         abs(daysBetween(date) ?? 0) > 1
     }
     
+    func validDaysBetween(_ stopDate: Date, in weekdays: [Weekday], direction: Calendar.SearchDirection = .backward) -> Int? {
+        var result: [Date] = []
+        let weekdayNumbers = weekdays.compactMap {
+            if let num = Weekday.allValues.firstIndex(of: $0) {
+                return Int(num + 1)
+            } else {
+                return nil
+            }
+        }.sorted()
+        let prevDay = Calendar.current.date(byAdding: .day, value: -1, to: self)!
+        
+        Calendar.current.enumerateDates(startingAfter: prevDay, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .nextTime) { (date, _, stop) in
+            if let date = date,
+               date <= stopDate {
+                let weekday = Calendar.current.component(.weekday, from: date)
+                if weekdayNumbers.contains(weekday) {
+                    result.append(date)
+                }
+            } else {
+                stop = true
+            }
+        }
+        
+        return result.count
+    }
+    
     func startOfMonth() -> Date {
         return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self)))!
     }
