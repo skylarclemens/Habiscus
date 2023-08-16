@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-enum Weekday: String, CaseIterable {
-    case sunday, monday, tuesday, wednesday, thursday, friday, saturday
-}
-
 struct WeekView: View {
     private let weekdays: [String] = Calendar.current.weekdaySymbols
     @Binding var selectedWeekdays: Set<Weekday>

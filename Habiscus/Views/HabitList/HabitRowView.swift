@@ -67,7 +67,7 @@ struct HabitRowView: View {
                     }
                 }
                 Spacer()
-                AddCountView(habit: habit, progress: progress, date: $date)
+                AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
             }
             .padding()
         }
@@ -79,10 +79,6 @@ struct HabitRowView: View {
         .onAppear {
             withAnimation(.spring(response: 1.5, dampingFraction: 1.5)) {
                 animated = true
-            }
-            if let progress = progress {
-                print("\(habit.wrappedName): \(progress.totalCount)")
-                print(habit.weekdays ?? "")
             }
         }
         .contextMenu {
@@ -141,6 +137,7 @@ struct HabitRowView_Previews: PreviewProvider {
         count.progress = progress
         habit.name = "Test"
         habit.icon = "🤩"
+        habit.weekdays = "Monday, Wednesday, Friday"
         habit.createdAt = Date.now
         progress.addToCounts(count)
         habit.addToProgress(progress)

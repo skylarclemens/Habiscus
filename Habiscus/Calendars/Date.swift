@@ -34,4 +34,67 @@ extension Date {
     func endOfMonth() -> Date {
         return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: self.startOfMonth())!
     }
+    
+    public var currentWeekdayString: String {
+        self.formatted(Date.FormatStyle().weekday(.wide))
+    }
+    
+    public var currentWeekday: Weekday {
+        Weekday(rawValue: currentWeekdayString.localizedLowercase)!
+    }
+    
+    func getWeekdayDate(weekdayNumber: Int, endDate: Date, direction: Calendar.SearchDirection = .forward) -> Date? {
+        var result: Date?
+        Calendar.current.enumerateDates(startingAfter: self, matching: DateComponents(weekday: weekdayNumber), matchingPolicy: .nextTime, direction: direction) { (date, _, stop) in
+            if let date = date,
+               (direction == .forward && date <= endDate) || (direction == .backward && date >= endDate) {
+                    result = date
+            } else {
+                stop = true
+            }
+        }
+        
+        return result
+    }
+    
+    func findWeekdayDate(in weekdays: [Weekday], direction: Calendar.SearchDirection = .forward) -> Date? {
+        guard weekdays.contains(self.currentWeekday) else { return nil }
+        
+        let directionValue = direction == .forward ? 1 : -1
+        guard let currentWeekdayNum = Weekday.allValues.firstIndex(of: self.currentWeekday),
+              let findWeek = Calendar.current.date(byAdding: .weekOfYear, value: directionValue, to: self) else {
+            return nil
+        }
+        
+        let weekdayNumbers = weekdays.compactMap { Weekday.allValues.firstIndex(of: $0) }.sorted()
+        if weekdayNumbers.count == 1 {
+            return Calendar.current.date(byAdding: .weekOfYear, value: directionValue, to: self)
+        }
+        
+        guard let currentIndex = weekdayNumbers.firstIndex(of: currentWeekdayNum) else {
+            return nil
+        }
+        
+        let findIndex = (currentIndex + directionValue) % weekdayNumbers.count
+        let findWeekdayNum = weekdayNumbers[findIndex]
+        
+        return self.getWeekdayDate(weekdayNumber: findWeekdayNum + 1, endDate: findWeek, direction: direction)
+    }
+    
+    func closestPreviousWeekday(in weekdays: [Weekday]) -> Date? {
+        guard let currentWeekdayNum = Weekday.allValues.firstIndex(of: self.currentWeekday),
+              let findWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: self) else {
+            return nil
+        }
+        let weekdayNumbers = weekdays.compactMap { Weekday.allValues.firstIndex(of: $0) }.sorted()
+        let closestWeekday = weekdayNumbers.reduce(weekdayNumbers[0]) {
+            if $1 >= currentWeekdayNum {
+                return $0
+            } else {
+                return abs($0 - currentWeekdayNum) < abs($1 - currentWeekdayNum) ? $0 : $1
+            }
+        }
+        
+        return self.getWeekdayDate(weekdayNumber: closestWeekday + 1, endDate: findWeek, direction: .backward)
+    }
 }

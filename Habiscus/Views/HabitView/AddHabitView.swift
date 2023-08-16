@@ -123,7 +123,7 @@ struct AddHabitView: View {
                             .padding(.horizontal)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(.background)
+                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
                             )
                             .submitLabel(.done)
                     }
@@ -197,7 +197,7 @@ struct AddHabitView: View {
                             .padding(.horizontal)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(.background)
+                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
                             )
                             .padding(4)
                             .frame(maxWidth: 100)
@@ -207,7 +207,7 @@ struct AddHabitView: View {
                             .padding(.horizontal)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(.background)
+                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
                             )
                             .submitLabel(.done)
                         Text("per \(goalRepeat == "Daily" ? "day" : "week")")
@@ -243,8 +243,6 @@ struct AddHabitView: View {
                         newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
                         try? moc.save()
                         setReminderNotification(id: newHabit.id!)
-                        
-                        print(goalCount)
                         
                         dismiss()
                     }

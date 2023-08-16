@@ -42,6 +42,7 @@
 		7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */; };
 		7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */; };
 		7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */; };
+		7EF7DCC72A8D15C7007AF16C /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF7DCC62A8D15C7007AF16C /* Weekday.swift */; };
 		7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +84,7 @@
 		7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRowView.swift; sourceTree = "<group>"; };
+		7EF7DCC62A8D15C7007AF16C /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -217,6 +219,7 @@
 				7EA6C3EE2A7295C100DA4C41 /* Week.swift */,
 				7EA6C3EC2A72950C00DA4C41 /* MultiWeekView.swift */,
 				7EAAB24C2A8BD9C00075F9EB /* WeekView.swift */,
+				7EF7DCC62A8D15C7007AF16C /* Weekday.swift */,
 			);
 			path = Calendars;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				7E697DD42A843B84000EC5D8 /* HabitView.swift in Sources */,
 				7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */,
 				7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */,
+				7EF7DCC72A8D15C7007AF16C /* Weekday.swift in Sources */,
 				7E697DD22A843B74000EC5D8 /* AddHabitView.swift in Sources */,
 				7E93174F2A7D84160074E210 /* HapticManager.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,

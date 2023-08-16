@@ -27,6 +27,14 @@ extension Progress {
     public var wrappedDate: Date {
         date ?? Date.now
     }
+    
+    public var weekdayString: String {
+        wrappedDate.currentWeekdayString
+    }
+    
+    public var weekday: Weekday? {
+        Weekday(rawValue: weekdayString.localizedLowercase)
+    }
 
     public var wrappedLastUpdated: Date {
         lastUpdated ?? Date.now

@@ -71,7 +71,7 @@ struct HabitView: View {
                                     }
                                 }
                                 Spacer()
-                                AddCountView(habit: habit, progress: progress, date: $date)
+                                AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
                             }
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -177,6 +177,7 @@ struct HabitView_Previews: PreviewProvider {
         progress.isSkipped = false
         habit.name = "Test"
         habit.icon = "🤩"
+        habit.weekdays = "Monday, Wednesday, Friday"
         habit.createdAt = Date.now
         habit.addToProgress(progress)
         habit.goal = 1

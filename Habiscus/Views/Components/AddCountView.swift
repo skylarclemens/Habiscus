@@ -14,10 +14,7 @@ struct AddCountView: View {
     @ObservedObject var habit: Habit
     var progress: Progress?
     @Binding var date: Date
-    
-    private var habitManager: HabitManager {
-        HabitManager(context: moc, habit: habit)
-    }
+    var habitManager: HabitManager
     
     var body: some View {
         Button {
@@ -74,6 +71,6 @@ struct AddCountView_Previews: PreviewProvider {
         habit.goal = 1
         habit.goalFrequency = 1
         
-        return AddCountView(habit: habit, date: .constant(Date.now))
+        return AddCountView(habit: habit, date: .constant(Date.now), habitManager: HabitManager(context: moc))
     }
 }
