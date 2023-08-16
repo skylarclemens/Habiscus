@@ -66,6 +66,8 @@ struct CalendarGridView: View {
                 .onTapGesture {
                     date = day.date
                 }
+                .opacity(day.inWeekdays ? 1 : 0.33)
+                .disabled(!day.inWeekdays)
             }
         }
     }
@@ -85,12 +87,11 @@ struct CalendarGridView_Previews: PreviewProvider {
         count.id = UUID()
         count.createdAt = countDate
         count.date = Date()
-        //count.progress = progress
-        //progress.addToCounts(count)
         progress.isSkipped = true
         habit.name = "Test"
         habit.createdAt = countDate
         habit.addToProgress(progress)
+        habit.weekdays = "Monday, Wednesday, Friday"
         habit.goal = 2
         habit.goalFrequency = 1
         return CalendarGridView(date: .constant(Date()), month: CalendarMonth(date: Date(), habit: habit), size: 36, color: .pink)
