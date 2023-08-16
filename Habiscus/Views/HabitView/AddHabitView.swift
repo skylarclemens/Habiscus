@@ -41,7 +41,7 @@ struct CustomColorPicker: View {
 struct RemindersView: View {
     @Binding var repeatValue: String
     @Binding var selectedDateTime: Date
-    @Binding var selectedDay: Day
+    @Binding var selectedDay: Weekday
     let repeatOptions = ["Once", "Daily", "Weekly", "None"]
     var body: some View {
         VStack {
@@ -59,8 +59,8 @@ struct RemindersView: View {
                 } else if repeatValue == "Weekly" {
                     HStack {
                         Picker("When?", selection: $selectedDay) {
-                            ForEach(Day.allCases, id: \.self) {
-                                Text($0.rawValue).tag($0)
+                            ForEach(Weekday.allCases, id: \.self) {
+                                Text($0.rawValue.localizedCapitalized).tag($0)
                             }
                         }
                         DatePicker("What day/time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
@@ -99,8 +99,8 @@ struct AddHabitView: View {
     @State private var color: String = "pink"
 
     @State private var repeatValue = "Daily"
-    @State private var selectedDateTime = Date.now
-    @State private var selectedDay: Day = .Monday
+    @State private var selectedDateTime = Date()
+    @State private var selectedDay: Weekday = .sunday
     
     let goalRepeatOptions = ["Daily", "Weekly"]
     @State private var goalRepeat: String = "Daily"
@@ -109,6 +109,13 @@ struct AddHabitView: View {
     @State private var goalWeekdays: Set<Weekday> = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     @State var openEmojiPicker = false
     @State var selectedEmoji: Emoji? = nil
+    
+    @State private var startDate: Date = Date()
+    @State private var endDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+    enum AdjustDates {
+        case startDate, startEndDates
+    }
+    @State private var editDateSelection: AdjustDates = .startDate
     
     @FocusState private var focusedInput: FocusedField?
     
@@ -219,6 +226,21 @@ struct AddHabitView: View {
                 }
                 .listRowSeparator(.hidden)
                 
+                Section {
+                    Picker("Adjust dates", selection: $editDateSelection) {
+                        Text("Start date").tag(AdjustDates.startDate)
+                        Text("Start & end dates").tag(AdjustDates.startEndDates)
+                    }
+                    DatePicker("Start date", selection: $startDate, displayedComponents: .date)
+                    if editDateSelection == .startEndDates {
+                        DatePicker("End date", selection: $endDate, displayedComponents: .date)
+                    }
+                } header: {
+                    Text("Habit dates")
+                } footer: {
+                    Text("Select the date you want your habit to start, and optionally select an end date")
+                }
+                
                 Section("Reminders") {
                     RemindersView(repeatValue: $repeatValue, selectedDateTime: $selectedDateTime, selectedDay: $selectedDay)
                 }
@@ -231,11 +253,14 @@ struct AddHabitView: View {
                         let newHabit = Habit(context: moc)
                         let daysSelectedArray = goalWeekdays.map { $0.rawValue.localizedCapitalized }
                         let daysSelected = daysSelectedArray.joined(separator: ", ")
+                        let endDateSelected = editDateSelection == .startEndDates ? endDate : nil
                         newHabit.id = UUID()
                         newHabit.name = name
                         newHabit.color = color
                         newHabit.icon = selectedEmoji?.char
                         newHabit.createdAt = Date.now
+                        newHabit.startDate = startDate
+                        newHabit.endDate = endDateSelected
                         newHabit.weekdays = daysSelected
                         newHabit.goal = Int16(goalCount)
                         newHabit.metric = metric.isEmpty ? "count" : metric
@@ -272,20 +297,7 @@ struct AddHabitView: View {
     }
     
     func calculateGoalFrequency() -> Int {
-        var frequency: Int = 0
-        let daysSelected: Int = goalWeekdays.count
-        /*if goalRepeat == "Daily" {
-            for (_, selected) in goalWeekdays {
-                //print("day: \(day.rawValue)\n selected: \(selected)")
-                if selected {
-                    daysSelected += 1
-                }
-            }
-            frequency = daysSelected * goalCount
-        }*/
-        frequency = daysSelected * goalCount
-        
-        return frequency
+        goalWeekdays.count * goalCount
     }
     
     func registerLocal(center: UNUserNotificationCenter) {

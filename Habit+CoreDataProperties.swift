@@ -18,6 +18,8 @@ extension Habit {
 
     @NSManaged public var color: String?
     @NSManaged public var createdAt: Date?
+    @NSManaged public var startDate: Date?
+    @NSManaged public var endDate: Date?
     @NSManaged public var goal: Int16
     @NSManaged public var goalFrequency: Int16
     @NSManaged public var metric: String?
