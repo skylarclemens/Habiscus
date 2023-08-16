@@ -61,38 +61,13 @@ struct HabitRowView: View {
                         .fontWeight(.medium)
                         .foregroundColor(.white)
                     if habit.icon != nil {
-                        Text("\(progress?.totalCount ?? 0) / \(habit.goalFrequencyNumber)")
+                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.goalMetric)")
                             .font(.system(.callout, design: .rounded))
                             .foregroundColor(.white.opacity(0.75))
                     }
                 }
                 Spacer()
-                Button {
-                    var wasProgressJustCompleted = false
-                    
-                    if let progress = progress {
-                        wasProgressJustCompleted = habitManager.addNewCount(progress: progress, date: date, habit: habit)
-                    } else {
-                        wasProgressJustCompleted = habitManager.addNewProgress(date: date)
-                    }
-                    
-                    if wasProgressJustCompleted {
-                        HapticManager.instance.completionSuccess()
-                        SoundManager.instance.playCompleteSound(sound: .complete)
-                    } else {
-                        simpleSuccess()
-                    }
-                } label: {
-                    Image(systemName: "plus")
-                        .bold()
-                        .foregroundColor(.white)
-                }
-                .padding(10)
-                .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(.white.opacity(0.25))
-                )
-                .buttonStyle(.plain)
+                AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
             }
             .padding()
         }
@@ -147,11 +122,6 @@ struct HabitRowView: View {
             }
         }
     }
-    
-    func simpleSuccess() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
-    }
 }
 
 struct HabitRowView_Previews: PreviewProvider {
@@ -167,6 +137,7 @@ struct HabitRowView_Previews: PreviewProvider {
         count.progress = progress
         habit.name = "Test"
         habit.icon = "🤩"
+        habit.weekdays = "Monday, Wednesday, Friday"
         habit.createdAt = Date.now
         progress.addToCounts(count)
         habit.addToProgress(progress)

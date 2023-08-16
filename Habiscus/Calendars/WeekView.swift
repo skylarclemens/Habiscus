@@ -2,77 +2,37 @@
 //  WeekView.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 7/27/23.
+//  Created by Skylar Clemens on 8/15/23.
 //
 
 import SwiftUI
 
 struct WeekView: View {
-    @Binding var selectedDate: Date
-    private var week: Week {
-        Week(initialDate: selectedDate)
-    }
-    private var allWeeks: [Week] {
-        week.getRelatedWeeks()
-    }
-    
-    @State private var currentIndex: Int = 0
-    @GestureState private var currentTranslation: CGFloat = 0
+    private let weekdays: [String] = Calendar.current.weekdaySymbols
+    @Binding var selectedWeekdays: Set<Weekday>
     
     var body: some View {
-        VStack {
-            GeometryReader { geo in
-                HStack(spacing: 0) {
-                    ForEach(allWeeks.indices, id: \.self) { index in
-                        HStack(spacing: 8) {
-                            ForEach(allWeeks[index].currentWeek, id: \.self) { weekday in
-                                let isSelectedDay = Calendar.current.isDate(selectedDate, inSameDayAs: weekday)
-                                VStack {
-                                    Text(weekday, format: .dateTime.weekday())
-                                        .font(.caption)
-                                    Text(weekday, format: .dateTime.day())
-                                        .bold()
-                                }
-                                .foregroundColor(isSelectedDay ? .white : .primary)
-                                .padding(8)
-                                .frame(width: 42)
-                                .background(isSelectedDay ? .pink : Color(UIColor.systemFill))
-                                .opacity(isSelectedDay ? 1 : 0.75)
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
-                                .onTapGesture {
-                                    selectedDate = weekday
-                                    currentIndex = 0
-                                }
-                            }
-                        }
-                        .frame(width: geo.size.width)
+        HStack {
+            ForEach(Weekday.allCases, id: \.rawValue) { weekday in
+                let isSelectedDay: Bool = selectedWeekdays.contains(weekday)
+                VStack {
+                    Text(weekday.rawValue.localizedCapitalized.prefix(1))
+                        .font(.system(size: 16, design: .rounded))
+                        .fontWeight(isSelectedDay ? .bold : .regular)
+                }
+                .foregroundColor(isSelectedDay ? .white : .primary)
+                .padding(8)
+                .frame(maxWidth: .infinity)
+                .background(isSelectedDay ? .pink : Color(UIColor.systemFill))
+                .opacity(isSelectedDay ? 1 : 0.75)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .onTapGesture {
+                    if selectedWeekdays.count > 1 && selectedWeekdays.contains(weekday) {
+                        selectedWeekdays.remove(weekday)
+                    } else if !selectedWeekdays.contains(weekday) {
+                        selectedWeekdays.insert(weekday)
                     }
                 }
-                .frame(width: geo.size.width)
-                .frame(maxHeight: .infinity)
-                .offset(x: geo.size.width * CGFloat(currentIndex))
-                .offset(x: currentTranslation)
-                .animation(.spring(), value: currentTranslation)
-                .gesture(
-                    DragGesture()
-                        .updating($currentTranslation) { value, state, _ in
-                            if currentIndex == 1 && value.translation.width > 0 {
-                                return
-                            } else if currentIndex == -1 && value.translation.width < 0 {
-                                return
-                            }
-                            state = value.translation.width
-                        }.onEnded { value in
-                            withAnimation(.interactiveSpring()) {
-                                if value.predictedEndTranslation.width > 0 {
-                                    currentIndex = min(currentIndex + 1, 1)
-                                } else {
-                                    currentIndex = max(currentIndex - 1, -1)
-                                }
-                            }
-                        }
-                )
-                
             }
         }
     }
@@ -80,6 +40,6 @@ struct WeekView: View {
 
 struct WeekView_Previews: PreviewProvider {
     static var previews: some View {
-        WeekView(selectedDate: .constant(Date()))
+        WeekView(selectedWeekdays: .constant([.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]))
     }
 }

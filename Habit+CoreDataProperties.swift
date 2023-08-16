@@ -18,8 +18,12 @@ extension Habit {
 
     @NSManaged public var color: String?
     @NSManaged public var createdAt: Date?
+    @NSManaged public var startDate: Date?
+    @NSManaged public var endDate: Date?
     @NSManaged public var goal: Int16
     @NSManaged public var goalFrequency: Int16
+    @NSManaged public var metric: String?
+    @NSManaged public var weekdays: String?
     @NSManaged public var id: UUID?
     @NSManaged public var isArchived: Bool
     @NSManaged public var lastUpdated: Date?
@@ -35,8 +39,22 @@ extension Habit {
         createdAt ?? Date()
     }
     
+    public var goalMetric: String {
+        metric ?? ""
+    }
+    
     public var emojiIcon: String {
         icon ?? ""
+    }
+    
+    public var weekdaysStrings: [String] {
+        let weekdaysComponents = weekdays?.components(separatedBy: ",")
+        return weekdaysComponents?.compactMap { $0.trimmingCharacters(in: .whitespaces) } ?? []
+        
+    }
+    
+    public var weekdaysArray: [Weekday] {
+        weekdaysStrings.compactMap { Weekday(rawValue: $0.localizedLowercase) ?? nil }
     }
 
     public var formattedCreatedDate: String {
@@ -53,7 +71,7 @@ extension Habit {
     //Filter for progress that is not skipped
     public var activeProgressArray: [Progress] {
         progressArray.filter {
-            !$0.isSkipped && !$0.countsArray.isEmpty
+            !$0.isSkipped && $0.totalCount > 0 && weekdaysArray.contains($0.weekday!)
         }
     }
 
@@ -121,52 +139,65 @@ extension Habit {
     // Divides total completed progress count over number of days since each day has one progress object
     // Returns percentage
     public var successPercentage: Double {
-        let daysSinceCreated = abs(self.createdDate.daysBetween(Date()) ?? 0)
-        let daysSinceFirstProgress = abs(self.activeProgressArray.first?.wrappedDate.daysBetween(Date()) ?? 0)
-        let progressDays = max(daysSinceCreated, daysSinceFirstProgress)
+        let daysSinceCreated = abs(self.createdDate.validDaysBetween(Date(), in: self.weekdaysArray) ?? 0)
+        let daysSinceStarted = abs(self.startDate?.validDaysBetween(Date(), in: self.weekdaysArray) ?? daysSinceCreated)
+        let daysSinceFirstProgress = abs(self.activeProgressArray.first?.wrappedDate.validDaysBetween(Date(), in: self.weekdaysArray) ?? 0)
+        let progressDays = max(daysSinceStarted, daysSinceFirstProgress)
         
-        let completedProgress = activeProgressArray.filter { $0.isCompleted }.count
+        let completedProgress = progressArray.filter { $0.isCompleted }.count
         
-        return (Double(completedProgress) / Double(progressDays + 1)) * 100
+        return (Double(completedProgress) / Double(progressDays) * 100)
     }
 
     // Starts progress array at most recent, assumed that progress is array is already sorted
     // If first progress is not completed or is more than one day from today, returns a streak of 0
     // Returns first, most recent, streak of streak array
     public func getCurrentStreak() -> Int {
-        guard progressArray.last(where: { $0.isCompleted && !$0.isSkipped }) != nil else {
+        guard let mostRecentProgress = progressArray.last(where: { $0.isCompleted && !$0.isSkipped }) else {
             return 0
         }
+        let closestProgress = self.findProgress(from: Date().closestPreviousWeekday(in: self.weekdaysArray)!)
 
-        let streaks = calculateStreaksArray(from: progressArray.reversed())
+        var streaks: [Int] = []
+        if Calendar.current.isDateInToday(mostRecentProgress.wrappedDate) || (closestProgress?.isCompleted ?? false) {
+            streaks = calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray)
+        }
         return streaks.first ?? 0
     }
 
-    // Adds to streak if compared dates are completed and one day apart
+    // Adds to streak if compared dates are completed and proper length apart
     // Returns array of all streaks
-    public func calculateStreaksArray(from: [Progress]? = nil) -> [Int] {
+    public func calculateStreaksArray(from: [Progress]? = nil, onDays daysToCheck: [Weekday]) -> [Int] {
         let refArray: [Progress] = from ?? self.progressArray
         var streakArray: [Int] = []
         var streak = 0
         
         for (progress, refProgress) in zip(refArray.dropFirst(), refArray) {
+            if let progressWeekday = progress.weekday, let refProgressWeekday = refProgress.weekday {
+                if !daysToCheck.contains(progressWeekday) || !daysToCheck.contains(refProgressWeekday) { continue }
+            }
             if refProgress.isSkipped { continue }
             
-            if progress.isSkipped {
-                if abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 && refProgress.isCompleted {
-                    streak += 1
-                }
-            } else if progress.isCompleted, refProgress.isCompleted, abs(progress.wrappedDate.daysBetween(refProgress.wrappedDate) ?? 0) == 1 {
+            var isRefNextWeekdayDate: Bool = false
+            if let findWeekdayDate = progress.wrappedDate.findWeekdayDate(in: daysToCheck, direction: .forward) {
+                isRefNextWeekdayDate = Calendar.current.isDate(findWeekdayDate, inSameDayAs: refProgress.wrappedDate)
+            }
+            
+            if progress.isSkipped && refProgress.isCompleted && isRefNextWeekdayDate {
+                streak += 1
+            } else if progress.isCompleted && refProgress.isCompleted && isRefNextWeekdayDate {
                 streak += 1
             } else {
-                if streak > 0 || progress.isCompleted {
+                if streak > 0 || refProgress.isCompleted {
                     streakArray.append(streak + 1)
                 }
                 streak = 0
             }
         }
         
-        if (refArray.first?.isCompleted ?? false) && !(refArray.first?.isSkipped ?? true) {
+        if let lastProgress = refArray.last,
+           let lastProgressWeekday = lastProgress.weekday,
+           daysToCheck.contains(lastProgressWeekday) && lastProgress.isCompleted && !lastProgress.isSkipped {
             streakArray.append(streak + 1)
         } else if streak > 0 {
             streakArray.append(streak)
@@ -177,7 +208,7 @@ extension Habit {
 
     // Gets the highest number in the streak array
     public func getLongestStreak() -> Int {
-        calculateStreaksArray(from: progressArray.reversed()).max() ?? 0
+        calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray).max() ?? 0
     }
     
 }

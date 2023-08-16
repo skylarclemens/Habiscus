@@ -27,6 +27,14 @@ extension Progress {
     public var wrappedDate: Date {
         date ?? Date.now
     }
+    
+    public var weekdayString: String {
+        wrappedDate.currentWeekdayString
+    }
+    
+    public var weekday: Weekday? {
+        Weekday(rawValue: weekdayString.localizedLowercase)
+    }
 
     public var wrappedLastUpdated: Date {
         lastUpdated ?? Date.now
@@ -40,7 +48,7 @@ extension Progress {
     }
 
     public var totalCount: Int {
-        countsArray.count
+        countsArray.map({Int($0.amount)}).reduce(0, +)
     }
 
     public var wrappedHabit: Habit {

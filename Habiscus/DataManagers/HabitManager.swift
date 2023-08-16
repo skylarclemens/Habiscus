@@ -25,47 +25,39 @@ struct HabitManager {
     
     // Makes sure the date is today or earlier
     // Creates a new count and adds it to progress
-    func addNewCount(progress: Progress, date: Date, habit: Habit? = nil) -> Bool {
-        guard !date.isAfter(Date()) else {
-            return false
-        }
+    func addNewCount(progress: Progress, date: Date, habit: Habit? = nil, amount: Int? = 1) {
+        guard !date.isAfter(Date()) else { return }
         
         let newCount = Count(context: moc)
         newCount.id = UUID()
         newCount.createdAt = Date()
         newCount.date = Calendar.current.isDateInToday(date) ? Date() : date
         newCount.progress = progress
+        newCount.amount = Int16(amount ?? 1)
         progress.addToCounts(newCount)
         
         updateProgress(progress)
         try? moc.save()
-        
-        var progressJustCompleted = false
-        if let habit = habit {
-            progressJustCompleted = progress.countsArray.count == habit.goalNumber
-        }
-        
-        return progressJustCompleted
     }
     
     // Makes sure the date is today or earlier
     // Creates a new Progress entity and adds a new count
     // Returns whether the progress was just completed or not
-    func addNewProgress(habit: Habit? = nil, date: Date, skip: Bool = false) -> Bool {
-        guard !date.isAfter(Date()) else { return false }
-        guard let habit = getHabit(habit) else { return false }
+    func addNewProgress(habit: Habit? = nil, date: Date, skip: Bool = false, amount: Int? = 1) {
+        guard !date.isAfter(Date()) else { return }
+        guard let habit = getHabit(habit) else { return }
         let newProgress = Progress(context: moc)
         newProgress.id = UUID()
         newProgress.date = date
         newProgress.lastUpdated = Date()
-        newProgress.isCompleted = habit.goalNumber == 1
+        newProgress.isCompleted = amount! >= habit.goalNumber
         newProgress.isSkipped = skip
         newProgress.habit = habit
         habit.addToProgress(newProgress)
         
-        if skip { return false }
+        if skip { return }
         
-        return addNewCount(progress: newProgress, date: date, habit: habit)
+        addNewCount(progress: newProgress, date: date, habit: habit, amount: amount)
     }
     
     func addNewSkippedProgress(habit: Habit? = nil, date: Date) {

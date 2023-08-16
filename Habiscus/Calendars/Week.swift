@@ -38,8 +38,8 @@ struct Week: Hashable {
         self.initialDate = initialDate
     }
     
-    func getRelatedWeek(_ direction: RelatedWeeks) -> Week {
-        let dayValue = direction == .next ? 7 : -7
+    func getRelatedWeek(_ direction: RelatedWeeks, distance: Int = 1) -> Week {
+        let dayValue = direction == .next ? 7 * distance : -7 * distance
         let oneWeekAgo = Calendar.current.date(byAdding: .day, value: dayValue, to: self.initialDate)!
         return Week(initialDate: oneWeekAgo)
     }

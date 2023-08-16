@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct StatisticsView: View {
-    var habit: Habit
+    @ObservedObject var habit: Habit
     
     private var currentStreak: Int {
         return habit.getCurrentStreak()

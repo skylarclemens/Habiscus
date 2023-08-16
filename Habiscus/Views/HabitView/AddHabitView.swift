@@ -41,7 +41,7 @@ struct CustomColorPicker: View {
 struct RemindersView: View {
     @Binding var repeatValue: String
     @Binding var selectedDateTime: Date
-    @Binding var selectedDay: Day
+    @Binding var selectedDay: Weekday
     let repeatOptions = ["Once", "Daily", "Weekly", "None"]
     var body: some View {
         VStack {
@@ -51,22 +51,36 @@ struct RemindersView: View {
                 }
             }
             .pickerStyle(.segmented)
-            if repeatValue == "Once" {
-                DatePicker("When?", selection: $selectedDateTime)
-            } else if repeatValue == "Daily" {
-                DatePicker("What time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
-            } else if repeatValue == "Weekly" {
-                HStack {
-                    Picker("When?", selection: $selectedDay) {
-                        ForEach(Day.allCases, id: \.self) {
-                            Text($0.rawValue).tag($0)
+            VStack {
+                if repeatValue == "Once" {
+                    DatePicker("When?", selection: $selectedDateTime)
+                } else if repeatValue == "Daily" {
+                    DatePicker("What time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
+                } else if repeatValue == "Weekly" {
+                    HStack {
+                        Picker("When?", selection: $selectedDay) {
+                            ForEach(Weekday.allCases, id: \.self) {
+                                Text($0.rawValue.localizedCapitalized).tag($0)
+                            }
                         }
+                        DatePicker("What day/time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
+                            .labelsHidden()
                     }
-                    DatePicker("What day/time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
+                } else {
+                    Text("No reminders set")
+                        .foregroundColor(.secondary)
                 }
             }
+            .padding(.vertical, 8)
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity, minHeight: 52)
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(.background)
+            )
         }
+        .listRowBackground(Color(UIColor.systemGroupedBackground))
+        .listRowInsets(EdgeInsets())
     }
 }
 
@@ -77,33 +91,52 @@ enum Day: String, CaseIterable {
 struct AddHabitView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
+    enum FocusedField: Hashable {
+        case goalCountField
+    }
     
     @State private var name: String = ""
     @State private var color: String = "pink"
 
     @State private var repeatValue = "Daily"
-    @State private var selectedDateTime = Date.now
-    @State private var selectedDay: Day = .Monday
+    @State private var selectedDateTime = Date()
+    @State private var selectedDay: Weekday = .sunday
     
     let goalRepeatOptions = ["Daily", "Weekly"]
     @State private var goalRepeat: String = "Daily"
     @State private var goalCount: Int = 1
+    @State private var metric: String = ""
+    @State private var goalWeekdays: Set<Weekday> = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     @State var openEmojiPicker = false
     @State var selectedEmoji: Emoji? = nil
+    
+    @State private var startDate: Date = Date()
+    @State private var endDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+    enum AdjustDates {
+        case startDate, startEndDates
+    }
+    @State private var editDateSelection: AdjustDates = .startDate
+    
+    @FocusState private var focusedInput: FocusedField?
     
     var body: some View {
         NavigationStack {
             Form {
                 Section("Name") {
-                    TextField("Meditate, Drink water, etc.", text: $name)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color(UIColor.secondarySystemGroupedBackground))
-                        )
-                        .listRowInsets(EdgeInsets())
+                    VStack {
+                        TextField("Meditate, Drink water, etc.", text: $name)
+                            .textInputAutocapitalization(.never)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
+                            )
+                            .submitLabel(.done)
+                    }
+                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                    .listRowInsets(EdgeInsets())
                 }
-                .listRowBackground(Color(UIColor.systemGroupedBackground))
                 Section("Icon and Color") {
                     HStack(alignment: .center) {
                         Button {
@@ -135,7 +168,7 @@ struct AddHabitView: View {
                     .listRowBackground(Color(UIColor.systemGroupedBackground))
                     .listRowInsets(EdgeInsets())
                 }
-                Section("Goal") {
+                Section("Repeat goal") {
                     VStack {
                         Picker("Repeat", selection: $goalRepeat) {
                             ForEach(goalRepeatOptions, id: \.self) { option in
@@ -143,14 +176,74 @@ struct AddHabitView: View {
                             }
                         }
                         .pickerStyle(.segmented)
-                        Stepper("\(goalCount) \(goalCount > 1 ? "times" : "time")", value: $goalCount, in: 1...1000)
+                        VStack {
+                            if goalRepeat == "Daily" {
+                                WeekView(selectedWeekdays: $goalWeekdays)
+                            } else {
+                                Text("Goal will be reset weekly")
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .padding(14)
+                        .frame(maxWidth: .infinity, minHeight: 64)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(.background)
+                        )
                     }
-                    
+                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                    .listRowInsets(EdgeInsets())
                 }
+                
+                Section("Goal") {
+                    HStack {
+                        TextField("count", value: $goalCount, format: .number)
+                            .keyboardType(.numberPad)
+                            .focused($focusedInput, equals: .goalCountField)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
+                            )
+                            .padding(4)
+                            .frame(maxWidth: 100)
+                        TextField("time(s)", text: $metric)
+                            .textInputAutocapitalization(.never)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
+                            )
+                            .submitLabel(.done)
+                        Text("per \(goalRepeat == "Daily" ? "day" : "week")")
+                            .font(.callout)
+                            .foregroundColor(.secondary)
+                    }
+                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                    .listRowInsets(EdgeInsets())
+                }
+                .listRowSeparator(.hidden)
+                
+                Section {
+                    Picker("Adjust dates", selection: $editDateSelection) {
+                        Text("Start date").tag(AdjustDates.startDate)
+                        Text("Start & end dates").tag(AdjustDates.startEndDates)
+                    }
+                    DatePicker("Start date", selection: $startDate, displayedComponents: .date)
+                    if editDateSelection == .startEndDates {
+                        DatePicker("End date", selection: $endDate, displayedComponents: .date)
+                    }
+                } header: {
+                    Text("Habit dates")
+                } footer: {
+                    Text("Select the date you want your habit to start, and optionally select an end date")
+                }
+                
                 Section("Reminders") {
                     RemindersView(repeatValue: $repeatValue, selectedDateTime: $selectedDateTime, selectedDay: $selectedDay)
                 }
-                .listRowSeparator(.hidden)
             }
             .navigationTitle("New habit")
             .navigationBarTitleDisplayMode(.inline)
@@ -158,12 +251,19 @@ struct AddHabitView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         let newHabit = Habit(context: moc)
+                        let daysSelectedArray = goalWeekdays.map { $0.rawValue.localizedCapitalized }
+                        let daysSelected = daysSelectedArray.joined(separator: ", ")
+                        let endDateSelected = editDateSelection == .startEndDates ? endDate : nil
                         newHabit.id = UUID()
                         newHabit.name = name
                         newHabit.color = color
                         newHabit.icon = selectedEmoji?.char
                         newHabit.createdAt = Date.now
+                        newHabit.startDate = startDate
+                        newHabit.endDate = endDateSelected
+                        newHabit.weekdays = daysSelected
                         newHabit.goal = Int16(goalCount)
+                        newHabit.metric = metric.isEmpty ? "count" : metric
                         newHabit.isArchived = false
                         newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
                         try? moc.save()
@@ -178,6 +278,14 @@ struct AddHabitView: View {
                         dismiss()
                     }
                 }
+                ToolbarItemGroup(placement: .keyboard) {
+                    if focusedInput == .goalCountField {
+                        Spacer()
+                        Button("Done") {
+                            focusedInput = nil
+                        }
+                    }
+                }
             }
             .tint(.pink)
             .sheet(isPresented: $openEmojiPicker) {
@@ -186,6 +294,10 @@ struct AddHabitView: View {
                     .presentationDragIndicator(.visible)
             }
         }
+    }
+    
+    func calculateGoalFrequency() -> Int {
+        goalWeekdays.count * goalCount
     }
     
     func registerLocal(center: UNUserNotificationCenter) {
@@ -230,6 +342,8 @@ struct AddHabitView: View {
 
 struct AddHabitView_Previews: PreviewProvider {
     static var previews: some View {
-        AddHabitView()
+        ZStack {
+            AddHabitView()
+        }
     }
 }

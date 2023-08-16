@@ -19,6 +19,7 @@ extension Count {
     @NSManaged public var createdAt: Date?
     @NSManaged public var date: Date?
     @NSManaged public var id: UUID?
+    @NSManaged public var amount: Int16
     @NSManaged public var progress: Progress?
     
     public var wrappedCreatedDate: Date {

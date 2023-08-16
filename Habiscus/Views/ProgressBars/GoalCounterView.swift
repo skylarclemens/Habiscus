@@ -14,14 +14,14 @@ struct GoalCounterView: View {
     @Binding var date: Date
     var showIcon: Bool = false
     
-    private var goalCompletion: Double {
-        Double(currentGoalCount) / Double(habit.goalNumber)
-    }
     private var currentGoalCount: Int {
         if let progress = habit.findProgress(from: date) {
-            return progress.countsArray.count
+            return progress.totalCount
         }
         return 0
+    }
+    private var goalCompletion: Double {
+        Double(currentGoalCount) / Double(habit.goalNumber)
     }
     
     var body: some View {

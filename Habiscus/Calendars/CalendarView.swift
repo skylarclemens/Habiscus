@@ -30,6 +30,7 @@ struct CalendarDay: Identifiable, Hashable {
     }
     var count: Int
     var skipped: Bool = false
+    var inWeekdays: Bool = true
 }
 
 struct CalendarMonth: Equatable, Hashable {
@@ -54,6 +55,9 @@ struct CalendarMonth: Equatable, Hashable {
     var firstWeekday: Int {
         Calendar.current.firstWeekday(date)
     }
+    var isCurrentMonth: Bool {
+        Calendar.current.dateComponents([.month, .year], from: date) == Calendar.current.dateComponents([.month, .year], from: Date())
+    }
     var dateRange: Range<Int> {
         Calendar.current.range(of: .day, in: .month, for: date)!
     }
@@ -63,13 +67,15 @@ struct CalendarMonth: Equatable, Hashable {
         for _ in self.dateRange {
             var progressTotalCounts = 0
             var progressIsSkipped = false
+            var inWeekdays = true
             if let habit = habit {
                 let currentProgress = habit.progressArray.first(where: {
                     Calendar.current.isDate($0.wrappedDate, inSameDayAs: day) })
                 progressTotalCounts = currentProgress?.totalCount ?? 0
                 progressIsSkipped = currentProgress?.isSkipped ?? false
+                inWeekdays = habit.weekdaysArray.contains(day.currentWeekday)
             }
-            let dayObject = CalendarDay(date: day, count: progressTotalCounts, skipped: progressIsSkipped)
+            let dayObject = CalendarDay(date: day, count: progressTotalCounts, skipped: progressIsSkipped, inWeekdays: inWeekdays)
             daysArray.append(dayObject)
             day = Calendar.current.date(byAdding: .day, value: 1, to: day)!
         }
@@ -132,10 +138,12 @@ struct CalendarView: View {
                     showNextMonth()
                 } label: {
                     Image(systemName: "chevron.right")
-                        .foregroundColor(color)
+                        .foregroundColor(!selectedMonth.isCurrentMonth ? color : .secondary)
                 }
                 .accessibilityLabel(Text("Forward one month"))
                 .padding(.horizontal, 10)
+                .opacity(selectedMonth.isCurrentMonth ? 0.5 : 1)
+                .disabled(selectedMonth.isCurrentMonth)
             }
             .padding(.bottom)
             CalendarGridView(date: $date, month: selectedMonth, size: size, color: color)
@@ -186,6 +194,7 @@ struct CalendarView_Previews: PreviewProvider {
         habit.name = "Test"
         habit.createdAt = countDate
         habit.addToProgress(progress)
+        habit.weekdays = "Monday, Wednesday, Friday"
         habit.goal = 2
         habit.goalFrequency = 1
         return CalendarView(habit: habit, date: .constant(Date()))
