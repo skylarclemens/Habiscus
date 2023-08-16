@@ -34,9 +34,15 @@ struct HabitListView: View {
     @Binding var dateSelected: Date
     @Binding var addHabitOpen: Bool
 
-    @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.createdAt, order: .reverse)
-    ], predicate: NSPredicate(format: "isArchived == NO"), animation: .default) var habits: FetchedResults<Habit>
+    @FetchRequest var habits: FetchedResults<Habit>
+    
+    init(dateSelected: Binding<Date>, addHabitOpen: Binding<Bool>, weekdayFilter: String) {
+        self._dateSelected = dateSelected
+        self._addHabitOpen = addHabitOpen
+        self._habits = FetchRequest<Habit>(sortDescriptors: [
+            SortDescriptor(\.createdAt, order: .reverse)
+        ], predicate: NSPredicate(format: "(isArchived == NO) AND weekdays CONTAINS[c] %@", weekdayFilter), animation: .default)
+    }
     
     var openHabits: [Habit] {
         habits.filter {
@@ -120,7 +126,7 @@ struct HabitListView: View {
                         }
                     } header: {
                         Text("Skipped")
-                            .font(.system(.title2 , design: .rounded))
+                            .font(.system(.title2, design: .rounded))
                             .textCase(nil)
                             .foregroundColor(.secondary)
                     }
@@ -138,7 +144,7 @@ struct HabitListView: View {
 struct HabitListView_Previews: PreviewProvider {
     static var dataController = DataController()
     static var previews: some View {
-        HabitListView(dateSelected: .constant(Date()), addHabitOpen: .constant(false))
+        HabitListView(dateSelected: .constant(Date()), addHabitOpen: .constant(false), weekdayFilter: "Monday")
             .environment(\.managedObjectContext, dataController.container.viewContext)
     }
 }

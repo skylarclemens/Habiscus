@@ -15,6 +15,10 @@ struct ContentView: View {
     @State private var addHabitOpen = false
     @State private var dateSelected: Date = Date()
     
+    var currentWeekday: String {
+        dateSelected.formatted(Date.FormatStyle().weekday(.wide))
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -41,7 +45,7 @@ struct ContentView: View {
                             .padding(.bottom, 16)
                             .offset(y: -15)
                     }
-                    HabitListView(dateSelected: $dateSelected, addHabitOpen: $addHabitOpen)
+                    HabitListView(dateSelected: $dateSelected, addHabitOpen: $addHabitOpen, weekdayFilter: currentWeekday)
                 }
                 .toolbar {
                     Button {

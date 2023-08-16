@@ -82,6 +82,7 @@ struct HabitRowView: View {
             }
             if let progress = progress {
                 print("\(habit.wrappedName): \(progress.totalCount)")
+                print(habit.weekdays ?? "")
             }
         }
         .contextMenu {
