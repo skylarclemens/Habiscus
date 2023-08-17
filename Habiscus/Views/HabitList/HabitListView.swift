@@ -50,26 +50,35 @@ struct HabitListView: View {
     var openHabits: [Habit] {
         habits.filter {
             if let progress = $0.findProgress(from: dateSelected) {
-                return !progress.isSkipped && (progress.totalCount < $0.goalNumber)
+                return !progress.isSkipped && !progress.isCompleted
             }
             return true
+        }.sorted { (lhs, rhs) in
+            return lhs.wrappedName < rhs.wrappedName
         }
     }
+    
     var completedHabits: [Habit] {
         habits.filter {
             if let progress = $0.findProgress(from: dateSelected) {
-                return !progress.isSkipped && (progress.totalCount >= $0.goalNumber)
+                return !progress.isSkipped && progress.isCompleted
             }
             return false
+        }.sorted { (lhs, rhs) in
+            return lhs.wrappedName < rhs.wrappedName
         }
     }
+    
     var skippedHabits: [Habit] {
         habits.filter {
             if let progress = $0.findProgress(from: dateSelected) {
                 return progress.isSkipped
             }
             return false
+        }.sorted { (lhs, rhs) in
+            return lhs.wrappedName < rhs.wrappedName
         }
+        
     }
     
     var body: some View {
@@ -91,27 +100,17 @@ struct HabitListView: View {
                             }.opacity(0)
                         )
                     }
-                }
-                
-                if completedHabits.count > 0 {
-                    Section {
-                        ForEach(completedHabits) { habit in
-                            HabitRowView(habit: habit, date: $dateSelected, progress:
-                                            habit.findProgress(from: dateSelected))
-                            .overlay(
-                                NavigationLink {
-                                    HabitView(habit: habit, date: $dateSelected)
-                                } label: {
-                                    EmptyView()
-                                }.opacity(0)
-                            )
-                        }
-                    } header: {
-                        Text("Complete")
-                            .font(.system(.title2 , design: .rounded))
-                            .textCase(nil)
-                            .foregroundColor(.secondary)
+                    ForEach(completedHabits) { habit in
+                        HabitRowView(habit: habit, date: $dateSelected, progress: habit.findProgress(from: dateSelected))
+                        .overlay(
+                            NavigationLink {
+                                HabitView(habit: habit, date: $dateSelected)
+                            } label: {
+                                EmptyView()
+                            }.opacity(0)
+                        )
                     }
+                    
                 }
                 
                 if skippedHabits.count > 0 {

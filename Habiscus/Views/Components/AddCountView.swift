@@ -16,6 +16,10 @@ struct AddCountView: View {
     @Binding var date: Date
     var habitManager: HabitManager
     
+    var isDateAfterToday: Bool {
+        date.isAfter(Date())
+    }
+    
     var body: some View {
         Button {
             showAddCountAlert.toggle()
@@ -27,8 +31,9 @@ struct AddCountView: View {
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(.white.opacity(0.25))
+                .fill(isDateAfterToday ? .white.opacity(0) : .white.opacity(0.25))
         )
+        .disabled(isDateAfterToday)
         .buttonStyle(.plain)
         .alert("Enter \(habit.goalMetric) amount", isPresented: $showAddCountAlert) {
             TextField("Enter count amount", value: $countAmount, format: .number)

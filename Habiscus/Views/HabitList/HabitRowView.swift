@@ -50,8 +50,8 @@ struct HabitRowView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(habit.habitColor)
-                .shadow(color: .black.opacity(isCompleted || isSkipped ? 0 : 0.1), radius: 6, y: 3)
-                .shadow(color: habit.habitColor.opacity(isCompleted || isSkipped ? 0 : 0.5), radius: 4, y: 3)
+                .shadow(color: .black.opacity(isSkipped ? 0 : 0.1), radius: 6, y: 3)
+                .shadow(color: habit.habitColor.opacity(isSkipped ? 0 : 0.5), radius: 4, y: 3)
                 .padding(.vertical, 2)
             HStack {
                 GoalCounterView(habit: habit, date: $date, showIcon: true)
@@ -140,6 +140,7 @@ struct HabitRowView_Previews: PreviewProvider {
         habit.weekdays = "Monday, Wednesday, Friday"
         habit.createdAt = Date.now
         progress.addToCounts(count)
+        progress.isCompleted = true
         habit.addToProgress(progress)
         habit.goal = 1
         habit.goalFrequency = 1
