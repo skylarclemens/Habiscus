@@ -7,8 +7,10 @@
 
 import Foundation
 
-public enum Weekday: String, CaseIterable {
+public enum Weekday: String, CaseIterable, Identifiable {
     case sunday, monday, tuesday, wednesday, thursday, friday, saturday
     
     static let allValues = [sunday, monday, tuesday, wednesday, thursday, friday, saturday]
+    
+    public var id: Self { self }
 }

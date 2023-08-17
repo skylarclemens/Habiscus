@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UserNotifications
 
 enum RepeatOptions: String, CaseIterable, Identifiable {
     case daily, weekly, weekdays, weekends
@@ -31,16 +30,20 @@ struct AddHabitView: View {
     @State private var setDays: String = "all"
     @State private var goalCount: Int = 1
     @State private var metric: String = ""
-    @State private var goalWeekdays: Set<Weekday> = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
+    @State private var repeatWeeklyOn: Set<Weekday> = [Date().currentWeekday]
+    private var weekdaysSelected: [RepeatOptions : Set<Weekday>] {
+        return [
+            .daily: [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
+            .weekly: repeatWeeklyOn,
+            .weekdays: [.monday, .tuesday, .wednesday, .thursday, .friday],
+            .weekends: [.saturday, .sunday]
+        ]
+    }
     @State var openEmojiPicker = false
     @State var selectedEmoji: Emoji? = nil
     
     @State private var startDate: Date = Date()
-    @State private var endDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
-    enum AdjustDates {
-        case startDate, startEndDates
-    }
-    @State private var editDateSelection: AdjustDates = .startDate
+    @State private var endDate: Date? = nil
     
     @FocusState private var focusedInput: FocusedField?
     
@@ -93,7 +96,6 @@ struct AddHabitView: View {
                     .listRowBackground(Color(UIColor.systemGroupedBackground))
                     .listRowInsets(EdgeInsets())
                 }
-                RepeatSelectionView(goalRepeat: $goalRepeat, weekdays: $goalWeekdays)
                 
                 Section("Goal") {
                     HStack {
@@ -121,25 +123,13 @@ struct AddHabitView: View {
                             .font(.callout)
                             .foregroundColor(.secondary)
                     }
+                    .animation(.default, value: goalRepeat)
                     .listRowBackground(Color(UIColor.systemGroupedBackground))
                     .listRowInsets(EdgeInsets())
                 }
                 .listRowSeparator(.hidden)
                 
-                Section {
-                    Picker("Adjust dates", selection: $editDateSelection) {
-                        Text("Start date").tag(AdjustDates.startDate)
-                        Text("Start & end dates").tag(AdjustDates.startEndDates)
-                    }
-                    DatePicker("Start date", selection: $startDate, displayedComponents: .date)
-                    if editDateSelection == .startEndDates {
-                        DatePicker("End date", selection: $endDate, displayedComponents: .date)
-                    }
-                } header: {
-                    Text("Habit dates")
-                } footer: {
-                    Text("Select the date you want your habit to start, and optionally select an end date")
-                }
+                DateOptions(goalRepeat: $goalRepeat, weekdays: $repeatWeeklyOn, startDate: $startDate, endDate: $endDate)
                 
                 Section("Reminders") {
                     RemindersView(repeatValue: $repeatValue, selectedDateTime: $selectedDateTime, selectedDay: $selectedDay)
@@ -150,28 +140,30 @@ struct AddHabitView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
+                        // Create new Habit with managedObjectContext
                         let newHabit = Habit(context: moc)
-                        let daysSelectedArray = goalWeekdays.map { $0.rawValue.localizedCapitalized }
+                        // Sort and convert Weekday array to one string for storing/loading
+                        let sortedDaysSelected = weekdaysSelected[goalRepeat]!.sorted { Weekday.allValues.firstIndex(of: $0)! < Weekday.allValues.firstIndex(of: $1)! }
+                        let daysSelectedArray = sortedDaysSelected.map { $0.rawValue.localizedCapitalized }
                         let daysSelected = daysSelectedArray.joined(separator: ", ")
-                        let endDateSelected = editDateSelection == .startEndDates ? endDate : nil
                         newHabit.id = UUID()
                         newHabit.name = name
                         newHabit.color = color
                         newHabit.icon = selectedEmoji?.char
                         newHabit.createdAt = Date.now
                         newHabit.startDate = startDate
-                        newHabit.endDate = endDateSelected
+                        newHabit.endDate = endDate
                         newHabit.weekdays = daysSelected
                         newHabit.goal = Int16(goalCount)
                         newHabit.metric = metric.isEmpty ? "count" : metric
                         newHabit.isArchived = false
                         newHabit.goalFrequency = Int16(goalRepeat == .daily ? 1 : 7)
+                        // Save new Habit in the context
                         try? moc.save()
+                        // Set reminder notifications if user sets them
                         if repeatValue != "None" {
                             NotificationManager.setReminderNotification(id: newHabit.id!, repeatValue: repeatValue, on: selectedDateTime, content: UNMutableNotificationContent())
                         }
-                        
-                        
                         
                         dismiss()
                     }
@@ -201,7 +193,7 @@ struct AddHabitView: View {
     }
     
     func calculateGoalFrequency() -> Int {
-        goalWeekdays.count * goalCount
+        weekdaysSelected[goalRepeat]!.count * goalCount
     }
 }
 
