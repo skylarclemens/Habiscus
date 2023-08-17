@@ -35,6 +35,10 @@
 		7EB770902A8423BE00559D73 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB7708F2A8423BE00559D73 /* IconView.swift */; };
 		7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */; };
 		7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */; };
+		7EE5ED2F2A8E79AA007424CD /* RemindersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5ED2E2A8E79AA007424CD /* RemindersView.swift */; };
+		7EE5ED312A8E7AC5007424CD /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5ED302A8E7AC5007424CD /* ColorPickerView.swift */; };
+		7EE5ED332A8E7B4C007424CD /* RepeatSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5ED322A8E7B4C007424CD /* RepeatSelectionView.swift */; };
+		7EE5ED352A8E7E42007424CD /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5ED342A8E7E42007424CD /* NotificationManager.swift */; };
 		7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */; };
 		7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */; };
 		7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */; };
@@ -77,6 +81,10 @@
 		7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
 		7ED7BFE42A82BB6C00952EFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountGridView.swift; sourceTree = "<group>"; };
+		7EE5ED2E2A8E79AA007424CD /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
+		7EE5ED302A8E7AC5007424CD /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
+		7EE5ED322A8E7B4C007424CD /* RepeatSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatSelectionView.swift; sourceTree = "<group>"; };
+		7EE5ED342A8E7E42007424CD /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		7EE77DE92A6DDBC90058CDF8 /* Habiscus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Habiscus.xcdatamodel; sourceTree = "<group>"; };
 		7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Count+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -151,7 +159,6 @@
 		7E697DD02A843B66000EC5D8 /* HabitView */ = {
 			isa = PBXGroup;
 			children = (
-				7E697DD12A843B74000EC5D8 /* AddHabitView.swift */,
 				7E697DD32A843B84000EC5D8 /* HabitView.swift */,
 				7E13C7552A8441EE006EBA82 /* StatisticsView.swift */,
 			);
@@ -175,6 +182,17 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		7EE5ED2D2A8E7977007424CD /* AddHabit */ = {
+			isa = PBXGroup;
+			children = (
+				7E697DD12A843B74000EC5D8 /* AddHabitView.swift */,
+				7EE5ED2E2A8E79AA007424CD /* RemindersView.swift */,
+				7EE5ED302A8E7AC5007424CD /* ColorPickerView.swift */,
+				7EE5ED322A8E7B4C007424CD /* RepeatSelectionView.swift */,
+			);
+			path = AddHabit;
+			sourceTree = "<group>";
+		};
 		7EFA41902A8021CD00D2F8E3 /* DataManagers */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +203,7 @@
 				7E93174E2A7D84160074E210 /* HapticManager.swift */,
 				7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */,
 				7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */,
+				7EE5ED342A8E7E42007424CD /* NotificationManager.swift */,
 			);
 			path = DataManagers;
 			sourceTree = "<group>";
@@ -192,6 +211,7 @@
 		7EFA41912A80220200D2F8E3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7EE5ED2D2A8E7977007424CD /* AddHabit */,
 				7E697DD02A843B66000EC5D8 /* HabitView */,
 				7EB7708E2A8423B000559D73 /* Components */,
 				7EFA41932A80220E00D2F8E3 /* HabitList */,
@@ -306,11 +326,13 @@
 			files = (
 				7E80A7ED2A7D9CFB0035F658 /* SoundManager.swift in Sources */,
 				7E13C7562A8441EE006EBA82 /* StatisticsView.swift in Sources */,
+				7EE5ED332A8E7B4C007424CD /* RepeatSelectionView.swift in Sources */,
 				7EA68A782A79555A001C6067 /* Date.swift in Sources */,
 				7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */,
 				7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */,
 				7EA6C3ED2A72950C00DA4C41 /* MultiWeekView.swift in Sources */,
 				7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */,
+				7EE5ED352A8E7E42007424CD /* NotificationManager.swift in Sources */,
 				7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */,
 				7E697DD42A843B84000EC5D8 /* HabitView.swift in Sources */,
 				7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */,
@@ -328,12 +350,14 @@
 				7EAAB24D2A8BD9C00075F9EB /* WeekView.swift in Sources */,
 				7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */,
 				7EA9FEAA2A82F6960084A843 /* Bundle-Decodable.swift in Sources */,
+				7EE5ED312A8E7AC5007424CD /* ColorPickerView.swift in Sources */,
 				7E1261702A7446B3009F15C9 /* Progress+CoreDataProperties.swift in Sources */,
 				7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */,
 				7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */,
 				7E3BE9142A8C27EA008C1503 /* AddCountView.swift in Sources */,
 				7E8C91232A7302EF0006055C /* GoalCounterView.swift in Sources */,
 				7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */,
+				7EE5ED2F2A8E79AA007424CD /* RemindersView.swift in Sources */,
 				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
 				7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */,
 				7E34D8762A82EE9700A7D649 /* IconPickerView.swift in Sources */,

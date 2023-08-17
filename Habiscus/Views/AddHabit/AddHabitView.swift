@@ -8,84 +8,9 @@
 import SwiftUI
 import UserNotifications
 
-
-struct CustomColorPicker: View {
-    @Binding var selection: String
-    let colorOptions = ["pink", "blue", "green", "purple"]
-    
-    var body: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 12) {
-                ForEach(colorOptions, id: \.self) { color in
-                    Button {
-                        selection = color
-                    } label: {
-                        if selection == color {
-                            Circle()
-                                .strokeBorder(Color(color), lineWidth: 6)
-                                .frame(width: 30, height: 30)
-                        } else {
-                            Circle()
-                                .fill(Color(color))
-                                .frame(width: 30, height: 30)
-                        }
-                    }
-                }
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 12)
-        }
-    }
-}
-
-struct RemindersView: View {
-    @Binding var repeatValue: String
-    @Binding var selectedDateTime: Date
-    @Binding var selectedDay: Weekday
-    let repeatOptions = ["Once", "Daily", "Weekly", "None"]
-    var body: some View {
-        VStack {
-            Picker("Repeat", selection: $repeatValue) {
-                ForEach(repeatOptions, id: \.self) { option in
-                    Text(option)
-                }
-            }
-            .pickerStyle(.segmented)
-            VStack {
-                if repeatValue == "Once" {
-                    DatePicker("When?", selection: $selectedDateTime)
-                } else if repeatValue == "Daily" {
-                    DatePicker("What time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
-                } else if repeatValue == "Weekly" {
-                    HStack {
-                        Picker("When?", selection: $selectedDay) {
-                            ForEach(Weekday.allCases, id: \.self) {
-                                Text($0.rawValue.localizedCapitalized).tag($0)
-                            }
-                        }
-                        DatePicker("What day/time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
-                            .labelsHidden()
-                    }
-                } else {
-                    Text("No reminders set")
-                        .foregroundColor(.secondary)
-                }
-            }
-            .padding(.vertical, 8)
-            .padding(.horizontal)
-            .frame(maxWidth: .infinity, minHeight: 52)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(.background)
-            )
-        }
-        .listRowBackground(Color(UIColor.systemGroupedBackground))
-        .listRowInsets(EdgeInsets())
-    }
-}
-
-enum Day: String, CaseIterable {
-    case Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+enum RepeatOptions: String, CaseIterable, Identifiable {
+    case daily, weekly, weekdays, weekends
+    var id: Self { self }
 }
 
 struct AddHabitView: View {
@@ -102,8 +27,8 @@ struct AddHabitView: View {
     @State private var selectedDateTime = Date()
     @State private var selectedDay: Weekday = .sunday
     
-    let goalRepeatOptions = ["Daily", "Weekly"]
-    @State private var goalRepeat: String = "Daily"
+    @State private var goalRepeat: RepeatOptions = .daily
+    @State private var setDays: String = "all"
     @State private var goalCount: Int = 1
     @State private var metric: String = ""
     @State private var goalWeekdays: Set<Weekday> = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
@@ -158,7 +83,7 @@ struct AddHabitView: View {
                                     .fill(Color(color).opacity(0.1))
                             )
                         }
-                        CustomColorPicker(selection: $color)
+                        ColorPickerView(selection: $color)
                             .padding(6)
                             .background(
                                 RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -168,32 +93,7 @@ struct AddHabitView: View {
                     .listRowBackground(Color(UIColor.systemGroupedBackground))
                     .listRowInsets(EdgeInsets())
                 }
-                Section("Repeat goal") {
-                    VStack {
-                        Picker("Repeat", selection: $goalRepeat) {
-                            ForEach(goalRepeatOptions, id: \.self) { option in
-                                Text(option)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-                        VStack {
-                            if goalRepeat == "Daily" {
-                                WeekView(selectedWeekdays: $goalWeekdays)
-                            } else {
-                                Text("Goal will be reset weekly")
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                        .padding(14)
-                        .frame(maxWidth: .infinity, minHeight: 64)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(.background)
-                        )
-                    }
-                    .listRowBackground(Color(UIColor.systemGroupedBackground))
-                    .listRowInsets(EdgeInsets())
-                }
+                RepeatSelectionView(goalRepeat: $goalRepeat, weekdays: $goalWeekdays)
                 
                 Section("Goal") {
                     HStack {
@@ -217,7 +117,7 @@ struct AddHabitView: View {
                                     .fill(Color(UIColor.secondarySystemGroupedBackground))
                             )
                             .submitLabel(.done)
-                        Text("per \(goalRepeat == "Daily" ? "day" : "week")")
+                        Text("per \(goalRepeat == .daily ? "day" : "week")")
                             .font(.callout)
                             .foregroundColor(.secondary)
                     }
@@ -265,9 +165,13 @@ struct AddHabitView: View {
                         newHabit.goal = Int16(goalCount)
                         newHabit.metric = metric.isEmpty ? "count" : metric
                         newHabit.isArchived = false
-                        newHabit.goalFrequency = Int16(goalRepeat == "Daily" ? 1 : 7)
+                        newHabit.goalFrequency = Int16(goalRepeat == .daily ? 1 : 7)
                         try? moc.save()
-                        setReminderNotification(id: newHabit.id!)
+                        if repeatValue != "None" {
+                            NotificationManager.setReminderNotification(id: newHabit.id!, repeatValue: repeatValue, on: selectedDateTime, content: UNMutableNotificationContent())
+                        }
+                        
+                        
                         
                         dismiss()
                     }
@@ -299,45 +203,6 @@ struct AddHabitView: View {
     func calculateGoalFrequency() -> Int {
         goalWeekdays.count * goalCount
     }
-    
-    func registerLocal(center: UNUserNotificationCenter) {
-        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
-            guard granted else {return}
-        }
-    }
-    
-    func setReminderNotification(id habitId: UUID) {
-        if repeatValue == "None" {
-            return
-        }
-        
-        let center = UNUserNotificationCenter.current()
-        var dateComponents = DateComponents()
-        if repeatValue == "Once" {
-            dateComponents = Calendar.current.dateComponents([.month, .day, .year, .hour, .minute], from: selectedDateTime)
-        } else if repeatValue == "Daily" {
-            dateComponents = Calendar.current.dateComponents([.hour, .minute], from: selectedDateTime)
-        } else if repeatValue == "Weekly" {
-            dateComponents = Calendar.current.dateComponents([.hour, .minute], from: selectedDateTime)
-            dateComponents.weekday = 1
-        } else {
-            return
-        }
-        
-        registerLocal(center: center)
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeatValue != "Once" ? true : false)
-        let content = UNMutableNotificationContent()
-        content.title = "Reminder"
-        content.body = "Time to complete \(name)!"
-        
-        let request = UNNotificationRequest(identifier: habitId.uuidString, content: content, trigger: trigger)
-        center.add(request) { (error) in
-            if error != nil {
-                print(error!.localizedDescription)
-            }
-         }
-    }    
 }
 
 struct AddHabitView_Previews: PreviewProvider {
