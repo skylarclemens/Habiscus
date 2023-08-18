@@ -13,7 +13,7 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     
     @State private var addHabitOpen = false
-    @State private var dateSelected: Date = Date().localDate
+    @State private var dateSelected: Date = Date()
     
     var body: some View {
         NavigationStack {
@@ -33,7 +33,7 @@ struct ContentView: View {
                                 .padding(.horizontal)
                         }
                         .onTapGesture {
-                            dateSelected = Date().localDate
+                            dateSelected = Date()
                         }
                         .animation(.spring(), value: dateSelected)
                         MultiWeekView(selectedDate: $dateSelected)
@@ -57,7 +57,7 @@ struct ContentView: View {
         }
         .tint(.pink)
         .onAppear {
-            HapticManager.instance.prepareHaptics()        
+            HapticManager.instance.prepareHaptics()
         }
     }
     

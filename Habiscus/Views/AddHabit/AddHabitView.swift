@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum RepeatOptions: String, CaseIterable, Identifiable {
-    case daily, weekly, weekdays, weekends
+    case daily, weekly, monthly, yearly, weekdays, weekends
     var id: Self { self }
 }
 
@@ -25,6 +25,7 @@ struct AddHabitView: View {
     @State private var selectedTime = Date()
     
     @State private var goalRepeat: RepeatOptions = .daily
+    @State private var frequency: Int = 1
     @State private var goalCount: Int = 1
     @State private var metric: String = ""
     @State private var repeatWeeklyOn: Set<Weekday> = [Date().currentWeekday]
@@ -33,14 +34,16 @@ struct AddHabitView: View {
             .daily: [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
             .weekly: repeatWeeklyOn,
             .weekdays: [.monday, .tuesday, .wednesday, .thursday, .friday],
-            .weekends: [.saturday, .sunday]
+            .weekends: [.saturday, .sunday],
+            .monthly: [],
+            .yearly: []
         ]
     }
     @State private var setReminders: Bool = true
     @State var openEmojiPicker = false
     @State var selectedEmoji: Emoji? = nil
     
-    @State private var startDate: Date = Date().localDate
+    @State private var startDate: Date = Date()
     @State private var endDate: Date? = nil
     
     @FocusState private var focusedInput: FocusedField?
@@ -127,7 +130,7 @@ struct AddHabitView: View {
                 }
                 .listRowSeparator(.hidden)
                 
-                DateOptions(goalRepeat: $goalRepeat, weekdays: $repeatWeeklyOn, startDate: $startDate, endDate: $endDate)
+                DateOptions(goalRepeat: $goalRepeat, weekdays: $repeatWeeklyOn, frequency: $frequency, startDate: $startDate, endDate: $endDate)
                 
 
                 RemindersView(setReminders: $setReminders, selectedTime: $selectedTime)
@@ -148,13 +151,15 @@ struct AddHabitView: View {
                         newHabit.name = name
                         newHabit.color = color
                         newHabit.icon = selectedEmoji?.char
-                        newHabit.createdAt = Date().localDate
+                        newHabit.createdAt = Date()
                         newHabit.startDate = startDate
                         newHabit.endDate = endDate
                         newHabit.weekdays = daysSelected
                         newHabit.goal = Int16(goalCount)
                         newHabit.metric = metric.isEmpty ? "count" : metric
                         newHabit.isArchived = false
+                        
+                        // TODO: Set goal frequency based on repeat option and frequency input
                         newHabit.goalFrequency = Int16(goalRepeat == .daily ? 1 : 7)
                         // Save new Habit in the context
                         try? moc.save()

@@ -62,8 +62,8 @@ extension Date {
     }
     
     public var localDate: Date {
-        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-        return Calendar.current.date(from: dateComponents)!
+        let dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: Date())
+        return Calendar.autoupdatingCurrent.date(from: dateComponents)!
     }
     
     public var currentWeekdayString: String {
