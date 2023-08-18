@@ -6,56 +6,37 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct RemindersView: View {
-    @Binding var repeatValue: String
-    @Binding var selectedDateTime: Date
-    @Binding var selectedDay: Weekday
+    @Binding var setReminders: Bool
+    @Binding var selectedTime: Date
     
-    let repeatOptions = ["Once", "Daily", "Weekly", "None"]
     var body: some View {
-        VStack {
-            Picker("Repeat", selection: $repeatValue) {
-                ForEach(repeatOptions, id: \.self) { option in
-                    Text(option)
+        Section {
+            Toggle(isOn: $setReminders.animation()) {
+                Label {
+                    Text("Set reminder")
+                } icon: {
+                    Image(systemName: "bell.fill")
                 }
-            }
-            .pickerStyle(.segmented)
-            VStack {
-                if repeatValue == "Once" {
-                    DatePicker("When?", selection: $selectedDateTime)
-                } else if repeatValue == "Daily" {
-                    DatePicker("What time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
-                } else if repeatValue == "Weekly" {
-                    HStack {
-                        Picker("When?", selection: $selectedDay) {
-                            ForEach(Weekday.allCases, id: \.self) {
-                                Text($0.rawValue.localizedCapitalized).tag($0)
-                            }
-                        }
-                        DatePicker("What day/time?", selection: $selectedDateTime, displayedComponents: .hourAndMinute)
-                            .labelsHidden()
+            }.tint(.none)
+                .onChange(of: setReminders) { newValue in
+                    if newValue {
+                        NotificationManager.shared.registerLocal()
                     }
-                } else {
-                    Text("No reminders set")
-                        .foregroundColor(.secondary)
                 }
+            if setReminders {
+                DatePicker("What time?", selection: $selectedTime, displayedComponents: .hourAndMinute)
             }
-            .padding(.vertical, 8)
-            .padding(.horizontal)
-            .frame(maxWidth: .infinity, minHeight: 52)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(.background)
-            )
         }
-        .listRowBackground(Color(UIColor.systemGroupedBackground))
-        .listRowInsets(EdgeInsets())
     }
 }
 
 struct RemindersView_Previews: PreviewProvider {
     static var previews: some View {
-        RemindersView(repeatValue: .constant("Daily"), selectedDateTime: .constant(Date()), selectedDay: .constant(.monday))
+        Form {
+            RemindersView(setReminders: .constant(true), selectedTime: .constant(Date()))
+        }
     }
 }

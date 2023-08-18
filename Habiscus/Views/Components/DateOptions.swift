@@ -73,8 +73,6 @@ struct DateOptions: View {
                     }
                 }
             }
-        } footer: {
-            Text("Select the date you want your habit to start, and optionally select an end date")
         }
     }
     
@@ -87,10 +85,6 @@ struct DateOptions: View {
             footerText += " on \(sortedWeekdaysString)"
         }
         return footerText
-    }
-    
-    private enum SetDaysOptions: CaseIterable {
-        case all, select
     }
     
     private func endDateSelect() -> some View {

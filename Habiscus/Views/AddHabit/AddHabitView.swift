@@ -22,12 +22,9 @@ struct AddHabitView: View {
     @State private var name: String = ""
     @State private var color: String = "pink"
 
-    @State private var repeatValue = "Daily"
-    @State private var selectedDateTime = Date()
-    @State private var selectedDay: Weekday = .sunday
+    @State private var selectedTime = Date()
     
     @State private var goalRepeat: RepeatOptions = .daily
-    @State private var setDays: String = "all"
     @State private var goalCount: Int = 1
     @State private var metric: String = ""
     @State private var repeatWeeklyOn: Set<Weekday> = [Date().currentWeekday]
@@ -39,10 +36,11 @@ struct AddHabitView: View {
             .weekends: [.saturday, .sunday]
         ]
     }
+    @State private var setReminders: Bool = true
     @State var openEmojiPicker = false
     @State var selectedEmoji: Emoji? = nil
     
-    @State private var startDate: Date = Date()
+    @State private var startDate: Date = Date().localDate
     @State private var endDate: Date? = nil
     
     @FocusState private var focusedInput: FocusedField?
@@ -131,9 +129,9 @@ struct AddHabitView: View {
                 
                 DateOptions(goalRepeat: $goalRepeat, weekdays: $repeatWeeklyOn, startDate: $startDate, endDate: $endDate)
                 
-                Section("Reminders") {
-                    RemindersView(repeatValue: $repeatValue, selectedDateTime: $selectedDateTime, selectedDay: $selectedDay)
-                }
+
+                RemindersView(setReminders: $setReminders, selectedTime: $selectedTime)
+
             }
             .navigationTitle("New habit")
             .navigationBarTitleDisplayMode(.inline)
@@ -150,7 +148,7 @@ struct AddHabitView: View {
                         newHabit.name = name
                         newHabit.color = color
                         newHabit.icon = selectedEmoji?.char
-                        newHabit.createdAt = Date.now
+                        newHabit.createdAt = Date().localDate
                         newHabit.startDate = startDate
                         newHabit.endDate = endDate
                         newHabit.weekdays = daysSelected
@@ -160,9 +158,12 @@ struct AddHabitView: View {
                         newHabit.goalFrequency = Int16(goalRepeat == .daily ? 1 : 7)
                         // Save new Habit in the context
                         try? moc.save()
+                        
                         // Set reminder notifications if user sets them
-                        if repeatValue != "None" {
-                            NotificationManager.setReminderNotification(id: newHabit.id!, repeatValue: repeatValue, on: selectedDateTime, content: UNMutableNotificationContent())
+                        if setReminders {
+                            sortedDaysSelected.forEach { weekday in
+                                NotificationManager.shared.setReminderNotification(id: newHabit.id!, on: Weekday.weekdayNums[weekday]!, at: selectedTime, body: "Time to complete \(name)", title: "Reminder")
+                            }
                         }
                         
                         dismiss()

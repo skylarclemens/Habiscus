@@ -61,6 +61,11 @@ extension Date {
         return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: self.startOfMonth())!
     }
     
+    public var localDate: Date {
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        return Calendar.current.date(from: dateComponents)!
+    }
+    
     public var currentWeekdayString: String {
         self.formatted(Date.FormatStyle().weekday(.wide))
     }

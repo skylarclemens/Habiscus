@@ -143,6 +143,10 @@ struct HabitView: View {
                 }
                 .opacity(showEntries ? 1 : 0)
                 .animation(.spring(), value: showEntries)
+                if let startDate = habit.startDate {
+                    Text("Start date: \(startDate.formatted())")
+                        .foregroundColor(.secondary)
+                }
             }
         }
     }
@@ -154,10 +158,6 @@ struct HabitView: View {
     func simpleUndo() {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.warning)
-    }
-    
-    func completeHaptic() {
-        
     }
 }
 
