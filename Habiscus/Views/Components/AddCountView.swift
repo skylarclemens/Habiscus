@@ -73,8 +73,6 @@ struct AddCountView_Previews: PreviewProvider {
         habit.createdAt = Date.now
         progress.addToCounts(count)
         habit.addToProgress(progress)
-        habit.goal = 1
-        habit.goalFrequency = 1
         
         return AddCountView(habit: habit, date: .constant(Date.now), habitManager: HabitManager(context: moc))
     }

@@ -125,26 +125,9 @@ struct CountGridView: View {
 }
 
 struct CountGridView_Previews: PreviewProvider {
-    static var dataController = DataController()
-    static var moc = dataController.container.viewContext
     static var previews: some View {
-        let habit = Habit(context: moc)
-        let count = Count(context: moc)
-        let progress = Progress(context: moc)
-        progress.id = UUID()
-        progress.date = Date.now
-        progress.isCompleted = false
-        count.id = UUID()
-        count.createdAt = Date.now
-        count.date = Date.now
-        //count.progress = progress
-        //progress.addToCounts(count)
-        progress.isSkipped = true
-        habit.name = "Test"
-        habit.createdAt = Date.now
-        habit.addToProgress(progress)
-        habit.goal = 2
-        habit.goalFrequency = 1
-        return CountGridView(habit: habit)
+        Previewing(\.habit) { habit in
+            CountGridView(habit: habit)
+        }
     }
 }

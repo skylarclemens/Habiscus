@@ -179,24 +179,8 @@ struct CalendarView_Previews: PreviewProvider {
     static var dataController = DataController()
     static var moc = dataController.container.viewContext
     static var previews: some View {
-        let habit = Habit(context: moc)
-        let count = Count(context: moc)
-        let progress = Progress(context: moc)
-        let countDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-        progress.id = UUID()
-        progress.date = countDate
-        progress.isCompleted = false
-        count.id = UUID()
-        count.createdAt = countDate
-        count.date = Date()
-        count.progress = progress
-        progress.addToCounts(count)
-        habit.name = "Test"
-        habit.createdAt = countDate
-        habit.addToProgress(progress)
-        habit.weekdays = "Monday, Wednesday, Friday"
-        habit.goal = 2
-        habit.goalFrequency = 1
-        return CalendarView(habit: habit, date: .constant(Date()))
+        Previewing(\.habit) { habit in
+            CalendarView(habit: habit, date: .constant(Date()))
+        }
     }
 }

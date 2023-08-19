@@ -85,27 +85,9 @@ struct StatisticsView: View {
 }
 
 struct StatisticsView_Previews: PreviewProvider {
-    static var dataController = DataController()
-    static var moc = dataController.container.viewContext
     static var previews: some View {
-        let habit = Habit(context: moc)
-        let count = Count(context: moc)
-        let progress = Progress(context: moc)
-        progress.id = UUID()
-        progress.date = Date.now
-        progress.isCompleted = true
-        count.id = UUID()
-        count.createdAt = Date.now
-        count.date = Date.now
-        //count.progress = progress
-        //progress.addToCounts(count)
-        progress.isSkipped = false
-        habit.name = "Test"
-        habit.icon = "🤩"
-        habit.createdAt = Date.now
-        habit.addToProgress(progress)
-        habit.goal = 1
-        habit.goalFrequency = 1
-        return StatisticsView(habit: habit)
+        Previewing(\.habit) { habit in
+            StatisticsView(habit: habit)
+        }
     }
 }

@@ -51,13 +51,16 @@ struct ContentView: View {
                     }
                 }
                 .sheet(isPresented: $addHabitOpen) {
-                    AddHabitView()
+                    NavigationStack {
+                        AddHabitView()
+                            .navigationTitle("New habit")
+                    }
                 }
             }
         }
         .tint(.pink)
         .onAppear {
-            HapticManager.instance.prepareHaptics()
+            HapticManager.shared.prepareHaptics()
         }
     }
     
@@ -77,8 +80,7 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var dataController = DataController()
-    static var hapticManager = HapticManager()
+    static var dataController = DataController.shared
     static var previews: some View {
         ContentView()
             .environment(\.managedObjectContext, dataController.container.viewContext)

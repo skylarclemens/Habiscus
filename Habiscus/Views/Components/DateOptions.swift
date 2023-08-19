@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct DateOptions: View {
-    @Binding var goalRepeat: RepeatOptions
+    @Binding var frequency: RepeatOptions
     @Binding var weekdays: Set<Weekday>
-    @Binding var frequency: Int
+    @Binding var interval: Int
     @Binding var startDate: Date
     @Binding var endDate: Date?
     @State var setEndDate: Bool = false
-    @State private var setFrequency: Bool = false
+    @State private var setInterval: Bool = false
     @State private var yearDate: Date = Date()
-    @State private var monthDay: Int = 1
     
     let endDateRange: ClosedRange<Date> = {
         let start = Calendar.current.dateComponents([.year, .month, .day], from: Date())
@@ -51,16 +50,16 @@ struct DateOptions: View {
     
     var body: some View {
         Section {
-            Picker(selection: $goalRepeat.animation()) {
+            Picker(selection: $frequency.animation()) {
                 ForEach(RepeatOptions.allCases) { option in
-                    Text(option.rawValue.localizedCapitalized)
+                    Text(option.rawValue.localizedCapitalized).tag(option.rawValue)
                 }
             } label: {
                 Label("Repeat", systemImage: "repeat")
             }
             Button {
                 withAnimation {
-                    setFrequency.toggle()
+                    setInterval.toggle()
                 }
             } label: {
                 HStack {
@@ -72,27 +71,26 @@ struct DateOptions: View {
                     }
                         
                     Spacer()
-                    Text("\(frequency > 1 ? String(describing: frequency) : "") \(repeatStrings[goalRepeat]!)\(frequency > 1 ? "s" : "")")
+                    Text("\(interval > 1 ? String(describing: interval) : "") \(repeatStrings[frequency]!)\(interval > 1 ? "s" : "")")
                         .foregroundColor(.secondary)
                 }
             }
-            if setFrequency {
-                Picker("", selection: $frequency) {
-                    ForEach(1..<366) { num in
-                        Text(num, format: .number)
-                            .tag(num)
+            if setInterval {
+                Picker("", selection: $interval) {
+                    ForEach(1...365, id: \.self) { index in
+                        Text("\(index)").tag(index)
                     }
                 }
                 .pickerStyle(.wheel)
             }
-            if goalRepeat == .weekly {
+            if frequency == .weekly {
                 MultiSelect(label: Label("On", systemImage: "calendar"),
                             selected: $weekdays,
                             options: weekdayOptions,
                             selectedOptionString: sortedWeekdaysString)
                 
             }
-            if goalRepeat == .monthly {
+            if frequency == .monthly {
                 
             }
         } footer: {
@@ -120,25 +118,27 @@ struct DateOptions: View {
     
     func getRepeatFooterText() -> String {
         var footerText = "Habit will repeat every "
-        if frequency > 1 {
-            footerText += String(frequency) + " "
+        if interval > 1 {
+            footerText += String(interval) + " "
         }
-        if let repeatString = repeatStrings[goalRepeat] {
+        if let repeatString = repeatStrings[frequency] {
             footerText += repeatString
         }
-        if let repeatText = repeatFooter[goalRepeat] {
-            footerText += repeatText
-        }
-        if frequency > 1 {
+        if interval > 1 {
             footerText += "s"
         }
-        if goalRepeat == .weekly {
+        
+        if let repeatText = repeatFooter[frequency] {
+            footerText += repeatText
+        }
+        
+        if frequency == .weekly {
             footerText += " on \(sortedWeekdaysString)"
         }
-        if goalRepeat == .monthly || goalRepeat == .yearly {
+        if frequency == .monthly || frequency == .yearly {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMMM dd"
-            footerText += " starting on \(goalRepeat == .monthly ? formatter.string(from: startDate) : startDate.formatted(date: .long, time: .omitted))"
+            footerText += " starting on \(frequency == .monthly ? formatter.string(from: startDate) : startDate.formatted(date: .long, time: .omitted))"
         }
         return footerText
     }
@@ -193,15 +193,15 @@ struct DateOptions_Previews: PreviewProvider {
 }
 
 struct DateOptionsPreviewHelper: View {
-    @State var goalRepeat: RepeatOptions = .daily
+    @State var frequency: RepeatOptions = .daily
     @State var weekdays: Set<Weekday> = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     @State var startDate = Date()
-    @State var frequency: Int = 1
+    @State var interval: Int = 1
     
     var body: some View {
         NavigationStack {
             Form {
-                DateOptions(goalRepeat: $goalRepeat, weekdays: $weekdays, frequency: $frequency, startDate: $startDate, endDate: .constant(nil))
+                DateOptions(frequency: $frequency, weekdays: $weekdays, interval: $interval, startDate: $startDate, endDate: .constant(nil))
             }
             .tint(.pink)
         }

@@ -124,28 +124,14 @@ struct CircleProgressStyle: ProgressViewStyle {
 }
 
 struct GoalCounterView_Previews: PreviewProvider {
-    static var dataController = DataController()
-    static var moc = dataController.container.viewContext
     static var previews: some View {
-        let habit = Habit(context: moc)
-        let count = Count(context: moc)
-        let progress = Progress(context: moc)
-        progress.date = Date.now
-        progress.isCompleted = false
-        count.createdAt = Date.now
-        count.progress = progress
-        habit.name = "Test"
-        habit.icon = "🤩"
-        habit.createdAt = Date.now
-        progress.addToCounts(count)
-        habit.addToProgress(progress)
-        habit.goal = 1
-        habit.goalFrequency = 2
-        return GoalCounterView(habit: habit, date: .constant(Date()))
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(.pink)
-            )
+        Previewing(\.habit) { habit in
+            GoalCounterView(habit: habit, date: .constant(Date()))
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.pink)
+                )
+        }
     }
 }

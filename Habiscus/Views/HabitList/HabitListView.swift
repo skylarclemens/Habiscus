@@ -39,12 +39,13 @@ struct HabitListView: View {
     init(dateSelected: Binding<Date>, addHabitOpen: Binding<Bool>, weekdayFilter: String) {
         self._dateSelected = dateSelected
         self._addHabitOpen = addHabitOpen
-        let isArchivedPredicate = NSPredicate(format: "isArchived == NO")
-        let containsWeekdaysPredicate = NSPredicate(format: "weekdays CONTAINS[c] %@", weekdayFilter)
-        let afterStartDatePredicate = NSPredicate(format: "startDate <= %@", dateSelected.wrappedValue as NSDate)
+        //let isArchivedPredicate = NSPredicate(format: "isArchived == NO")
+        //let containsWeekdaysPredicate = NSPredicate(format: "goal.weekdays CONTAINS[c] %@", weekdayFilter)
+        //let afterStartDatePredicate = NSPredicate(format: "startDate <= %@", dateSelected.wrappedValue as NSDate)
+        /*predicate: NSCompoundPredicate(type: .and, subpredicates: [isArchivedPredicate, afterStartDatePredicate])*/
         self._habits = FetchRequest<Habit>(sortDescriptors: [
             SortDescriptor(\.createdAt, order: .reverse)
-        ], predicate: NSCompoundPredicate(type: .and, subpredicates: [isArchivedPredicate, containsWeekdaysPredicate, afterStartDatePredicate]), animation: .default)
+        ], animation: .default)
     }
     
     var openHabits: [Habit] {
@@ -144,9 +145,9 @@ struct HabitListView: View {
 }
 
 struct HabitListView_Previews: PreviewProvider {
-    static var dataController = DataController()
     static var previews: some View {
-        HabitListView(dateSelected: .constant(Date()), addHabitOpen: .constant(false), weekdayFilter: "Monday")
-            .environment(\.managedObjectContext, dataController.container.viewContext)
+        Previewing(withData: \.habits) {
+            HabitListView(dateSelected: .constant(Date()), addHabitOpen: .constant(false), weekdayFilter: "Sunday, Monday, Tuesday")
+        }
     }
 }

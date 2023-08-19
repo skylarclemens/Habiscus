@@ -2,7 +2,7 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 8/9/23.
+//  Created by Skylar Clemens on 8/19/23.
 //
 //
 
@@ -18,19 +18,16 @@ extension Habit {
 
     @NSManaged public var color: String?
     @NSManaged public var createdAt: Date?
-    @NSManaged public var startDate: Date?
     @NSManaged public var endDate: Date?
-    @NSManaged public var goal: Int16
-    @NSManaged public var goalFrequency: Int16
-    @NSManaged public var metric: String?
-    @NSManaged public var weekdays: String?
+    @NSManaged public var icon: String?
     @NSManaged public var id: UUID?
     @NSManaged public var isArchived: Bool
     @NSManaged public var lastUpdated: Date?
     @NSManaged public var name: String?
-    @NSManaged public var icon: String?
+    @NSManaged public var startDate: Date?
     @NSManaged public var progress: NSSet?
-
+    @NSManaged public var goal: Goal?
+    
     public var wrappedName: String {
         name ?? "Unkown name"
     }
@@ -40,7 +37,10 @@ extension Habit {
     }
     
     public var goalMetric: String {
-        metric ?? ""
+        if let goal = goal {
+            return goal.wrappedUnit
+        }
+        return ""
     }
     
     public var emojiIcon: String {
@@ -48,13 +48,17 @@ extension Habit {
     }
     
     public var weekdaysStrings: [String] {
-        let weekdaysComponents = weekdays?.components(separatedBy: ",")
-        return weekdaysComponents?.compactMap { $0.trimmingCharacters(in: .whitespaces) } ?? []
-        
+        if let goal = goal {
+            return goal.weekdaysStrings
+        }
+        return []
     }
     
     public var weekdaysArray: [Weekday] {
-        weekdaysStrings.compactMap { Weekday(rawValue: $0.localizedLowercase) ?? nil }
+        if let goal = goal {
+            return goal.weekdaysArray
+        }
+        return []
     }
 
     public var formattedCreatedDate: String {
@@ -84,15 +88,25 @@ extension Habit {
     }
 
     public var goalNumber: Int {
-        Int(goal)
+        if let goal = goal {
+            return Int(goal.amount)
+        }
+        return 1
     }
 
+    // TODO: Switch to Goal
     public var goalFrequencyNumber: Int {
-        Int(goalFrequency)
+        if let goal = goal {
+            return Int(goal.amount)
+        }
+        return 1
     }
 
     public var goalFrequencyString: String {
-        goalFrequency == 1 ? "Daily" : "Weekly"
+        if let goal = goal {
+            return goal.wrappedFrequency
+        }
+        return ""
     }
 
 
@@ -210,7 +224,6 @@ extension Habit {
     public func getLongestStreak() -> Int {
         calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray).max() ?? 0
     }
-    
 }
 
 // MARK: Generated accessors for progress

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E06CD0B2A9122E400B64FB3 /* Previewing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E06CD0A2A9122E400B64FB3 /* Previewing.swift */; };
 		7E1261622A742200009F15C9 /* HabitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1261612A742200009F15C9 /* HabitManager.swift */; };
 		7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */; };
 		7E1261702A7446B3009F15C9 /* Progress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */; };
@@ -34,8 +35,8 @@
 		7EB1C77A2A83E2A7008CB6C3 /* emoji.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EB1C7792A83E2A7008CB6C3 /* emoji.json */; };
 		7EB770902A8423BE00559D73 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB7708F2A8423BE00559D73 /* IconView.swift */; };
 		7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */; };
-		7ED504232A8FDF4500E08440 /* Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED504222A8FDF4500E08440 /* Repeat.swift */; };
 		7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */; };
+		7EE16BD02A9015D1002720DC /* EditHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE16BCF2A9015D1002720DC /* EditHabitView.swift */; };
 		7EE5ED2F2A8E79AA007424CD /* RemindersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5ED2E2A8E79AA007424CD /* RemindersView.swift */; };
 		7EE5ED312A8E7AC5007424CD /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5ED302A8E7AC5007424CD /* ColorPickerView.swift */; };
 		7EE5ED332A8E7B4C007424CD /* DateOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5ED322A8E7B4C007424CD /* DateOptions.swift */; };
@@ -50,9 +51,12 @@
 		7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */; };
 		7EF7DCC72A8D15C7007AF16C /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF7DCC62A8D15C7007AF16C /* Weekday.swift */; };
 		7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */; };
+		7EFC30402A911DA900419608 /* Goal+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFC303C2A911DA900419608 /* Goal+CoreDataClass.swift */; };
+		7EFC30412A911DA900419608 /* Goal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFC303D2A911DA900419608 /* Goal+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E06CD0A2A9122E400B64FB3 /* Previewing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Previewing.swift; sourceTree = "<group>"; };
 		7E1261612A742200009F15C9 /* HabitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitManager.swift; sourceTree = "<group>"; };
 		7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -81,9 +85,9 @@
 		7EB1C7792A83E2A7008CB6C3 /* emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 		7EB7708F2A8423BE00559D73 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
 		7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
-		7ED504222A8FDF4500E08440 /* Repeat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repeat.swift; sourceTree = "<group>"; };
 		7ED7BFE42A82BB6C00952EFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountGridView.swift; sourceTree = "<group>"; };
+		7EE16BCF2A9015D1002720DC /* EditHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHabitView.swift; sourceTree = "<group>"; };
 		7EE5ED2E2A8E79AA007424CD /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
 		7EE5ED302A8E7AC5007424CD /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		7EE5ED322A8E7B4C007424CD /* DateOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateOptions.swift; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 		7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRowView.swift; sourceTree = "<group>"; };
 		7EF7DCC62A8D15C7007AF16C /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		7EFC303C2A911DA900419608 /* Goal+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7EFC303D2A911DA900419608 /* Goal+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +117,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E06CD092A9122D500B64FB3 /* Previews */ = {
+			isa = PBXGroup;
+			children = (
+				7E06CD0A2A9122E400B64FB3 /* Previewing.swift */,
+			);
+			path = Previews;
+			sourceTree = "<group>";
+		};
 		7E67A7932A6B52B9001E0C23 = {
 			isa = PBXGroup;
 			children = (
@@ -130,11 +144,10 @@
 		7E67A79E2A6B52B9001E0C23 /* Habiscus */ = {
 			isa = PBXGroup;
 			children = (
-				7ED504242A8FDF5F00E08440 /* Models */,
-				7ED7BFE42A82BB6C00952EFD /* Info.plist */,
 				7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */,
 				7E67A7A12A6B52B9001E0C23 /* ContentView.swift */,
-				7E34D8752A82EE9700A7D649 /* IconPickerView.swift */,
+				7ED7BFE42A82BB6C00952EFD /* Info.plist */,
+				7ED504242A8FDF5F00E08440 /* Models */,
 				7EFA41942A80222C00D2F8E3 /* Calendars */,
 				7EFA41912A80220200D2F8E3 /* Views */,
 				7EFA41902A8021CD00D2F8E3 /* DataManagers */,
@@ -160,6 +173,7 @@
 			children = (
 				7E697DD32A843B84000EC5D8 /* HabitView.swift */,
 				7E13C7552A8441EE006EBA82 /* StatisticsView.swift */,
+				7EE16BCF2A9015D1002720DC /* EditHabitView.swift */,
 			);
 			path = HabitView;
 			sourceTree = "<group>";
@@ -186,13 +200,14 @@
 		7ED504242A8FDF5F00E08440 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */,
+				7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */,
+				7EFC303C2A911DA900419608 /* Goal+CoreDataClass.swift */,
+				7EFC303D2A911DA900419608 /* Goal+CoreDataProperties.swift */,
 				7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */,
 				7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */,
 				7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */,
 				7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */,
-				7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */,
-				7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */,
-				7ED504222A8FDF4500E08440 /* Repeat.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -203,6 +218,7 @@
 				7E697DD12A843B74000EC5D8 /* AddHabitView.swift */,
 				7EE5ED2E2A8E79AA007424CD /* RemindersView.swift */,
 				7EE5ED302A8E7AC5007424CD /* ColorPickerView.swift */,
+				7E34D8752A82EE9700A7D649 /* IconPickerView.swift */,
 			);
 			path = AddHabit;
 			sourceTree = "<group>";
@@ -225,6 +241,7 @@
 		7EFA41912A80220200D2F8E3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7E06CD092A9122D500B64FB3 /* Previews */,
 				7EE5ED2D2A8E7977007424CD /* AddHabit */,
 				7E697DD02A843B66000EC5D8 /* HabitView */,
 				7EB7708E2A8423B000559D73 /* Components */,
@@ -345,7 +362,7 @@
 				7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */,
 				7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */,
 				7EA6C3ED2A72950C00DA4C41 /* MultiWeekView.swift in Sources */,
-				7ED504232A8FDF4500E08440 /* Repeat.swift in Sources */,
+				7EFC30402A911DA900419608 /* Goal+CoreDataClass.swift in Sources */,
 				7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */,
 				7EE5ED352A8E7E42007424CD /* NotificationManager.swift in Sources */,
 				7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */,
@@ -361,6 +378,7 @@
 				7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */,
 				7EE5ED372A8E9656007424CD /* MultiSelect.swift in Sources */,
 				7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */,
+				7EE16BD02A9015D1002720DC /* EditHabitView.swift in Sources */,
 				7EA6C3EF2A7295C100DA4C41 /* Week.swift in Sources */,
 				7EB770902A8423BE00559D73 /* IconView.swift in Sources */,
 				7EAAB24D2A8BD9C00075F9EB /* WeekView.swift in Sources */,
@@ -373,6 +391,8 @@
 				7E3BE9142A8C27EA008C1503 /* AddCountView.swift in Sources */,
 				7E8C91232A7302EF0006055C /* GoalCounterView.swift in Sources */,
 				7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */,
+				7EFC30412A911DA900419608 /* Goal+CoreDataProperties.swift in Sources */,
+				7E06CD0B2A9122E400B64FB3 /* Previewing.swift in Sources */,
 				7EE5ED2F2A8E79AA007424CD /* RemindersView.swift in Sources */,
 				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
 				7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */,

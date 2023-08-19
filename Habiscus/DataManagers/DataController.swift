@@ -9,9 +9,29 @@ import CoreData
 import Foundation
 
 class DataController: ObservableObject {
-    let container = NSPersistentContainer(name: "Habiscus")
+    static let shared = DataController()
     
-    init() {
+    let container: NSPersistentContainer
+    
+    init(inMemory: Bool = false) {
+        container = NSPersistentContainer(name: "Habiscus")
+        /*let storeContainer = container.persistentStoreCoordinator
+        for store in storeContainer.persistentStores {
+            try? storeContainer.destroyPersistentStore(
+                at: store.url!,
+                ofType: store.type,
+                options: nil
+            )
+        }*/
+        
+        //container = NSPersistentContainer(name: "Habiscus")
+        
+        //print(container)
+        
+        if inMemory {
+            container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+        }
+        
         container.loadPersistentStores { description, error in
             if let error = error {
                 print("Core Data failed to load \(error.localizedDescription)")

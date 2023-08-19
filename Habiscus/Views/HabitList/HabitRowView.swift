@@ -9,16 +9,21 @@ import SwiftUI
 
 struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
-    @EnvironmentObject private var hapticManager: HapticManager
     @ObservedObject var habit: Habit
-    var progress: Progress?
     @State private var animated: Bool = false
     @Binding var date: Date
     
     init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
         self.habit = habit
         self._date = date
-        self.progress = progress
+    }
+    
+    var progress: Progress? {
+        if let progress = habit.findProgress(from: date) {
+            return progress
+        }
+        return nil
+
     }
     
     var isCompleted: Bool {
@@ -125,39 +130,11 @@ struct HabitRowView: View {
 }
 
 struct HabitRowView_Previews: PreviewProvider {
-    static var dataController = DataController()
-    static var moc = dataController.container.viewContext
     static var previews: some View {
-        let habit = Habit(context: moc)
-        let count = Count(context: moc)
-        let progress = Progress(context: moc)
-        progress.date = Date.now
-        progress.isCompleted = false
-        count.createdAt = Date.now
-        count.progress = progress
-        habit.name = "Test"
-        habit.icon = "🤩"
-        habit.weekdays = "Monday, Wednesday, Friday"
-        habit.createdAt = Date.now
-        progress.addToCounts(count)
-        progress.isCompleted = true
-        habit.addToProgress(progress)
-        habit.goal = 1
-        habit.goalFrequency = 1
-        return List {
-            HabitRowView(habit: habit, date: .constant(Date()), progress: progress)
-                .swipeActions {
-                    Button("Delete", role: .destructive) {
-                        
-                    }
-                }
-            HabitRowView(habit: habit, date: .constant(Date()))
-                .swipeActions {
-                    Button("Delete", role: .destructive) {
-                        
-                    }
-                }
+        Previewing(\.habit) { habit in
+            List {
+                HabitRowView(habit: habit, date: .constant(Date()))
+            }.listStyle(.grouped)
         }
-        .listStyle(.grouped)
     }
 }
