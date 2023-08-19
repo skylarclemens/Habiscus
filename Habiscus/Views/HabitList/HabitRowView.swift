@@ -66,7 +66,7 @@ struct HabitRowView: View {
                         .fontWeight(.medium)
                         .foregroundColor(.white)
                     if habit.icon != nil {
-                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.goalMetric)")
+                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
                             .font(.system(.callout, design: .rounded))
                             .foregroundColor(.white.opacity(0.75))
                     }

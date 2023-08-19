@@ -65,7 +65,7 @@ struct HabitView: View {
                                         .bold()
                                         .foregroundColor(.white)
                                     if habit.icon != nil {
-                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.goalMetric)")
+                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
                                             .font(.system(.callout, design: .rounded))
                                             .bold()
                                             .foregroundColor(.white.opacity(0.75))
@@ -176,8 +176,7 @@ struct HabitView: View {
             }
             .sheet(isPresented: $showEditView) {
                 NavigationStack {
-                    AddHabitView(habit: habit)
-                        .navigationTitle("Edit habit")
+                    EditHabitView(habit: habit)
                 }
             }
             

@@ -143,11 +143,13 @@ struct AddHabitView: View {
                 Button("Save") {
                     // Create new Habit with managedObjectContext
                     let newHabit = Habit(context: moc)
-                    let newGoal = Goal(context: moc)
                     // Sort and convert Weekday array to one string for storing/loading
                     let sortedDaysSelected = weekdaysSelected[frequency]!.sorted { Weekday.allValues.firstIndex(of: $0)! < Weekday.allValues.firstIndex(of: $1)! }
+                    print(sortedDaysSelected)
                     let daysSelectedArray = sortedDaysSelected.map { $0.rawValue.localizedCapitalized }
+                    print(daysSelectedArray)
                     let daysSelected = daysSelectedArray.joined(separator: ", ")
+                    print(daysSelected)
                     newHabit.id = UUID()
                     newHabit.name = name
                     newHabit.color = color
@@ -156,13 +158,13 @@ struct AddHabitView: View {
                     newHabit.startDate = startDate
                     newHabit.endDate = endDate
                     newHabit.isArchived = false
+                    newHabit.goal = Int16(goalCount)
+                    newHabit.unit = unit.isEmpty ? "count" : unit
+                    newHabit.interval = Int16(interval)
+                    newHabit.frequency = frequency.rawValue
+                    newHabit.weekdays = daysSelected
                     
-                    newGoal.amount = Int16(goalCount)
-                    newGoal.unit = unit.isEmpty ? "count" : unit
-                    newGoal.interval = Int16(interval)
-                    newGoal.frequency = frequency.rawValue
-                    newGoal.weekdays = daysSelected
-                    newHabit.goal = newGoal
+                    
                     
                     // Save new Habit in the context
                     try? moc.save()

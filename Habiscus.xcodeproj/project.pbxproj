@@ -34,6 +34,8 @@
 		7EAAB24D2A8BD9C00075F9EB /* WeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAAB24C2A8BD9C00075F9EB /* WeekView.swift */; };
 		7EB1C77A2A83E2A7008CB6C3 /* emoji.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EB1C7792A83E2A7008CB6C3 /* emoji.json */; };
 		7EB770902A8423BE00559D73 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB7708F2A8423BE00559D73 /* IconView.swift */; };
+		7EBD230D2A91533000752B36 /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBD230B2A91533000752B36 /* Habit+CoreDataClass.swift */; };
+		7EBD230E2A91533000752B36 /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBD230C2A91533000752B36 /* Habit+CoreDataProperties.swift */; };
 		7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */; };
 		7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */; };
 		7EE16BD02A9015D1002720DC /* EditHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE16BCF2A9015D1002720DC /* EditHabitView.swift */; };
@@ -46,13 +48,9 @@
 		7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */; };
 		7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */; };
 		7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */; };
-		7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */; };
-		7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */; };
 		7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */; };
 		7EF7DCC72A8D15C7007AF16C /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF7DCC62A8D15C7007AF16C /* Weekday.swift */; };
 		7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */; };
-		7EFC30402A911DA900419608 /* Goal+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFC303C2A911DA900419608 /* Goal+CoreDataClass.swift */; };
-		7EFC30412A911DA900419608 /* Goal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFC303D2A911DA900419608 /* Goal+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +82,8 @@
 		7EAAB24C2A8BD9C00075F9EB /* WeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekView.swift; sourceTree = "<group>"; };
 		7EB1C7792A83E2A7008CB6C3 /* emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 		7EB7708F2A8423BE00559D73 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
+		7EBD230B2A91533000752B36 /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7EBD230C2A91533000752B36 /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
 		7ED7BFE42A82BB6C00952EFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountGridView.swift; sourceTree = "<group>"; };
@@ -97,13 +97,9 @@
 		7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Count+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Count+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataClass.swift"; sourceTree = "<group>"; };
-		7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRowView.swift; sourceTree = "<group>"; };
 		7EF7DCC62A8D15C7007AF16C /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
-		7EFC303C2A911DA900419608 /* Goal+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal+CoreDataClass.swift"; sourceTree = "<group>"; };
-		7EFC303D2A911DA900419608 /* Goal+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,10 +196,8 @@
 		7ED504242A8FDF5F00E08440 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				7EE77DF72A6DE0310058CDF8 /* Habit+CoreDataClass.swift */,
-				7EE77DF82A6DE0310058CDF8 /* Habit+CoreDataProperties.swift */,
-				7EFC303C2A911DA900419608 /* Goal+CoreDataClass.swift */,
-				7EFC303D2A911DA900419608 /* Goal+CoreDataProperties.swift */,
+				7EBD230B2A91533000752B36 /* Habit+CoreDataClass.swift */,
+				7EBD230C2A91533000752B36 /* Habit+CoreDataProperties.swift */,
 				7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */,
 				7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */,
 				7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */,
@@ -360,10 +354,8 @@
 				7EE5ED332A8E7B4C007424CD /* DateOptions.swift in Sources */,
 				7EA68A782A79555A001C6067 /* Date.swift in Sources */,
 				7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */,
-				7EE77DFB2A6DE0310058CDF8 /* Habit+CoreDataClass.swift in Sources */,
 				7EA6C3ED2A72950C00DA4C41 /* MultiWeekView.swift in Sources */,
-				7EFC30402A911DA900419608 /* Goal+CoreDataClass.swift in Sources */,
-				7EE77DFC2A6DE0310058CDF8 /* Habit+CoreDataProperties.swift in Sources */,
+				7EBD230E2A91533000752B36 /* Habit+CoreDataProperties.swift in Sources */,
 				7EE5ED352A8E7E42007424CD /* NotificationManager.swift in Sources */,
 				7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */,
 				7E697DD42A843B84000EC5D8 /* HabitView.swift in Sources */,
@@ -391,9 +383,9 @@
 				7E3BE9142A8C27EA008C1503 /* AddCountView.swift in Sources */,
 				7E8C91232A7302EF0006055C /* GoalCounterView.swift in Sources */,
 				7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */,
-				7EFC30412A911DA900419608 /* Goal+CoreDataProperties.swift in Sources */,
 				7E06CD0B2A9122E400B64FB3 /* Previewing.swift in Sources */,
 				7EE5ED2F2A8E79AA007424CD /* RemindersView.swift in Sources */,
+				7EBD230D2A91533000752B36 /* Habit+CoreDataClass.swift in Sources */,
 				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
 				7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */,
 				7E34D8762A82EE9700A7D649 /* IconPickerView.swift in Sources */,

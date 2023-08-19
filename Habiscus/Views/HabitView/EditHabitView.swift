@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct EditHabitView: View {
+    @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) var dismiss
     @ObservedObject var habit: Habit
     
     enum FocusedField: Hashable {
@@ -15,6 +17,28 @@ struct EditHabitView: View {
     }
     
     @FocusState private var focusedInput: FocusedField?
+    @State var weekdays: Set<Weekday>
+    @State var frequency: RepeatOptions
+    @State var interval: Int
+    
+    private var weekdaysSelected: [RepeatOptions : Set<Weekday>] {
+        return [
+            .daily: [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
+            .weekly: weekdays,
+            .weekdays: [.monday, .tuesday, .wednesday, .thursday, .friday],
+            .weekends: [.saturday, .sunday],
+            .monthly: [],
+            .yearly: []
+        ]
+    }
+    
+    init(habit: Habit) {
+        self.habit = habit
+        let weekdaySet = Set(habit.weekdaysArray)
+        self._weekdays = State(initialValue: weekdaySet)
+        self._frequency = State(initialValue: RepeatOptions(rawValue: habit.goalFrequency)!)
+        self._interval = State(initialValue: Int(habit.interval))
+    }
     
     var body: some View {
         Form {
@@ -47,7 +71,7 @@ struct EditHabitView: View {
             }
             Section("Goal") {
                 HStack {
-                    /*TextField("count", value: $habit.goal, format: .number)
+                    TextField("count", value: $habit.goal, format: .number)
                         .keyboardType(.numberPad)
                         .focused($focusedInput, equals: .goalCountField)
                         .padding(.vertical, 10)
@@ -58,7 +82,7 @@ struct EditHabitView: View {
                         )
                         .padding(4)
                         .frame(maxWidth: 100)
-                    TextField("time(s)", text: $habit.metric ?? "")
+                    TextField("time(s)", text: $habit.unit ?? "")
                         .textInputAutocapitalization(.never)
                         .padding(.vertical, 10)
                         .padding(.horizontal)
@@ -67,15 +91,46 @@ struct EditHabitView: View {
                                 .fill(Color(UIColor.secondarySystemGroupedBackground))
                         )
                         .submitLabel(.done)
-                    Text("per \(goalRepeat == .daily ? "day" : "week")")
+                    Text("per \(habit.goalFrequency == "daily" ? "day" : "week")")
                         .font(.callout)
-                        .foregroundColor(.secondary)*/
+                        .foregroundColor(.secondary)
                 }
-                //.animation(.default, value: goalRepeat)
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
                 .listRowInsets(EdgeInsets())
             }
             .listRowSeparator(.hidden)
+            DateOptions(frequency: $frequency, weekdays: $weekdays, interval: $interval, startDate: $habit.startDate ?? Date(), endDate: $habit.endDate)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Save") {
+                    let sortedDaysSelected = weekdaysSelected[frequency]!.sorted { Weekday.allValues.firstIndex(of: $0)! < Weekday.allValues.firstIndex(of: $1)! }
+                    let daysSelectedArray = sortedDaysSelected.map { $0.rawValue.localizedCapitalized }
+                    let daysSelected = daysSelectedArray.joined(separator: ", ")
+                    habit.weekdays = daysSelected
+                    habit.frequency = frequency.rawValue
+                    habit.interval = Int16(interval)
+                    
+                    // Save new Habit in the context
+                    try? moc.save()
+                    
+                    dismiss()
+                }
+                .disabled((habit.name ?? "").isEmpty)
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Cancel") {
+                    dismiss()
+                }
+            }
+            ToolbarItemGroup(placement: .keyboard) {
+                if focusedInput == .goalCountField {
+                    Spacer()
+                    Button("Done") {
+                        focusedInput = nil
+                    }
+                }
+            }
         }
     }
 }

@@ -39,13 +39,12 @@ struct HabitListView: View {
     init(dateSelected: Binding<Date>, addHabitOpen: Binding<Bool>, weekdayFilter: String) {
         self._dateSelected = dateSelected
         self._addHabitOpen = addHabitOpen
-        //let isArchivedPredicate = NSPredicate(format: "isArchived == NO")
-        //let containsWeekdaysPredicate = NSPredicate(format: "goal.weekdays CONTAINS[c] %@", weekdayFilter)
-        //let afterStartDatePredicate = NSPredicate(format: "startDate <= %@", dateSelected.wrappedValue as NSDate)
-        /*predicate: NSCompoundPredicate(type: .and, subpredicates: [isArchivedPredicate, afterStartDatePredicate])*/
+        let isArchivedPredicate = NSPredicate(format: "isArchived == NO")
+        let containsWeekdaysPredicate = NSPredicate(format: "weekdays CONTAINS[c] %@", weekdayFilter)
+        let afterStartDatePredicate = NSPredicate(format: "startDate < %@", dateSelected.wrappedValue as NSDate)
         self._habits = FetchRequest<Habit>(sortDescriptors: [
-            SortDescriptor(\.createdAt, order: .reverse)
-        ], animation: .default)
+            SortDescriptor(\.createdAt, order: .reverse),
+        ], predicate: NSCompoundPredicate(type: .and, subpredicates: [isArchivedPredicate, containsWeekdaysPredicate, afterStartDatePredicate]), animation: .default)
     }
     
     var openHabits: [Habit] {

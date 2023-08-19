@@ -46,13 +46,13 @@ struct PreviewData {
             habit.color = "blue"
             habit.createdAt = Date.now
             habit.startDate = Date()
-            
-            let goal = Goal(context: context)
-            goal.amount = 1
-            goal.frequency = "daily"
-            goal.interval = 1
-            goal.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
-            habit.goal = goal
+            habit.endDate = nil
+            habit.isArchived = false
+            habit.goal = 1
+            habit.unit = "count"
+            habit.interval = 1
+            habit.frequency = "daily"
+            habit.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
             
             let count = Count(context: context)
             count.id = UUID()
@@ -83,13 +83,13 @@ struct PreviewData {
                 habit.color = "blue"
                 habit.createdAt = Date.now
                 habit.startDate = Date()
-                
-                let goal = Goal(context: context)
-                goal.amount = 1
-                goal.frequency = "daily"
-                goal.interval = 1
-                goal.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
-                habit.goal = goal
+                habit.endDate = nil
+                habit.isArchived = false
+                habit.goal = 1
+                habit.unit = "count"
+                habit.interval = 1
+                habit.frequency = "daily"
+                habit.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
                 
                 let count = Count(context: context)
                 count.id = UUID()

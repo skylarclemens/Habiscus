@@ -28,14 +28,6 @@ extension Progress {
         date ?? Date.now
     }
     
-    public var relatedGoal: Goal? {
-        if let habit = habit {
-            return habit.goal
-        } else {
-            return nil
-        }
-    }
-    
     public var weekdayString: String {
         wrappedDate.currentWeekdayString
     }
