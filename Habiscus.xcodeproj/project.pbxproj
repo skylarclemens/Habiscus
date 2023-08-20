@@ -20,7 +20,6 @@
 		7E67A7A42A6B52BA001E0C23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */; };
 		7E67A7A72A6B52BA001E0C23 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E67A7A62A6B52BA001E0C23 /* Preview Assets.xcassets */; };
 		7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */; };
-		7E697DD22A843B74000EC5D8 /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E697DD12A843B74000EC5D8 /* AddHabitView.swift */; };
 		7E697DD42A843B84000EC5D8 /* HabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E697DD32A843B84000EC5D8 /* HabitView.swift */; };
 		7E80A7EB2A7D9CC90035F658 /* complete.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7E80A7EA2A7D9CC90035F658 /* complete.mp3 */; };
 		7E80A7ED2A7D9CFB0035F658 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */; };
@@ -51,6 +50,7 @@
 		7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */; };
 		7EF7DCC72A8D15C7007AF16C /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF7DCC62A8D15C7007AF16C /* Weekday.swift */; };
 		7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */; };
+		7EFE65BA2A928391009E655F /* DataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE65B92A928391009E655F /* DataOperation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,7 +68,6 @@
 		7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7E67A7A62A6B52BA001E0C23 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
-		7E697DD12A843B74000EC5D8 /* AddHabitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
 		7E697DD32A843B84000EC5D8 /* HabitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HabitView.swift; sourceTree = "<group>"; };
 		7E80A7EA2A7D9CC90035F658 /* complete.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = complete.mp3; sourceTree = "<group>"; };
 		7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
@@ -100,6 +99,7 @@
 		7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRowView.swift; sourceTree = "<group>"; };
 		7EF7DCC62A8D15C7007AF16C /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		7EFE65B92A928391009E655F /* DataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataOperation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,7 +209,6 @@
 		7EE5ED2D2A8E7977007424CD /* AddHabit */ = {
 			isa = PBXGroup;
 			children = (
-				7E697DD12A843B74000EC5D8 /* AddHabitView.swift */,
 				7EE5ED2E2A8E79AA007424CD /* RemindersView.swift */,
 				7EE5ED302A8E7AC5007424CD /* ColorPickerView.swift */,
 				7E34D8752A82EE9700A7D649 /* IconPickerView.swift */,
@@ -228,6 +227,7 @@
 				7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */,
 				7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */,
 				7EE5ED342A8E7E42007424CD /* NotificationManager.swift */,
+				7EFE65B92A928391009E655F /* DataOperation.swift */,
 			);
 			path = DataManagers;
 			sourceTree = "<group>";
@@ -353,6 +353,7 @@
 				7E13C7562A8441EE006EBA82 /* StatisticsView.swift in Sources */,
 				7EE5ED332A8E7B4C007424CD /* DateOptions.swift in Sources */,
 				7EA68A782A79555A001C6067 /* Date.swift in Sources */,
+				7EFE65BA2A928391009E655F /* DataOperation.swift in Sources */,
 				7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */,
 				7EA6C3ED2A72950C00DA4C41 /* MultiWeekView.swift in Sources */,
 				7EBD230E2A91533000752B36 /* Habit+CoreDataProperties.swift in Sources */,
@@ -362,7 +363,6 @@
 				7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */,
 				7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */,
 				7EF7DCC72A8D15C7007AF16C /* Weekday.swift in Sources */,
-				7E697DD22A843B74000EC5D8 /* AddHabitView.swift in Sources */,
 				7E93174F2A7D84160074E210 /* HapticManager.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,
 				7E34D87E2A82F47300A7D649 /* EmojiManager.swift in Sources */,

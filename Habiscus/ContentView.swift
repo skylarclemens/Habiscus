@@ -11,8 +11,6 @@ import CoreHaptics
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
-    
-    @State private var addHabitOpen = false
     @State private var dateSelected: Date = Date()
     
     var body: some View {
@@ -41,20 +39,7 @@ struct ContentView: View {
                             .padding(.bottom, 16)
                             .offset(y: -15)
                     }
-                    HabitListView(dateSelected: $dateSelected, addHabitOpen: $addHabitOpen, weekdayFilter: dateSelected.currentWeekdayString)
-                }
-                .toolbar {
-                    Button {
-                        addHabitOpen = true
-                    } label: {
-                        Label("Add", systemImage: "plus")
-                    }
-                }
-                .sheet(isPresented: $addHabitOpen) {
-                    NavigationStack {
-                        AddHabitView()
-                            .navigationTitle("New habit")
-                    }
+                    HabitListView(dateSelected: $dateSelected, weekdayFilter: dateSelected.currentWeekdayString)
                 }
             }
         }

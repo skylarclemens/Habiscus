@@ -7,20 +7,27 @@
 
 import SwiftUI
 
+enum RepeatOptions: String, CaseIterable, Identifiable {
+    case daily, weekly, monthly, yearly, weekdays, weekends
+    
+    var id: Self { self }
+}
+
 struct EditHabitView: View {
-    @Environment(\.managedObjectContext) var moc
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.managedObjectContext) private var childContext
+    @Environment(\.dismiss) private var dismiss
+    
+    // New object if creating, and existing object if editing
     @ObservedObject var habit: Habit
     
+    @FocusState private var focusedInput: FocusedField?
     enum FocusedField: Hashable {
         case goalCountField
     }
     
-    @FocusState private var focusedInput: FocusedField?
-    @State var weekdays: Set<Weekday>
-    @State var frequency: RepeatOptions
-    @State var interval: Int
-    
+    @State private var frequency: RepeatOptions
+    @State private var weekdays: Set<Weekday>
+    @State private var startDate: Date
     private var weekdaysSelected: [RepeatOptions : Set<Weekday>] {
         return [
             .daily: [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
@@ -34,10 +41,9 @@ struct EditHabitView: View {
     
     init(habit: Habit) {
         self.habit = habit
-        let weekdaySet = Set(habit.weekdaysArray)
-        self._weekdays = State(initialValue: weekdaySet)
-        self._frequency = State(initialValue: RepeatOptions(rawValue: habit.goalFrequency)!)
-        self._interval = State(initialValue: Int(habit.interval))
+        self._frequency = State(initialValue: RepeatOptions(rawValue: habit.frequency ?? "") ?? .daily)
+        self._startDate = State(initialValue: habit.startDate ?? Date())
+        self._weekdays = State(initialValue: (habit.weekdays != nil) ? Set(habit.weekdaysArray) : [Date().currentWeekday])
     }
     
     var body: some View {
@@ -99,7 +105,7 @@ struct EditHabitView: View {
                 .listRowInsets(EdgeInsets())
             }
             .listRowSeparator(.hidden)
-            DateOptions(frequency: $frequency, weekdays: $weekdays, interval: $interval, startDate: $habit.startDate ?? Date(), endDate: $habit.endDate)
+            DateOptions(frequency: $frequency, weekdays: $weekdays, interval: $habit.interval, startDate: $startDate, endDate: $habit.endDate)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -109,11 +115,10 @@ struct EditHabitView: View {
                     let daysSelected = daysSelectedArray.joined(separator: ", ")
                     habit.weekdays = daysSelected
                     habit.frequency = frequency.rawValue
-                    habit.interval = Int16(interval)
+                    habit.startDate = startDate
                     
-                    // Save new Habit in the context
-                    try? moc.save()
-                    
+                    // Save new Habit in the child context
+                    try? childContext.save()
                     dismiss()
                 }
                 .disabled((habit.name ?? "").isEmpty)

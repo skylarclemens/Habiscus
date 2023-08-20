@@ -10,7 +10,7 @@ import SwiftUI
 struct DateOptions: View {
     @Binding var frequency: RepeatOptions
     @Binding var weekdays: Set<Weekday>
-    @Binding var interval: Int
+    @Binding var interval: Int16
     @Binding var startDate: Date
     @Binding var endDate: Date?
     @State var setEndDate: Bool = false
@@ -196,7 +196,7 @@ struct DateOptionsPreviewHelper: View {
     @State var frequency: RepeatOptions = .daily
     @State var weekdays: Set<Weekday> = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     @State var startDate = Date()
-    @State var interval: Int = 1
+    @State var interval: Int16 = 1
     
     var body: some View {
         NavigationStack {

@@ -8,23 +8,14 @@
 import SwiftUI
 
 struct NoHabitsView: View {
-    @Binding var addHabitOpen: Bool
+    @Binding var date: Date
     var body: some View {
         VStack {
             VStack(spacing: 4) {
-                Text("You currently have no habits")
+                Text("You currently have no habits for \(date.formatted(date: .long, time: .omitted))")
                     .font(.title2)
                     .foregroundColor(.secondary)
             }
-            Button {
-                addHabitOpen = true
-            } label: {
-                Image(systemName: "plus")
-                    .font(.system(size: 20))
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            
         }
     }
 }
@@ -32,13 +23,13 @@ struct NoHabitsView: View {
 struct HabitListView: View {
     @Environment(\.managedObjectContext) var moc
     @Binding var dateSelected: Date
-    @Binding var addHabitOpen: Bool
 
     @FetchRequest var habits: FetchedResults<Habit>
     
-    init(dateSelected: Binding<Date>, addHabitOpen: Binding<Bool>, weekdayFilter: String) {
+    @State private var createHabit: DataOperation<Habit>?
+    
+    init(dateSelected: Binding<Date>, weekdayFilter: String) {
         self._dateSelected = dateSelected
-        self._addHabitOpen = addHabitOpen
         let isArchivedPredicate = NSPredicate(format: "isArchived == NO")
         let containsWeekdaysPredicate = NSPredicate(format: "weekdays CONTAINS[c] %@", weekdayFilter)
         let afterStartDatePredicate = NSPredicate(format: "startDate < %@", dateSelected.wrappedValue as NSDate)
@@ -84,7 +75,7 @@ struct HabitListView: View {
     var body: some View {
         if habits.count == 0 {
             ScrollView {
-                NoHabitsView(addHabitOpen: $addHabitOpen)
+                NoHabitsView(date: $dateSelected)
             }
         } else {
             List {
@@ -139,6 +130,20 @@ struct HabitListView: View {
             .scrollContentBackground(.hidden)
             .environment(\.defaultMinListRowHeight, 80)
             .animation(.spring(), value: openHabits)
+            .toolbar {
+                Button {
+                    createHabit = DataOperation(withContext: moc)
+                } label: {
+                    Label("Add", systemImage: "plus")
+                }
+            }
+            .sheet(item: $createHabit) { create in
+                NavigationStack {
+                    EditHabitView(habit: create.childObject)
+                        .navigationTitle("New habit")
+                }
+                .environment(\.managedObjectContext, create.childContext)
+            }
         }
     }
 }
@@ -146,7 +151,9 @@ struct HabitListView: View {
 struct HabitListView_Previews: PreviewProvider {
     static var previews: some View {
         Previewing(withData: \.habits) {
-            HabitListView(dateSelected: .constant(Date()), addHabitOpen: .constant(false), weekdayFilter: "Sunday, Monday, Tuesday")
+            NavigationStack {
+                HabitListView(dateSelected: .constant(Date()), weekdayFilter: "Sunday, Monday, Tuesday")
+            }
         }
     }
 }

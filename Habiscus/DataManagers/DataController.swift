@@ -15,18 +15,6 @@ class DataController: ObservableObject {
     
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Habiscus")
-        /*let storeContainer = container.persistentStoreCoordinator
-        for store in storeContainer.persistentStores {
-            try? storeContainer.destroyPersistentStore(
-                at: store.url!,
-                ofType: store.type,
-                options: nil
-            )
-        }*/
-        
-        //container = NSPersistentContainer(name: "Habiscus")
-        
-        //print(container)
         
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")

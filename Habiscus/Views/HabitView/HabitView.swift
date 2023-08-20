@@ -12,6 +12,7 @@ struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     @Binding var date: Date
+    @State private var updateHabit: DataOperation<Habit>?
     
     private var progress: Progress? {
         return habit.findProgress(from: date)
@@ -36,12 +37,6 @@ struct HabitView: View {
     }
     
     @State private var showSkippedOverlay: Bool = false
-    @State private var showEditView: Bool = false
-    
-    init(habit: Habit, date: Binding<Date>) {
-        self.habit = habit
-        self._date = date
-    }
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -155,7 +150,7 @@ struct HabitView: View {
                 ToolbarItem {
                     Menu {
                         Button {
-                            showEditView = true
+                            updateHabit = DataOperation(withExistsingData: habit, in: moc)
                         } label: {
                             Label("Edit", systemImage: "pencil")
                         }
@@ -174,10 +169,12 @@ struct HabitView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showEditView) {
+            .sheet(item: $updateHabit) { update in
                 NavigationStack {
-                    EditHabitView(habit: habit)
+                    EditHabitView(habit: update.childObject)
+                        .navigationTitle("Edit habit")
                 }
+                .environment(\.managedObjectContext, update.childContext)
             }
             
         }
@@ -198,7 +195,7 @@ struct HabitView_Previews: PreviewProvider {
         Previewing(\.habit) { habit in
             NavigationStack {
                 HabitView(habit: habit, date: .constant(Date()))
-                    .navigationTitle("Test")
+                    .navigationTitle(habit.wrappedName)
                     .navigationBarTitleDisplayMode(.inline)
             }
         }
