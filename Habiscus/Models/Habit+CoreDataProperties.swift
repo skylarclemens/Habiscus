@@ -2,7 +2,7 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 8/9/23.
+//  Created by Skylar Clemens on 8/19/23.
 //
 //
 
@@ -18,19 +18,20 @@ extension Habit {
 
     @NSManaged public var color: String?
     @NSManaged public var createdAt: Date?
-    @NSManaged public var startDate: Date?
     @NSManaged public var endDate: Date?
-    @NSManaged public var goal: Int16
-    @NSManaged public var goalFrequency: Int16
-    @NSManaged public var metric: String?
-    @NSManaged public var weekdays: String?
+    @NSManaged public var icon: String?
     @NSManaged public var id: UUID?
     @NSManaged public var isArchived: Bool
     @NSManaged public var lastUpdated: Date?
     @NSManaged public var name: String?
-    @NSManaged public var icon: String?
+    @NSManaged public var startDate: Date?
+    @NSManaged public var goal: Int16
+    @NSManaged public var frequency: String?
+    @NSManaged public var interval: Int16
+    @NSManaged public var unit: String?
+    @NSManaged public var weekdays: String?
     @NSManaged public var progress: NSSet?
-
+    
     public var wrappedName: String {
         name ?? "Unkown name"
     }
@@ -39,8 +40,8 @@ extension Habit {
         createdAt ?? Date()
     }
     
-    public var goalMetric: String {
-        metric ?? ""
+    public var wrappedUnit: String {
+        unit ?? ""
     }
     
     public var emojiIcon: String {
@@ -87,14 +88,14 @@ extension Habit {
         Int(goal)
     }
 
-    public var goalFrequencyNumber: Int {
-        Int(goalFrequency)
+    // TODO: Switch to Goal
+    public var goalInterval: Int {
+        Int(interval)
     }
-
-    public var goalFrequencyString: String {
-        goalFrequency == 1 ? "Daily" : "Weekly"
+    
+    public var goalFrequency: String {
+        frequency ?? ""
     }
-
 
     public var allCountsArray: [Count] {
         var tempCountArray: [Count] = []
@@ -153,13 +154,15 @@ extension Habit {
     // If first progress is not completed or is more than one day from today, returns a streak of 0
     // Returns first, most recent, streak of streak array
     public func getCurrentStreak() -> Int {
-        guard let mostRecentProgress = progressArray.last(where: { $0.isCompleted && !$0.isSkipped }) else {
+        guard let mostRecentProgress = progressArray.last(where: { $0.isCompleted && !$0.isSkipped }),
+              let progressDate = Date().closestPreviousWeekday(in: self.weekdaysArray),
+              let closestProgress = self.findProgress(from: progressDate)
+        else {
             return 0
         }
-        let closestProgress = self.findProgress(from: Date().closestPreviousWeekday(in: self.weekdaysArray)!)
 
         var streaks: [Int] = []
-        if Calendar.current.isDateInToday(mostRecentProgress.wrappedDate) || (closestProgress?.isCompleted ?? false) {
+        if Calendar.current.isDateInToday(mostRecentProgress.wrappedDate) || (closestProgress.isCompleted) {
             streaks = calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray)
         }
         return streaks.first ?? 0
@@ -210,7 +213,7 @@ extension Habit {
     public func getLongestStreak() -> Int {
         calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray).max() ?? 0
     }
-    
+
 }
 
 // MARK: Generated accessors for progress

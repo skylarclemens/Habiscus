@@ -40,4 +40,8 @@ class EmojiManager: ObservableObject {
     init() {
         self.emojis = Bundle.main.decode("emoji.json")
     }
+    
+    func findEmoji(from char: String) -> Emoji? {
+        return emojis.first(where: { $0.char == char })
+    }
 }

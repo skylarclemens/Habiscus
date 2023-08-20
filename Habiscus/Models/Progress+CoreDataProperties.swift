@@ -2,7 +2,7 @@
 //  Progress+CoreDataProperties.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 8/6/23.
+//  Created by Skylar Clemens on 8/19/23.
 //
 //
 
@@ -19,8 +19,8 @@ extension Progress {
     @NSManaged public var date: Date?
     @NSManaged public var id: UUID?
     @NSManaged public var isCompleted: Bool
-    @NSManaged public var lastUpdated: Date?
     @NSManaged public var isSkipped: Bool
+    @NSManaged public var lastUpdated: Date?
     @NSManaged public var counts: NSSet?
     @NSManaged public var habit: Habit?
     
@@ -58,6 +58,7 @@ extension Progress {
     public func checkCompleted() -> Bool {
         totalCount >= wrappedHabit.goalNumber
     }
+
 }
 
 // MARK: Generated accessors for counts

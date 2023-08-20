@@ -12,6 +12,7 @@ struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
     @Binding var date: Date
+    @State private var updateHabit: DataOperation<Habit>?
     
     private var progress: Progress? {
         return habit.findProgress(from: date)
@@ -35,12 +36,7 @@ struct HabitView: View {
         return false
     }
     
-    @State var showSkippedOverlay: Bool = false
-    
-    init(habit: Habit, date: Binding<Date>) {
-        self.habit = habit
-        self._date = date
-    }
+    @State private var showSkippedOverlay: Bool = false
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -64,7 +60,7 @@ struct HabitView: View {
                                         .bold()
                                         .foregroundColor(.white)
                                     if habit.icon != nil {
-                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.goalMetric)")
+                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
                                             .font(.system(.callout, design: .rounded))
                                             .bold()
                                             .foregroundColor(.white.opacity(0.75))
@@ -143,7 +139,44 @@ struct HabitView: View {
                 }
                 .opacity(showEntries ? 1 : 0)
                 .animation(.spring(), value: showEntries)
+                if let startDate = habit.startDate {
+                    Text("Start date: \(startDate.formatted(date: .abbreviated, time: .omitted))")
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                }
             }
+            .toolbar {
+                ToolbarItem {
+                    Menu {
+                        Button {
+                            updateHabit = DataOperation(withExistsingData: habit, in: moc)
+                        } label: {
+                            Label("Edit", systemImage: "pencil")
+                        }
+                        Button {
+                            habitManager.archiveHabit()
+                        } label: {
+                            Label("Archive", systemImage: "archivebox")
+                        }
+                        Button(role: .destructive) {
+                            habitManager.removeHabit()
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                    }
+                }
+            }
+            .sheet(item: $updateHabit) { update in
+                NavigationStack {
+                    EditHabitView(habit: update.childObject)
+                        .navigationTitle("Edit habit")
+                }
+                .environment(\.managedObjectContext, update.childContext)
+            }
+            
         }
     }
     
@@ -155,38 +188,16 @@ struct HabitView: View {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.warning)
     }
-    
-    func completeHaptic() {
-        
-    }
 }
 
 struct HabitView_Previews: PreviewProvider {
-    static var dataController = DataController()
-    static var moc = dataController.container.viewContext
     static var previews: some View {
-        let habit = Habit(context: moc)
-        let count = Count(context: moc)
-        let progress = Progress(context: moc)
-        progress.id = UUID()
-        progress.date = Date.now
-        progress.isCompleted = true
-        count.id = UUID()
-        count.createdAt = Date.now
-        count.date = Date.now
-        progress.isSkipped = false
-        habit.name = "Test"
-        habit.icon = "🤩"
-        habit.weekdays = "Monday, Wednesday, Friday"
-        habit.createdAt = Date.now
-        habit.addToProgress(progress)
-        habit.goal = 1
-        habit.goalFrequency = 1
-        
-        return NavigationStack {
-            HabitView(habit: habit, date: .constant(Date.now))
-                .navigationTitle("Test")
-                .navigationBarTitleDisplayMode(.inline)
+        Previewing(\.habit) { habit in
+            NavigationStack {
+                HabitView(habit: habit, date: .constant(Date()))
+                    .navigationTitle(habit.wrappedName)
+                    .navigationBarTitleDisplayMode(.inline)
+            }
         }
     }
 }

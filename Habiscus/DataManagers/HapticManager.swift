@@ -9,7 +9,7 @@ import Foundation
 import CoreHaptics
 
 class HapticManager: ObservableObject {
-    static let instance = HapticManager()
+    static let shared = HapticManager()
     var hapticEngine: CHHapticEngine?
     
     func prepareHaptics() {

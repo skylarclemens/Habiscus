@@ -9,16 +9,21 @@ import SwiftUI
 
 struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
-    @EnvironmentObject private var hapticManager: HapticManager
     @ObservedObject var habit: Habit
-    var progress: Progress?
     @State private var animated: Bool = false
     @Binding var date: Date
     
     init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
         self.habit = habit
         self._date = date
-        self.progress = progress
+    }
+    
+    var progress: Progress? {
+        if let progress = habit.findProgress(from: date) {
+            return progress
+        }
+        return nil
+
     }
     
     var isCompleted: Bool {
@@ -50,8 +55,8 @@ struct HabitRowView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(habit.habitColor)
-                .shadow(color: .black.opacity(isCompleted || isSkipped ? 0 : 0.1), radius: 6, y: 3)
-                .shadow(color: habit.habitColor.opacity(isCompleted || isSkipped ? 0 : 0.5), radius: 4, y: 3)
+                .shadow(color: .black.opacity(isSkipped ? 0 : 0.1), radius: 6, y: 3)
+                .shadow(color: habit.habitColor.opacity(isSkipped ? 0 : 0.5), radius: 4, y: 3)
                 .padding(.vertical, 2)
             HStack {
                 GoalCounterView(habit: habit, date: $date, showIcon: true)
@@ -61,7 +66,7 @@ struct HabitRowView: View {
                         .fontWeight(.medium)
                         .foregroundColor(.white)
                     if habit.icon != nil {
-                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.goalMetric)")
+                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
                             .font(.system(.callout, design: .rounded))
                             .foregroundColor(.white.opacity(0.75))
                     }
@@ -125,38 +130,11 @@ struct HabitRowView: View {
 }
 
 struct HabitRowView_Previews: PreviewProvider {
-    static var dataController = DataController()
-    static var moc = dataController.container.viewContext
     static var previews: some View {
-        let habit = Habit(context: moc)
-        let count = Count(context: moc)
-        let progress = Progress(context: moc)
-        progress.date = Date.now
-        progress.isCompleted = false
-        count.createdAt = Date.now
-        count.progress = progress
-        habit.name = "Test"
-        habit.icon = "🤩"
-        habit.weekdays = "Monday, Wednesday, Friday"
-        habit.createdAt = Date.now
-        progress.addToCounts(count)
-        habit.addToProgress(progress)
-        habit.goal = 1
-        habit.goalFrequency = 1
-        return List {
-            HabitRowView(habit: habit, date: .constant(Date()), progress: progress)
-                .swipeActions {
-                    Button("Delete", role: .destructive) {
-                        
-                    }
-                }
-            HabitRowView(habit: habit, date: .constant(Date()))
-                .swipeActions {
-                    Button("Delete", role: .destructive) {
-                        
-                    }
-                }
+        Previewing(\.habit) { habit in
+            List {
+                HabitRowView(habit: habit, date: .constant(Date()))
+            }.listStyle(.grouped)
         }
-        .listStyle(.grouped)
     }
 }

@@ -61,6 +61,11 @@ extension Date {
         return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: self.startOfMonth())!
     }
     
+    public var localDate: Date {
+        let dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: Date())
+        return Calendar.autoupdatingCurrent.date(from: dateComponents)!
+    }
+    
     public var currentWeekdayString: String {
         self.formatted(Date.FormatStyle().weekday(.wide))
     }
@@ -112,6 +117,7 @@ extension Date {
               let findWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: self) else {
             return nil
         }
+
         let weekdayNumbers = weekdays.compactMap { Weekday.allValues.firstIndex(of: $0) }.sorted()
         let closestWeekday = weekdayNumbers.reduce(weekdayNumbers[0]) {
             if $1 >= currentWeekdayNum {
