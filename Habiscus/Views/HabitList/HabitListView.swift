@@ -32,7 +32,7 @@ struct HabitListView: View {
         self._dateSelected = dateSelected
         let isArchivedPredicate = NSPredicate(format: "isArchived == NO")
         let containsWeekdaysPredicate = NSPredicate(format: "weekdays CONTAINS[c] %@", weekdayFilter)
-        let afterStartDatePredicate = NSPredicate(format: "startDate < %@", dateSelected.wrappedValue as NSDate)
+        let afterStartDatePredicate = NSPredicate(format: "startDate <= %@", dateSelected.wrappedValue as NSDate)
         self._habits = FetchRequest<Habit>(sortDescriptors: [
             SortDescriptor(\.createdAt, order: .reverse),
         ], predicate: NSCompoundPredicate(type: .and, subpredicates: [isArchivedPredicate, containsWeekdaysPredicate, afterStartDatePredicate]), animation: .default)

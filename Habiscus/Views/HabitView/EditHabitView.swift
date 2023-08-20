@@ -42,7 +42,7 @@ struct EditHabitView: View {
     init(habit: Habit) {
         self.habit = habit
         self._frequency = State(initialValue: RepeatOptions(rawValue: habit.frequency ?? "") ?? .daily)
-        self._startDate = State(initialValue: habit.startDate ?? Date())
+        self._startDate = State(initialValue: habit.startDate ?? Calendar.current.startOfDay(for: Date()))
         self._weekdays = State(initialValue: (habit.weekdays != nil) ? Set(habit.weekdaysArray) : [Date().currentWeekday])
     }
     
