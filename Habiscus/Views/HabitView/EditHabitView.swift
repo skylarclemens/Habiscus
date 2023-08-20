@@ -20,6 +20,7 @@ struct EditHabitView: View {
     // New object if creating, and existing object if editing
     @ObservedObject var habit: Habit
     
+    @State private var openEmojiPicker: Bool = false
     @FocusState private var focusedInput: FocusedField?
     enum FocusedField: Hashable {
         case goalCountField
@@ -28,6 +29,7 @@ struct EditHabitView: View {
     @State private var frequency: RepeatOptions
     @State private var weekdays: Set<Weekday>
     @State private var startDate: Date
+    @State var selectedEmoji: String? = nil
     private var weekdaysSelected: [RepeatOptions : Set<Weekday>] {
         return [
             .daily: [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
@@ -65,7 +67,26 @@ struct EditHabitView: View {
             }
             Section("Icon and Color") {
                 HStack(alignment: .center) {
-                    ColorPickerView(selection: $habit.color ?? "blue")
+                    Button {
+                        openEmojiPicker = true
+                    } label: {
+                        VStack {
+                            if let selectedEmoji = habit.icon {
+                                Text(selectedEmoji)
+                                    .font(.title)
+                            } else {
+                                Image(systemName: "plus")
+                                    .font(.title)
+                                    .foregroundColor(Color(habit.color ?? "pink"))
+                            }
+                        }
+                        .frame(width: 65, height: 65)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color(habit.color ?? "pink").opacity(0.1))
+                        )
+                    }
+                    ColorPickerView(selection: $habit.color ?? "pink")
                         .padding(6)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -74,6 +95,7 @@ struct EditHabitView: View {
                 }
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
                 .listRowInsets(EdgeInsets())
+                
             }
             Section("Goal") {
                 HStack {
@@ -117,8 +139,11 @@ struct EditHabitView: View {
                     habit.frequency = frequency.rawValue
                     habit.startDate = startDate
                     
-                    // Save new Habit in the child context
+                    // Save new/edited Habit in the child context
                     try? childContext.save()
+                    if let parentContext = childContext.parent {
+                        try? parentContext.save()
+                    }
                     dismiss()
                 }
                 .disabled((habit.name ?? "").isEmpty)
@@ -136,6 +161,11 @@ struct EditHabitView: View {
                     }
                 }
             }
+        }
+        .sheet(isPresented: $openEmojiPicker) {
+            IconPickerView(selectedIcon: $habit.icon)
+                .presentationDetents([.fraction(0.8), .large])
+                .presentationDragIndicator(.visible)
         }
     }
 }
