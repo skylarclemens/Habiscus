@@ -25,10 +25,16 @@ struct EditHabitView: View {
     enum FocusedField: Hashable {
         case goalCountField
     }
+    // Whether setting reminders is toggled
+    @State private var setReminders: Bool = true
+    // Time for reminders to be set
+    @State private var selectedTime = Date()
+    
     
     @State private var frequency: RepeatOptions
     @State private var weekdays: Set<Weekday>
     @State private var startDate: Date
+    @State private var notifications: [Notification]
     @State var selectedEmoji: String? = nil
     private var weekdaysSelected: [RepeatOptions : Set<Weekday>] {
         return [
@@ -46,6 +52,16 @@ struct EditHabitView: View {
         self._frequency = State(initialValue: RepeatOptions(rawValue: habit.frequency ?? "") ?? .daily)
         self._startDate = State(initialValue: habit.startDate ?? Calendar.current.startOfDay(for: Date()))
         self._weekdays = State(initialValue: (habit.weekdays != nil) ? Set(habit.weekdaysArray) : [Date().currentWeekday])
+        self._notifications = State(initialValue: habit.notificationsArray)
+        if let created = habit.createdAt {
+            if habit.notificationsArray.count > 0 {
+                if let firstNotification = habit.notificationsArray.first {
+                    self._selectedTime = State(initialValue: firstNotification.wrappedTime)
+                }
+            } else {
+                self._setReminders = State(initialValue: false)
+            }
+        }
     }
     
     var body: some View {
@@ -128,19 +144,39 @@ struct EditHabitView: View {
             }
             .listRowSeparator(.hidden)
             DateOptions(frequency: $frequency, weekdays: $weekdays, interval: $habit.interval, startDate: $startDate, endDate: $habit.endDate)
+            
+            RemindersView(setReminders: $setReminders, selectedTime: $selectedTime, notifications: $notifications)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Save") {
+                    // Sort selected week days
                     let sortedDaysSelected = weekdaysSelected[frequency]!.sorted { Weekday.allValues.firstIndex(of: $0)! < Weekday.allValues.firstIndex(of: $1)! }
                     let daysSelectedArray = sortedDaysSelected.map { $0.rawValue.localizedCapitalized }
+                    // Convert to string array for storage
                     let daysSelected = daysSelectedArray.joined(separator: ", ")
+                    if habit.createdAt == nil {
+                        habit.id = UUID()
+                        habit.createdAt = Date()
+                        habit.isArchived = false
+                    }
                     habit.weekdays = daysSelected
                     habit.frequency = frequency.rawValue
                     habit.startDate = startDate
                     
+                    // Remove all current notifications
+                    let habitManager = HabitManager(context: childContext, habit: habit)
+                    habitManager.removeAllNotifications()
+                    // Create new notifications if toggle is set
+                    if setReminders {
+                        sortedDaysSelected.forEach { weekday in
+                            NotificationManager.shared.setReminderNotification(for: habit, in: childContext, on: Weekday.weekdayNums[weekday]!, at: selectedTime, body: "Time to complete \(habit.name ?? "habit")", title: "Reminder")
+                        }
+                    }
+                    
                     // Save new/edited Habit in the child context
                     try? childContext.save()
+                    // Save in the parent context
                     if let parentContext = childContext.parent {
                         try? parentContext.save()
                     }
@@ -179,7 +215,7 @@ func ??<T>(lhs: Binding<Optional<T>>, rhs: T) -> Binding<T> {
 
 struct EditHabitView_Previews: PreviewProvider {
     static var previews: some View {
-        Previewing(\.habit) { habit in
+        Previewing(\.newHabit) { habit in
             ZStack {
                 NavigationStack {
                     EditHabitView(habit: habit)

@@ -110,4 +110,10 @@ struct PreviewData {
             return previewHabits
         }
     }
+    
+    var newHabit: (NSManagedObjectContext) -> Habit {
+        { context in
+            return Habit(context: context)
+        }
+    }
 }
