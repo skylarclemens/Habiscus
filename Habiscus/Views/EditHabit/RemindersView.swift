@@ -11,12 +11,13 @@ import UserNotifications
 struct RemindersView: View {
     @Binding var setReminders: Bool
     @Binding var selectedTime: Date
+    @Binding var notifications: [Notification]
     
     var body: some View {
         Section {
             Toggle(isOn: $setReminders.animation()) {
                 Label {
-                    Text("Set reminder")
+                    Text("Set reminders")
                 } icon: {
                     Image(systemName: "bell.fill")
                 }
@@ -29,6 +30,10 @@ struct RemindersView: View {
             if setReminders {
                 DatePicker("What time?", selection: $selectedTime, displayedComponents: .hourAndMinute)
             }
+        } footer: {
+            if setReminders {
+                Text("Reminders will be set at the selected time for each day your habit repeats")
+            }
         }
     }
 }
@@ -36,7 +41,7 @@ struct RemindersView: View {
 struct RemindersView_Previews: PreviewProvider {
     static var previews: some View {
         Form {
-            RemindersView(setReminders: .constant(true), selectedTime: .constant(Date()))
+            RemindersView(setReminders: .constant(true), selectedTime: .constant(Date()), notifications: .constant([]))
         }
     }
 }

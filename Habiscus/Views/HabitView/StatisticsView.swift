@@ -18,6 +18,10 @@ struct StatisticsView: View {
         return habit.getLongestStreak()
     }
     
+    private var successPercentage: Int {
+        return Int(habit.getSuccessPercentage())
+    }
+    
     private var columns: [GridItem] {
         Array(repeating: .init(.adaptive(minimum: 100, maximum: .infinity)), count: 3)
     }
@@ -67,7 +71,7 @@ struct StatisticsView: View {
                     .font(.system(size: 12, weight: .medium, design: .rounded))
                     .foregroundColor(.primary.opacity(0.8))
                 
-                Text("\(Int(habit.successPercentage))%")
+                Text("\(successPercentage)%")
                     .font(.system(size: 24, weight: .medium, design: .rounded))
                     .foregroundColor(habit.habitColor)
             }

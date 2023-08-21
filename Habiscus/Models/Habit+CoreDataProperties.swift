@@ -2,13 +2,14 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus
 //
-//  Created by Skylar Clemens on 8/19/23.
+//  Created by Skylar Clemens on 8/21/23.
 //
 //
 
 import Foundation
 import CoreData
 import SwiftUI
+
 
 extension Habit {
 
@@ -19,18 +20,19 @@ extension Habit {
     @NSManaged public var color: String?
     @NSManaged public var createdAt: Date?
     @NSManaged public var endDate: Date?
+    @NSManaged public var frequency: String?
+    @NSManaged public var goal: Int16
     @NSManaged public var icon: String?
     @NSManaged public var id: UUID?
+    @NSManaged public var interval: Int16
     @NSManaged public var isArchived: Bool
     @NSManaged public var lastUpdated: Date?
     @NSManaged public var name: String?
     @NSManaged public var startDate: Date?
-    @NSManaged public var goal: Int16
-    @NSManaged public var frequency: String?
-    @NSManaged public var interval: Int16
     @NSManaged public var unit: String?
     @NSManaged public var weekdays: String?
     @NSManaged public var progress: NSSet?
+    @NSManaged public var notifications: NSSet?
     
     public var wrappedName: String {
         name ?? "Unkown name"
@@ -74,6 +76,20 @@ extension Habit {
         progressArray.filter {
             !$0.isSkipped && $0.totalCount > 0 && weekdaysArray.contains($0.weekday!)
         }
+    }
+    
+    public var notificationsArray: [Notification] {
+        let set = notifications as? Set<Notification> ?? []
+        return set.sorted {
+            $0.wrappedDate < $1.wrappedDate
+        }
+    }
+    
+    public func findNotificationByDay(_ day: Int) -> Notification? {
+        if let notification = notificationsArray.first(where: { $0.scheduledDay == Int16(day) }) {
+            return notification
+        }
+        return nil
     }
 
     public var lastUpdatedDate: Date {
@@ -139,7 +155,7 @@ extension Habit {
     // Compares day the habit was first created and day since first progress to find starting day
     // Divides total completed progress count over number of days since each day has one progress object
     // Returns percentage
-    public var successPercentage: Double {
+    public func getSuccessPercentage() -> Double {
         let daysSinceCreated = abs(self.createdDate.validDaysBetween(Date(), in: self.weekdaysArray) ?? 0)
         let daysSinceStarted = abs(self.startDate?.validDaysBetween(Date(), in: self.weekdaysArray) ?? daysSinceCreated)
         let daysSinceFirstProgress = abs(self.activeProgressArray.first?.wrappedDate.validDaysBetween(Date(), in: self.weekdaysArray) ?? 0)
@@ -230,6 +246,23 @@ extension Habit {
 
     @objc(removeProgress:)
     @NSManaged public func removeFromProgress(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for notifications
+extension Habit {
+
+    @objc(addNotificationsObject:)
+    @NSManaged public func addToNotifications(_ value: Notification)
+
+    @objc(removeNotificationsObject:)
+    @NSManaged public func removeFromNotifications(_ value: Notification)
+
+    @objc(addNotifications:)
+    @NSManaged public func addToNotifications(_ values: NSSet)
+
+    @objc(removeNotifications:)
+    @NSManaged public func removeFromNotifications(_ values: NSSet)
 
 }
 

@@ -10,6 +10,7 @@ import Charts
 
 struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var habit: Habit
     @Binding var date: Date
     @State private var updateHabit: DataOperation<Habit>?
@@ -156,13 +157,9 @@ struct HabitView: View {
                         }
                         Button {
                             habitManager.archiveHabit()
+                            dismiss()
                         } label: {
                             Label("Archive", systemImage: "archivebox")
-                        }
-                        Button(role: .destructive) {
-                            habitManager.removeHabit()
-                        } label: {
-                            Label("Delete", systemImage: "trash")
                         }
                     } label: {
                         Image(systemName: "ellipsis")
@@ -176,7 +173,6 @@ struct HabitView: View {
                 }
                 .environment(\.managedObjectContext, update.childContext)
             }
-            
         }
     }
     

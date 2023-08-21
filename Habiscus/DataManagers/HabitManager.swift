@@ -109,7 +109,7 @@ struct HabitManager {
             return
         }
         habit.isArchived = true
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [habit.id!.uuidString])
+        removeAllNotifications(habit)
         try? moc.save()
     }
     
@@ -117,9 +117,23 @@ struct HabitManager {
         guard let habit = getHabit(habit) else {
             return
         }
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [habit.id!.uuidString])
+        removeAllNotifications(habit)
         moc.delete(habit)
         try? moc.save()
+    }
+    
+    func removeAllNotifications(_ habit: Habit? = nil) {
+        guard let habit = getHabit(habit) else {
+            return
+        }
+        if habit.notificationsArray.count > 0 {
+            let notificationsIds = habit.notificationsArray.map { $0.id!.uuidString }
+            NotificationManager.shared.removeNotifications(notificationsIds)
+            habit.notificationsArray.forEach {
+                moc.delete($0)
+            }
+            try? moc.save()
+        }
     }
     
     // MARK: - Private methods
