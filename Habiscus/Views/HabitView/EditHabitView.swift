@@ -178,8 +178,6 @@ func ??<T>(lhs: Binding<Optional<T>>, rhs: T) -> Binding<T> {
 }
 
 struct EditHabitView_Previews: PreviewProvider {
-    static var dataController = DataController()
-    static var moc = dataController.container.viewContext
     static var previews: some View {
         Previewing(\.habit) { habit in
             ZStack {

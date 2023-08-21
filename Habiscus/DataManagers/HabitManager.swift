@@ -42,7 +42,6 @@ struct HabitManager {
     
     // Makes sure the date is today or earlier
     // Creates a new Progress entity and adds a new count
-    // Returns whether the progress was just completed or not
     func addNewProgress(habit: Habit? = nil, date: Date, skip: Bool = false, amount: Int? = 1) {
         guard !date.isAfter(Date()) else { return }
         guard let habit = getHabit(habit) else { return }
