@@ -35,7 +35,7 @@ struct AddCountView: View {
         )
         .disabled(isDateAfterToday)
         .buttonStyle(.plain)
-        .alert("Enter \(habit.wrappedUnit) amount", isPresented: $showAddCountAlert) {
+        .alert("Enter amount", isPresented: $showAddCountAlert) {
             TextField("Enter count amount", value: $countAmount, format: .number)
                 .keyboardType(.numberPad)
             Button("Cancel", role: .cancel) { }

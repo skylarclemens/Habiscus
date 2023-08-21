@@ -13,7 +13,7 @@ struct EmojiCategoryView: View {
     private var columns: [GridItem] {
         Array(repeating: .init(.flexible()), count: 6)
     }
-    @Binding var selected: Emoji?
+    @Binding var selected: String?
     @Binding var currentTab: String
     
     var body: some View {
@@ -24,11 +24,11 @@ struct EmojiCategoryView: View {
                             Text(emoji.char)
                                 .font(.system(size: 32))
                                 .onTapGesture {
-                                    selected = emoji
+                                    selected = emoji.char
                                 }
                                 .background(
                                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                        .fill(selected == emoji ? .pink.opacity(0.25) : .clear)
+                                        .fill(.clear)
                                         .frame(width: 45, height: 45)
                                 )
                     }
@@ -50,10 +50,10 @@ struct IconPickerView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var emojiManager = EmojiManager()
     @State private var tabViewSelection = "Activities"
-    @State private var originalSelectedIcon: Emoji?
-    @Binding var selectedIcon: Emoji?
+    @State private var originalSelectedIcon: String?
+    @Binding var selectedIcon: String?
     
-    init(selectedIcon: Binding<Emoji?>) {
+    init(selectedIcon: Binding<String?>) {
         self._selectedIcon = selectedIcon
         self._originalSelectedIcon = State(initialValue: selectedIcon.wrappedValue)
     }
@@ -63,7 +63,7 @@ struct IconPickerView: View {
             VStack {
                 VStack {
                     if let selectedIcon = selectedIcon {
-                        Text(selectedIcon.char)
+                        Text(selectedIcon)
                             .font(.largeTitle)
                     } else {
                         Image(systemName: "plus")
@@ -115,6 +115,6 @@ struct IconPickerView: View {
 
 struct IconPickerView_Previews: PreviewProvider {
     static var previews: some View {
-        IconPickerView(selectedIcon: .constant(Emoji.exampleEmoji2))
+        IconPickerView(selectedIcon: .constant(Emoji.exampleEmoji2.char))
     }
 }

@@ -20,6 +20,7 @@ struct EditHabitView: View {
     // New object if creating, and existing object if editing
     @ObservedObject var habit: Habit
     
+    @State private var openEmojiPicker: Bool = false
     @FocusState private var focusedInput: FocusedField?
     enum FocusedField: Hashable {
         case goalCountField
@@ -28,6 +29,7 @@ struct EditHabitView: View {
     @State private var frequency: RepeatOptions
     @State private var weekdays: Set<Weekday>
     @State private var startDate: Date
+    @State var selectedEmoji: String? = nil
     private var weekdaysSelected: [RepeatOptions : Set<Weekday>] {
         return [
             .daily: [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
@@ -42,7 +44,7 @@ struct EditHabitView: View {
     init(habit: Habit) {
         self.habit = habit
         self._frequency = State(initialValue: RepeatOptions(rawValue: habit.frequency ?? "") ?? .daily)
-        self._startDate = State(initialValue: habit.startDate ?? Date())
+        self._startDate = State(initialValue: habit.startDate ?? Calendar.current.startOfDay(for: Date()))
         self._weekdays = State(initialValue: (habit.weekdays != nil) ? Set(habit.weekdaysArray) : [Date().currentWeekday])
     }
     
@@ -65,7 +67,26 @@ struct EditHabitView: View {
             }
             Section("Icon and Color") {
                 HStack(alignment: .center) {
-                    ColorPickerView(selection: $habit.color ?? "blue")
+                    Button {
+                        openEmojiPicker = true
+                    } label: {
+                        VStack {
+                            if let selectedEmoji = habit.icon {
+                                Text(selectedEmoji)
+                                    .font(.title)
+                            } else {
+                                Image(systemName: "plus")
+                                    .font(.title)
+                                    .foregroundColor(Color(habit.color ?? "pink"))
+                            }
+                        }
+                        .frame(width: 65, height: 65)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color(habit.color ?? "pink").opacity(0.1))
+                        )
+                    }
+                    ColorPickerView(selection: $habit.color ?? "pink")
                         .padding(6)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -74,6 +95,7 @@ struct EditHabitView: View {
                 }
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
                 .listRowInsets(EdgeInsets())
+                
             }
             Section("Goal") {
                 HStack {
@@ -117,8 +139,11 @@ struct EditHabitView: View {
                     habit.frequency = frequency.rawValue
                     habit.startDate = startDate
                     
-                    // Save new Habit in the child context
+                    // Save new/edited Habit in the child context
                     try? childContext.save()
+                    if let parentContext = childContext.parent {
+                        try? parentContext.save()
+                    }
                     dismiss()
                 }
                 .disabled((habit.name ?? "").isEmpty)
@@ -137,6 +162,11 @@ struct EditHabitView: View {
                 }
             }
         }
+        .sheet(isPresented: $openEmojiPicker) {
+            IconPickerView(selectedIcon: $habit.icon)
+                .presentationDetents([.fraction(0.8), .large])
+                .presentationDragIndicator(.visible)
+        }
     }
 }
 
@@ -148,8 +178,6 @@ func ??<T>(lhs: Binding<Optional<T>>, rhs: T) -> Binding<T> {
 }
 
 struct EditHabitView_Previews: PreviewProvider {
-    static var dataController = DataController()
-    static var moc = dataController.container.viewContext
     static var previews: some View {
         Previewing(\.habit) { habit in
             ZStack {

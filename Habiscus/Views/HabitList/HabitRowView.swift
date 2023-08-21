@@ -10,7 +10,6 @@ import SwiftUI
 struct HabitRowView: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var habit: Habit
-    @State private var animated: Bool = false
     @Binding var date: Date
     
     init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
@@ -80,12 +79,6 @@ struct HabitRowView: View {
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 2, trailing: 16))
         .opacity(isCompleted || isSkipped ? 0.5 : 1)
-        .opacity(animated ? 1 : 0)
-        .onAppear {
-            withAnimation(.spring(response: 1.5, dampingFraction: 1.5)) {
-                animated = true
-            }
-        }
         .contextMenu {
             Group {
                 if !isProgressEmpty {
