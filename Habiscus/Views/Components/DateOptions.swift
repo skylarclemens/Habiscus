@@ -76,7 +76,7 @@ struct DateOptions: View {
             if setInterval {
                 Picker("", selection: $interval) {
                     ForEach(1...365, id: \.self) { index in
-                        Text("\(index)").tag(index)
+                        Text("\(index)").tag(Int16(index))
                     }
                 }
                 .pickerStyle(.wheel)
