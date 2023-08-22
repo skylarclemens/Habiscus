@@ -39,9 +39,3 @@ struct ColorSchemeModifier: ViewModifier {
             }
     }
 }
-
-extension View {
-    func colorSchemeStyle() -> some View {
-        modifier(ColorSchemeModifier())
-    }
-}

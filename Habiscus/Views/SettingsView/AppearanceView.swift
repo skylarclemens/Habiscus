@@ -19,6 +19,7 @@ struct AppearanceView: View {
             }.pickerStyle(.inline)
                 .labelsHidden()
         }
+        .navigationTitle("Appearance")
     }
 }
 

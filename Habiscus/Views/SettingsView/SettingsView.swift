@@ -13,18 +13,21 @@ struct SettingsView: View {
             List {
                 Section {
                     NavigationLink {
+                        AppearanceView()
+                    } label: {
+                        Label("Appearance", systemImage: "paintpalette")
+                    }
+                    NavigationLink {
                         ArchiveView()
                     } label: {
                         Label("Archive", systemImage: "archivebox")
                     }
-                }
-                Section {
                     NavigationLink {
-                        AppearanceView()
-                            .navigationTitle("Appearance")
+                        RemindersSettingsView()
                     } label: {
-                        Label("Appearance", systemImage: "paintpalette")
+                        Label("Reminders", systemImage: "bell")
                     }
+                    
                 }
             }
             .navigationTitle("Settings")
