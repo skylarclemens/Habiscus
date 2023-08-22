@@ -12,6 +12,12 @@ struct HabitRowView: View {
     @ObservedObject var habit: Habit
     @Binding var date: Date
     
+    @EnvironmentObject var toastManager: ToastManager
+    
+    @State private var showAlert: Bool = false
+    @State private var isSuccess: Bool = false
+    @State private var successMessage: String = ""
+    
     init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
         self.habit = habit
         self._date = date
@@ -105,7 +111,21 @@ struct HabitRowView: View {
                         }
                     }
                     Button {
-                        habitManager.archiveHabit()
+                        withAnimation {
+                            do {
+                                try habitManager.archiveHabit()
+                                toastManager.successTitle = "\(habit.wrappedName) has been archived"
+                                toastManager.isSuccess = true
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleSuccess()
+                            } catch let error {
+                                print(error.localizedDescription)
+                                toastManager.errorMessage = "Error while archiving"
+                                toastManager.isSuccess = false
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleError()
+                            }
+                        }
                     } label: {
                         Label("Archive", systemImage: "archivebox")
                     }

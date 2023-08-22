@@ -11,6 +11,7 @@ import Charts
 struct HabitView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var toastManager: ToastManager
     @ObservedObject var habit: Habit
     @Binding var date: Date
     @State private var updateHabit: DataOperation<Habit>?
@@ -196,8 +197,22 @@ struct HabitView: View {
                                     Label("Edit", systemImage: "pencil")
                                 }
                                 Button {
-                                    habitManager.archiveHabit()
-                                    dismiss()
+                                    withAnimation {
+                                        do {
+                                            try habitManager.archiveHabit()
+                                            toastManager.successTitle = "\(habit.wrappedName) has been archived"
+                                            toastManager.isSuccess = true
+                                            toastManager.showAlert = true
+                                            HapticManager.shared.simpleSuccess()
+                                            dismiss()
+                                        } catch let error {
+                                            print(error.localizedDescription)
+                                            toastManager.errorMessage = "Error while archiving"
+                                            toastManager.isSuccess = false
+                                            toastManager.showAlert = true
+                                            HapticManager.shared.simpleError()
+                                        }
+                                    }
                                 } label: {
                                     Label("Archive", systemImage: "archivebox")
                                 }

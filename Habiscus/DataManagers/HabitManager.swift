@@ -104,13 +104,17 @@ struct HabitManager {
         try? moc.save()
     }
     
-    func archiveHabit(_ habit: Habit? = nil) {
+    func archiveHabit(_ habit: Habit? = nil) throws {
         guard let habit = getHabit(habit) else {
             return
         }
         habit.isArchived = true
         removeAllNotifications(habit)
-        try? moc.save()
+        do {
+            try moc.save()
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     func removeHabit(_ habit: Habit? = nil) {

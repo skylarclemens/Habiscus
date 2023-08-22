@@ -14,6 +14,7 @@
 		7E13C7562A8441EE006EBA82 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E13C7552A8441EE006EBA82 /* StatisticsView.swift */; };
 		7E34D8762A82EE9700A7D649 /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D8752A82EE9700A7D649 /* IconPickerView.swift */; };
 		7E34D87E2A82F47300A7D649 /* EmojiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D87D2A82F47300A7D649 /* EmojiManager.swift */; };
+		7E36B7422A956F28006D4632 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36B7412A956F28006D4632 /* ToastManager.swift */; };
 		7E3BE9142A8C27EA008C1503 /* AddCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3BE9132A8C27EA008C1503 /* AddCountView.swift */; };
 		7E4EAC762A93D91700EC16A5 /* Notification+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */; };
 		7E4EAC772A93D91700EC16A5 /* Notification+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC732A93D91700EC16A5 /* Notification+CoreDataProperties.swift */; };
@@ -73,6 +74,7 @@
 		7E13C7552A8441EE006EBA82 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		7E34D8752A82EE9700A7D649 /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
 		7E34D87D2A82F47300A7D649 /* EmojiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiManager.swift; sourceTree = "<group>"; };
+		7E36B7412A956F28006D4632 /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
 		7E3BE9132A8C27EA008C1503 /* AddCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCountView.swift; sourceTree = "<group>"; };
 		7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7E4EAC732A93D91700EC16A5 /* Notification+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 				7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */,
 				7EE5ED342A8E7E42007424CD /* NotificationManager.swift */,
 				7EFE65B92A928391009E655F /* DataOperation.swift */,
+				7E36B7412A956F28006D4632 /* ToastManager.swift */,
 			);
 			path = DataManagers;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				7E13C7562A8441EE006EBA82 /* StatisticsView.swift in Sources */,
 				7E5609242A95357F0003568D /* RemindersSettingsView.swift in Sources */,
 				7E4EAC772A93D91700EC16A5 /* Notification+CoreDataProperties.swift in Sources */,
+				7E36B7422A956F28006D4632 /* ToastManager.swift in Sources */,
 				7EE5ED332A8E7B4C007424CD /* DateOptions.swift in Sources */,
 				7EA68A782A79555A001C6067 /* Date.swift in Sources */,
 				7EFE65BA2A928391009E655F /* DataOperation.swift in Sources */,
