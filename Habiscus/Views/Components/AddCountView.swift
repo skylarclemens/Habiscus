@@ -45,14 +45,9 @@ struct AddCountView: View {
                     habitManager.addNewProgress(date: date, amount: countAmount)
                 }
                 
-                simpleSuccess()
+                HapticManager.shared.simpleSuccess()
             }
         }
-    }
-    
-    func simpleSuccess() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
     }
 }
 

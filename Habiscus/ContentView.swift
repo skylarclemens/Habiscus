@@ -11,6 +11,7 @@ import CoreHaptics
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
+    @Environment(\.colorScheme) var colorScheme
     @State private var dateSelected: Date = Date()
     
     var body: some View {
@@ -21,6 +22,7 @@ struct ContentView: View {
         .onAppear {
             HapticManager.shared.prepareHaptics()
         }
+        .colorSchemeStyle()
     }
 }
 

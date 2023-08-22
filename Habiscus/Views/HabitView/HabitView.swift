@@ -48,42 +48,73 @@ struct HabitView: View {
                     .fill(Color(UIColor.secondarySystemBackground))
                     .ignoresSafeArea()
                 ScrollView(showsIndicators: false) {
-                    VStack {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                .fill(habit.habitColor)
-                                .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
-                                .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
-                                .padding(.horizontal)
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    GoalCounterView(habit: habit, size: 60, date: $date, showIcon: true)
-                                    VStack(alignment: .leading) {
-                                        Text(habit.wrappedName)
-                                            .font(.system(size: 38, design: .rounded))
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 24, style: .continuous)
+                            .fill(habit.habitColor)
+                            .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+                            .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
+                        VStack(alignment: .leading) {
+                            HStack {
+                                GoalCounterView(habit: habit, size: 60, date: $date, showIcon: true)
+                                VStack(alignment: .leading) {
+                                    Text(habit.wrappedName)
+                                        .font(.system(size: 38, design: .rounded))
+                                        .bold()
+                                        .foregroundColor(.white)
+                                        .minimumScaleFactor(0.5)
+                                        .padding(.trailing)
+                                        .lineLimit(2)
+                                    if habit.icon != nil {
+                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
+                                            .font(.system(.callout, design: .rounded))
                                             .bold()
-                                            .foregroundColor(.white)
-                                            .minimumScaleFactor(0.5)
-                                            .padding(.trailing)
-                                            .lineLimit(2)
-                                        if habit.icon != nil {
-                                            Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
-                                                .font(.system(.callout, design: .rounded))
-                                                .bold()
-                                                .foregroundColor(.white.opacity(0.75))
-                                        }
+                                            .foregroundColor(.white.opacity(0.75))
                                     }
-                                    Spacer()
-                                    if !habit.isArchived {
-                                        AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                                }
+                                Spacer()
+                                if !habit.isArchived {
+                                    AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding()
+                    }
+                    .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 24, style: .continuous))
+                    .contextMenu {
+                        Group {
+                            if !habit.isArchived {
+                                if let progress = progress,
+                                   !progress.isEmpty {
+                                    Button {
+                                        habitManager.undoLastCount(from: date)
+                                    } label: {
+                                        Label("Undo last count", systemImage: "arrow.uturn.backward")
+                                    }
+                                }
+                                if !isSkipped {
+                                    Button {
+                                        if let progress = progress {
+                                            habitManager.setProgressSkip(progress: progress, skip: true)
+                                        } else {
+                                            habitManager.addNewSkippedProgress(date: date)
+                                        }
+                                    } label: {
+                                        Label("Skip", systemImage: "forward.end")
+                                    }
+                                } else {
+                                    Button {
+                                        if let progress = progress {
+                                            habitManager.setProgressSkip(progress: progress, skip: false)
+                                        }
+                                    } label: {
+                                        Label("Undo skip", systemImage: "backward.end")
                                     }
                                 }
                             }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .padding()
-                            .padding(.horizontal)
                         }
                     }
+                    .padding(.horizontal)
                     
                     StatisticsView(habit: habit)
                         .padding()
@@ -191,15 +222,6 @@ struct HabitView: View {
                 }
             }
         }
-    }
-    
-    func simpleSuccess() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
-    }
-    func simpleUndo() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.warning)
     }
 }
 

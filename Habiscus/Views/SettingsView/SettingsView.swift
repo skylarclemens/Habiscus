@@ -11,12 +11,24 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
-                NavigationLink {
-                    ArchiveView()
-                } label: {
-                    Label("Archive", systemImage: "archivebox")
+                Section {
+                    NavigationLink {
+                        ArchiveView()
+                    } label: {
+                        Label("Archive", systemImage: "archivebox")
+                    }
+                }
+                Section {
+                    NavigationLink {
+                        AppearanceView()
+                            .navigationTitle("Appearance")
+                    } label: {
+                        Label("Appearance", systemImage: "paintpalette")
+                    }
                 }
             }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }

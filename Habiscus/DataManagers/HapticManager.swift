@@ -7,10 +7,17 @@
 
 import Foundation
 import CoreHaptics
+import UIKit.UINotificationFeedbackGenerator
 
 class HapticManager: ObservableObject {
     static let shared = HapticManager()
+    var feedbackGenerator = UINotificationFeedbackGenerator()
     var hapticEngine: CHHapticEngine?
+    var hapticsEnabled: Bool = true
+    
+    func toggleHaptics() {
+        hapticsEnabled.toggle()
+    }
     
     func prepareHaptics() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
@@ -52,5 +59,13 @@ class HapticManager: ObservableObject {
         } catch {
             print("Failed to play pattern: \(error.localizedDescription).")
         }
+    }
+    
+    func simpleSuccess() {
+        feedbackGenerator.notificationOccurred(.success)
+    }
+    
+    func simpleUndo() {
+        feedbackGenerator.notificationOccurred(.warning)
     }
 }

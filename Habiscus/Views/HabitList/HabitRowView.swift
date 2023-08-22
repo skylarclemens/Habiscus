@@ -39,13 +39,6 @@ struct HabitRowView: View {
         return false
     }
     
-    var isProgressEmpty: Bool {
-        if let progress = progress {
-            return progress.countsArray.isEmpty
-        }
-        return true
-    }
-    
     private var habitManager: HabitManager {
         HabitManager(context: moc, habit: habit)
     }
@@ -84,7 +77,8 @@ struct HabitRowView: View {
         .contextMenu {
             Group {
                 if !habit.isArchived {
-                    if !isProgressEmpty {
+                    if let progress = progress,
+                       !progress.isEmpty {
                         Button {
                             habitManager.undoLastCount(from: date)
                         } label: {
