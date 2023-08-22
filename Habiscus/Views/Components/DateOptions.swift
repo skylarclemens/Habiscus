@@ -41,8 +41,6 @@ struct DateOptions: View {
         return [
             .daily: "day",
             .weekly: "week",
-            .monthly: "month",
-            .yearly: "year",
             .weekdays: "week",
             .weekends: "week"
         ]
@@ -78,7 +76,7 @@ struct DateOptions: View {
             if setInterval {
                 Picker("", selection: $interval) {
                     ForEach(1...365, id: \.self) { index in
-                        Text("\(index)").tag(index)
+                        Text("\(index)").tag(Int16(index))
                     }
                 }
                 .pickerStyle(.wheel)
@@ -88,9 +86,6 @@ struct DateOptions: View {
                             selected: $weekdays,
                             options: weekdayOptions,
                             selectedOptionString: sortedWeekdaysString)
-                
-            }
-            if frequency == .monthly {
                 
             }
         } footer: {
@@ -134,11 +129,6 @@ struct DateOptions: View {
         
         if frequency == .weekly {
             footerText += " on \(sortedWeekdaysString)"
-        }
-        if frequency == .monthly || frequency == .yearly {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMMM dd"
-            footerText += " starting on \(frequency == .monthly ? formatter.string(from: startDate) : startDate.formatted(date: .long, time: .omitted))"
         }
         return footerText
     }

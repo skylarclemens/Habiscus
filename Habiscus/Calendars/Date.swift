@@ -36,7 +36,9 @@ extension Date {
                 return nil
             }
         }.sorted()
-        let prevDay = Calendar.current.date(byAdding: .day, value: -1, to: self)!
+        guard let prevDay = Calendar.current.date(byAdding: .day, value: -1, to: self) else {
+            return nil
+        }
         
         Calendar.current.enumerateDates(startingAfter: prevDay, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .nextTime) { (date, _, stop) in
             if let date = date,
