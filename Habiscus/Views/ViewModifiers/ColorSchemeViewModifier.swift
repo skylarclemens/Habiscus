@@ -25,7 +25,7 @@ enum DisplayMode: Int {
     }
 }
 
-struct ColorSchemeModifier: ViewModifier {
+struct ColorSchemeViewModifier: ViewModifier {
     @AppStorage("selectedAppearance") var selectedAppearance: DisplayMode = .system
     
     func body(content: Content) -> some View {

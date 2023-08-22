@@ -12,7 +12,7 @@ struct NoHabitsView: View {
     var body: some View {
         VStack {
             VStack(spacing: 4) {
-                Text("You currently have no habits for \(date.formatted(date: .long, time: .omitted))")
+                Text("No habits for \(date.formatted(date: .abbreviated, time: .omitted))")
                     .font(.title2)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -72,15 +72,35 @@ struct HabitListView: View {
     }
     
     var body: some View {
-        if habits.count == 0 {
-            ScrollView {
-                NoHabitsView(date: $dateSelected)
-                    .padding()
+        List {
+            Section {
+                ForEach(openHabits) { habit in
+                    HabitRowView(habit: habit, date: $dateSelected, progress:
+                                    habit.findProgress(from: dateSelected))
+                    .overlay(
+                        NavigationLink {
+                            HabitView(habit: habit, date: $dateSelected)
+                        } label: {
+                            EmptyView()
+                        }.opacity(0)
+                    )
+                }
+                ForEach(completedHabits) { habit in
+                    HabitRowView(habit: habit, date: $dateSelected, progress: habit.findProgress(from: dateSelected))
+                        .overlay(
+                            NavigationLink {
+                                HabitView(habit: habit, date: $dateSelected)
+                            } label: {
+                                EmptyView()
+                            }.opacity(0)
+                        )
+                }
+                
             }
-        } else {
-            List {
+            
+            if skippedHabits.count > 0 {
                 Section {
-                    ForEach(openHabits) { habit in
+                    ForEach(skippedHabits) { habit in
                         HabitRowView(habit: habit, date: $dateSelected, progress:
                                         habit.findProgress(from: dateSelected))
                         .overlay(
@@ -91,45 +111,24 @@ struct HabitListView: View {
                             }.opacity(0)
                         )
                     }
-                    ForEach(completedHabits) { habit in
-                        HabitRowView(habit: habit, date: $dateSelected, progress: habit.findProgress(from: dateSelected))
-                            .overlay(
-                                NavigationLink {
-                                    HabitView(habit: habit, date: $dateSelected)
-                                } label: {
-                                    EmptyView()
-                                }.opacity(0)
-                            )
-                    }
-                    
-                }
-                
-                if skippedHabits.count > 0 {
-                    Section {
-                        ForEach(skippedHabits) { habit in
-                            HabitRowView(habit: habit, date: $dateSelected, progress:
-                                            habit.findProgress(from: dateSelected))
-                            .overlay(
-                                NavigationLink {
-                                    HabitView(habit: habit, date: $dateSelected)
-                                } label: {
-                                    EmptyView()
-                                }.opacity(0)
-                            )
-                        }
-                    } header: {
-                        Text("Skipped")
-                            .font(.system(.title2, design: .rounded))
-                            .textCase(nil)
-                            .foregroundColor(.secondary)
-                    }
+                } header: {
+                    Text("Skipped")
+                        .font(.system(.title2, design: .rounded))
+                        .textCase(nil)
+                        .foregroundColor(.secondary)
                 }
             }
-            .offset(y: -40)
-            .listStyle(.grouped)
-            .scrollContentBackground(.hidden)
-            .environment(\.defaultMinListRowHeight, 80)
-            .animation(.spring(), value: openHabits)
+        }
+        .offset(y: -40)
+        .listStyle(.grouped)
+        .scrollContentBackground(.hidden)
+        .environment(\.defaultMinListRowHeight, 80)
+        .animation(.spring(), value: openHabits)
+        .emptyState(isEmpty: habits.count == 0) {
+            ScrollView {
+                NoHabitsView(date: $dateSelected)
+                    .padding()
+            }
         }
     }
 }

@@ -22,12 +22,13 @@
 		7E4EAC7C2A9401E900EC16A5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC7B2A9401E900EC16A5 /* SettingsView.swift */; };
 		7E4EAC7E2A94030400EC16A5 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC7D2A94030400EC16A5 /* ArchiveView.swift */; };
 		7E56091D2A9428CC0003568D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56091C2A9428CC0003568D /* HomeView.swift */; };
-		7E5609202A951C880003568D /* ColorSchemeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56091F2A951C880003568D /* ColorSchemeModifier.swift */; };
+		7E5609202A951C880003568D /* ColorSchemeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56091F2A951C880003568D /* ColorSchemeViewModifier.swift */; };
 		7E5609222A9522410003568D /* AppearanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5609212A9522410003568D /* AppearanceView.swift */; };
 		7E5609242A95357F0003568D /* RemindersSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5609232A95357F0003568D /* RemindersSettingsView.swift */; };
 		7E5609282A9541940003568D /* ToastViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5609272A9541940003568D /* ToastViewModifier.swift */; };
 		7E56092A2A9541CF0003568D /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5609292A9541CF0003568D /* View.swift */; };
 		7E56092D2A95462D0003568D /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56092C2A95462D0003568D /* AlertView.swift */; };
+		7E56092F2A9566C90003568D /* EmptyViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56092E2A9566C90003568D /* EmptyViewModifier.swift */; };
 		7E67A7A02A6B52B9001E0C23 /* HabiscusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */; };
 		7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E67A7A12A6B52B9001E0C23 /* ContentView.swift */; };
 		7E67A7A42A6B52BA001E0C23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */; };
@@ -80,12 +81,13 @@
 		7E4EAC7B2A9401E900EC16A5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		7E4EAC7D2A94030400EC16A5 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		7E56091C2A9428CC0003568D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		7E56091F2A951C880003568D /* ColorSchemeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeModifier.swift; sourceTree = "<group>"; };
+		7E56091F2A951C880003568D /* ColorSchemeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewModifier.swift; sourceTree = "<group>"; };
 		7E5609212A9522410003568D /* AppearanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceView.swift; sourceTree = "<group>"; };
 		7E5609232A95357F0003568D /* RemindersSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersSettingsView.swift; sourceTree = "<group>"; };
 		7E5609272A9541940003568D /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
 		7E5609292A9541CF0003568D /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		7E56092C2A95462D0003568D /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
+		7E56092E2A9566C90003568D /* EmptyViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewModifier.swift; sourceTree = "<group>"; };
 		7E67A79C2A6B52B9001E0C23 /* Habiscus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habiscus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusApp.swift; sourceTree = "<group>"; };
 		7E67A7A12A6B52B9001E0C23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -165,8 +167,9 @@
 		7E56091E2A951C760003568D /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
-				7E56091F2A951C880003568D /* ColorSchemeModifier.swift */,
+				7E56091F2A951C880003568D /* ColorSchemeViewModifier.swift */,
 				7E5609272A9541940003568D /* ToastViewModifier.swift */,
+				7E56092E2A9566C90003568D /* EmptyViewModifier.swift */,
 				7E5609292A9541CF0003568D /* View.swift */,
 			);
 			path = ViewModifiers;
@@ -441,7 +444,7 @@
 				7EE5ED372A8E9656007424CD /* MultiSelect.swift in Sources */,
 				7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */,
 				7EE16BD02A9015D1002720DC /* EditHabitView.swift in Sources */,
-				7E5609202A951C880003568D /* ColorSchemeModifier.swift in Sources */,
+				7E5609202A951C880003568D /* ColorSchemeViewModifier.swift in Sources */,
 				7E4EAC762A93D91700EC16A5 /* Notification+CoreDataClass.swift in Sources */,
 				7EA6C3EF2A7295C100DA4C41 /* Week.swift in Sources */,
 				7EB770902A8423BE00559D73 /* IconView.swift in Sources */,
@@ -457,6 +460,7 @@
 				7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */,
 				7E06CD0B2A9122E400B64FB3 /* Previewing.swift in Sources */,
 				7E5609222A9522410003568D /* AppearanceView.swift in Sources */,
+				7E56092F2A9566C90003568D /* EmptyViewModifier.swift in Sources */,
 				7EE5ED2F2A8E79AA007424CD /* RemindersView.swift in Sources */,
 				7E4EAC782A93D91700EC16A5 /* Habit+CoreDataClass.swift in Sources */,
 				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
