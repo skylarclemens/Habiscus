@@ -66,13 +66,14 @@ struct Checkmark: Shape {
 
 struct AnimatedCheckmark: View {
     var animationDuration: Double = 0.75
+    var color: Color = .white
     @State private var innerTrimEnd: CGFloat = 0
     @State private var scale = 1.0
     var body: some View {
         HStack {
             Checkmark()
                 .trim(from: 0, to: innerTrimEnd)
-                .stroke(.white, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+                .stroke(color, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
                 .frame(width: 15, height: 15)
                 .scaleEffect(scale)
         }

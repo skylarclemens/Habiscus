@@ -68,4 +68,8 @@ class HapticManager: ObservableObject {
     func simpleUndo() {
         feedbackGenerator.notificationOccurred(.warning)
     }
+    
+    func simpleError() {
+        feedbackGenerator.notificationOccurred(.error)
+    }
 }

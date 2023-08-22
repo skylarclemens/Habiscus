@@ -31,7 +31,6 @@ struct ColorSchemeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onChange(of: selectedAppearance) { newValue in
-                print(selectedAppearance)
                 selectedAppearance.displayOverride()
             }
             .onAppear {

@@ -30,7 +30,7 @@ class DataController: ObservableObject {
         }
     }
     
-    func batchDelete(of entityName: String) {
+    func batchDelete(of entityName: String) throws {
         let context = self.container.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)

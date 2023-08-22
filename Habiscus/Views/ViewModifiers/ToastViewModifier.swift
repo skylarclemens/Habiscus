@@ -26,5 +26,14 @@ struct ToastViewModifier<ToastContent: View>: ViewModifier {
                     toastContent()
                 }
             }
+            .onChange(of: isPresented) { newValue in
+                if newValue == true {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.75) {
+                        withAnimation {
+                            isPresented = false
+                        }
+                    }
+                }
+            }
     }
 }
