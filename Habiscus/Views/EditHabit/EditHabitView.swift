@@ -134,7 +134,7 @@ struct EditHabitView: View {
                                 .fill(Color(UIColor.secondarySystemGroupedBackground))
                         )
                         .submitLabel(.done)
-                    Text("per \(habit.goalFrequency == "daily" ? "day" : "week")")
+                    Text("per \(frequency == .daily ? "day" : "week")")
                         .font(.callout)
                         .foregroundColor(.secondary)
                 }
