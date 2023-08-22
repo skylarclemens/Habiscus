@@ -40,138 +40,155 @@ struct HabitView: View {
     @State private var showSkippedOverlay: Bool = false
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Rectangle()
-                .fill(Color(UIColor.secondarySystemBackground))
-                .ignoresSafeArea()
-            ScrollView(showsIndicators: false) {
-                VStack {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .fill(habit.habitColor)
-                            .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
-                            .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
-                            .padding(.horizontal)
-                        VStack(alignment: .leading) {
-                            HStack {
-                                GoalCounterView(habit: habit, size: 60, date: $date, showIcon: true)
-                                VStack(alignment: .leading) {
-                                    Text(habit.wrappedName)
-                                        .font(.system(size: 38, design: .rounded))
-                                        .bold()
-                                        .foregroundColor(.white)
-                                    if habit.icon != nil {
-                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
-                                            .font(.system(.callout, design: .rounded))
+        if habit.isDeleted {
+            Text("Sorry, habit has been deleted!")
+        } else {
+            ZStack(alignment: .bottom) {
+                Rectangle()
+                    .fill(Color(UIColor.secondarySystemBackground))
+                    .ignoresSafeArea()
+                ScrollView(showsIndicators: false) {
+                    VStack {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                .fill(habit.habitColor)
+                                .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+                                .shadow(color: habit.habitColor.opacity(0.3), radius: 10, y: 8)
+                                .padding(.horizontal)
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    GoalCounterView(habit: habit, size: 60, date: $date, showIcon: true)
+                                    VStack(alignment: .leading) {
+                                        Text(habit.wrappedName)
+                                            .font(.system(size: 38, design: .rounded))
                                             .bold()
-                                            .foregroundColor(.white.opacity(0.75))
-                                    }
-                                }
-                                Spacer()
-                                AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
-                            }
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .padding()
-                        .padding(.horizontal)
-                    }
-                }
-                
-                StatisticsView(habit: habit)
-                    .padding()
-                
-                VStack {
-                    CalendarView(habit: habit, date: $date, size: 40, color: habit.habitColor)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(.regularMaterial)
-                                .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
-                        )
-                        .padding(.horizontal)
-                }
-                
-                VStack {
-                    CountGridView(habit: habit, size: 14, spacing: 4)
-                        .padding(.vertical, 20)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(.regularMaterial)
-                                .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
-                        )
-                        .padding()
-                }
-                .frame(maxWidth: .infinity)
-                
-                VStack {
-                    if showEntries {
-                        VStack(alignment: .leading) {
-                            Section {
-                                ForEach(progress?.countsArray ?? []) { count in
-                                    HStack(spacing: 12) {
-                                        Text("+1")
                                             .foregroundColor(.white)
-                                            .padding(8)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                    .fill(habit.habitColor.opacity(0.8))
-                                                    .shadow(color: habit.habitColor.opacity(0.3), radius: 4, y: 2)
-                                            )
-                                        Text(count.dateString)
+                                            .minimumScaleFactor(0.5)
+                                            .padding(.trailing)
+                                            .lineLimit(2)
+                                        if habit.icon != nil {
+                                            Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
+                                                .font(.system(.callout, design: .rounded))
+                                                .bold()
+                                                .foregroundColor(.white.opacity(0.75))
+                                        }
+                                    }
+                                    Spacer()
+                                    if !habit.isArchived {
+                                        AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
                                     }
                                 }
-                            } header: {
-                                Text("Entries")
-                                    .font(.headline)
-                                    .padding(.bottom, 4)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .padding()
+                            .padding(.horizontal)
+                        }
+                    }
+                    
+                    StatisticsView(habit: habit)
+                        .padding()
+                    
+                    VStack {
+                        CalendarView(habit: habit, date: $date, size: 40, color: habit.habitColor)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(.regularMaterial)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                            )
+                            .padding(.horizontal)
+                    }
+                    
+                    VStack {
+                        CountGridView(habit: habit, size: 14, spacing: 4)
+                            .padding(.vertical, 20)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(.regularMaterial)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                            )
+                            .padding()
+                    }
+                    .frame(maxWidth: .infinity)
+                    
+                    VStack {
+                        if showEntries {
+                            VStack(alignment: .leading) {
+                                Section {
+                                    ForEach(progress?.countsArray ?? []) { count in
+                                        HStack(spacing: 12) {
+                                            Text("+1")
+                                                .foregroundColor(.white)
+                                                .padding(8)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                                        .fill(habit.habitColor.opacity(0.8))
+                                                        .shadow(color: habit.habitColor.opacity(0.3), radius: 4, y: 2)
+                                                )
+                                            Text(count.dateString)
+                                        }
+                                    }
+                                } header: {
+                                    Text("Entries")
+                                        .font(.headline)
+                                        .padding(.bottom, 4)
+                                }
+                            }
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(.regularMaterial)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
+                            )
+                            .padding()
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing).combined(with: .opacity),
+                                removal: .scale.combined(with: .opacity)
+                            ))
+                        }
+                    }
+                    .opacity(showEntries ? 1 : 0)
+                    .animation(.spring(), value: showEntries)
+                    if let startDate = habit.startDate {
+                        Text("Start date: \(startDate.formatted(date: .abbreviated, time: .omitted))")
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                    }
+                }
+                .toolbar {
+                    if !habit.isArchived {
+                        ToolbarItem {
+                            Menu {
+                                Button {
+                                    updateHabit = DataOperation(withExistsingData: habit, in: moc)
+                                } label: {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                                Button {
+                                    habitManager.archiveHabit()
+                                    dismiss()
+                                } label: {
+                                    Label("Archive", systemImage: "archivebox")
+                                }
+                                Button(role: .destructive) {
+                                    habitManager.removeHabit()
+                                    dismiss()
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            } label: {
+                                Image(systemName: "ellipsis")
                             }
                         }
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(.regularMaterial)
-                                .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
-                        )
-                        .padding()
-                        .transition(.asymmetric(
-                            insertion: .move(edge: .trailing).combined(with: .opacity),
-                            removal: .scale.combined(with: .opacity)
-                        ))
                     }
                 }
-                .opacity(showEntries ? 1 : 0)
-                .animation(.spring(), value: showEntries)
-                if let startDate = habit.startDate {
-                    Text("Start date: \(startDate.formatted(date: .abbreviated, time: .omitted))")
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
-                }
-            }
-            .toolbar {
-                ToolbarItem {
-                    Menu {
-                        Button {
-                            updateHabit = DataOperation(withExistsingData: habit, in: moc)
-                        } label: {
-                            Label("Edit", systemImage: "pencil")
-                        }
-                        Button {
-                            habitManager.archiveHabit()
-                            dismiss()
-                        } label: {
-                            Label("Archive", systemImage: "archivebox")
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis")
+                .sheet(item: $updateHabit) { update in
+                    NavigationStack {
+                        EditHabitView(habit: update.childObject)
+                            .navigationTitle("Edit habit")
                     }
+                    .environment(\.managedObjectContext, update.childContext)
                 }
-            }
-            .sheet(item: $updateHabit) { update in
-                NavigationStack {
-                    EditHabitView(habit: update.childObject)
-                        .navigationTitle("Edit habit")
-                }
-                .environment(\.managedObjectContext, update.childContext)
             }
         }
     }

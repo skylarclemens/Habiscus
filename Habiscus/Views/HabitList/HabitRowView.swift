@@ -71,7 +71,9 @@ struct HabitRowView: View {
                     }
                 }
                 Spacer()
-                AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                if !habit.isArchived {
+                    AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                }
             }
             .padding()
         }
@@ -81,36 +83,38 @@ struct HabitRowView: View {
         .opacity(isCompleted || isSkipped ? 0.5 : 1)
         .contextMenu {
             Group {
-                if !isProgressEmpty {
-                    Button {
-                        habitManager.undoLastCount(from: date)
-                    } label: {
-                        Label("Undo last count", systemImage: "arrow.uturn.backward")
-                    }
-                }
-                if !isSkipped {
-                    Button {
-                        if let progress = progress {
-                            habitManager.setProgressSkip(progress: progress, skip: true)
-                        } else {
-                            habitManager.addNewSkippedProgress(date: date)
+                if !habit.isArchived {
+                    if !isProgressEmpty {
+                        Button {
+                            habitManager.undoLastCount(from: date)
+                        } label: {
+                            Label("Undo last count", systemImage: "arrow.uturn.backward")
                         }
-                    } label: {
-                        Label("Skip", systemImage: "forward.end")
                     }
-                } else {
-                    Button {
-                        if let progress = progress {
-                            habitManager.setProgressSkip(progress: progress, skip: false)
+                    if !isSkipped {
+                        Button {
+                            if let progress = progress {
+                                habitManager.setProgressSkip(progress: progress, skip: true)
+                            } else {
+                                habitManager.addNewSkippedProgress(date: date)
+                            }
+                        } label: {
+                            Label("Skip", systemImage: "forward.end")
                         }
-                    } label: {
-                        Label("Undo skip", systemImage: "backward.end")
+                    } else {
+                        Button {
+                            if let progress = progress {
+                                habitManager.setProgressSkip(progress: progress, skip: false)
+                            }
+                        } label: {
+                            Label("Undo skip", systemImage: "backward.end")
+                        }
                     }
-                }
-                Button {
-                    habitManager.archiveHabit()
-                } label: {
-                    Label("Archive", systemImage: "archivebox")
+                    Button {
+                        habitManager.archiveHabit()
+                    } label: {
+                        Label("Archive", systemImage: "archivebox")
+                    }
                 }
                 Button(role: .destructive) {
                     habitManager.removeHabit()

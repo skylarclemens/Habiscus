@@ -15,51 +15,11 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                Rectangle()
-                    .fill(Color(UIColor.secondarySystemBackground))
-                    .ignoresSafeArea()
-                VStack {
-                    VStack {
-                        VStack(spacing: 0) {
-                            Text(checkCloseDate().uppercased())
-                                .font(.subheadline)
-                                .frame(height: 16)
-                            Text(dateSelected, format: .dateTime.month().day())
-                                .font(.system(size: 40, weight: .medium, design: .rounded))
-                                .frame(maxWidth: .infinity)
-                                .padding(.horizontal)
-                        }
-                        .onTapGesture {
-                            dateSelected = Date()
-                        }
-                        .animation(.spring(), value: dateSelected)
-                        MultiWeekView(selectedDate: $dateSelected)
-                            .frame(height: 60)
-                            .padding(.bottom, 16)
-                            .offset(y: -15)
-                    }
-                    HabitListView(dateSelected: $dateSelected, weekdayFilter: dateSelected.currentWeekdayString)
-                }
-            }
+            HomeView(dateSelected: $dateSelected)
         }
         .tint(.pink)
         .onAppear {
             HapticManager.shared.prepareHaptics()
-        }
-    }
-    
-    func checkCloseDate() -> String {
-        if Calendar.current.isDateInToday(dateSelected) {
-            return "Today"
-        } else if Calendar.current.isDateInYesterday(dateSelected) {
-            return "Yesterday"
-        } else if Calendar.current.isDateInTomorrow(dateSelected) {
-            return "Tomorrow"
-        } else {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "EEEE"
-            return dateFormatter.string(from: dateSelected)
         }
     }
 }

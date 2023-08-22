@@ -155,10 +155,12 @@ extension Habit {
     // Compares day the habit was first created and day since first progress to find starting day
     // Divides total completed progress count over number of days since each day has one progress object
     // Returns percentage
-    public func getSuccessPercentage() -> Double {
-        let daysSinceCreated = abs(self.createdDate.validDaysBetween(Date(), in: self.weekdaysArray) ?? 0)
-        let daysSinceStarted = abs(self.startDate?.validDaysBetween(Date(), in: self.weekdaysArray) ?? daysSinceCreated)
-        let daysSinceFirstProgress = abs(self.activeProgressArray.first?.wrappedDate.validDaysBetween(Date(), in: self.weekdaysArray) ?? 0)
+    public func getSuccessPercentage() -> Double? {
+        guard let daysSinceStarted = self.startDate?.validDaysBetween(Date(), in: self.weekdaysArray),
+              let daysSinceFirstProgress = self.activeProgressArray.first?.wrappedDate.validDaysBetween(Date(), in: self.weekdaysArray) else {
+            return nil
+        }
+        
         let progressDays = max(daysSinceStarted, daysSinceFirstProgress)
         
         let completedProgress = progressArray.filter { $0.isCompleted }.count

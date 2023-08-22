@@ -19,7 +19,7 @@ struct StatisticsView: View {
     }
     
     private var successPercentage: Int {
-        return Int(habit.getSuccessPercentage())
+        return Int(habit.getSuccessPercentage() ?? 0)
     }
     
     private var columns: [GridItem] {
@@ -70,7 +70,6 @@ struct StatisticsView: View {
                 Text("Success %")
                     .font(.system(size: 12, weight: .medium, design: .rounded))
                     .foregroundColor(.primary.opacity(0.8))
-                
                 Text("\(successPercentage)%")
                     .font(.system(size: 24, weight: .medium, design: .rounded))
                     .foregroundColor(habit.habitColor)

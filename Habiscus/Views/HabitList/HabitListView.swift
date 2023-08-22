@@ -15,6 +15,7 @@ struct NoHabitsView: View {
                 Text("You currently have no habits for \(date.formatted(date: .long, time: .omitted))")
                     .font(.title2)
                     .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
             }
         }
     }
@@ -25,8 +26,6 @@ struct HabitListView: View {
     @Binding var dateSelected: Date
 
     @FetchRequest var habits: FetchedResults<Habit>
-    
-    @State private var createHabit: DataOperation<Habit>?
     
     init(dateSelected: Binding<Date>, weekdayFilter: String) {
         self._dateSelected = dateSelected
@@ -76,6 +75,7 @@ struct HabitListView: View {
         if habits.count == 0 {
             ScrollView {
                 NoHabitsView(date: $dateSelected)
+                    .padding()
             }
         } else {
             List {
@@ -93,13 +93,13 @@ struct HabitListView: View {
                     }
                     ForEach(completedHabits) { habit in
                         HabitRowView(habit: habit, date: $dateSelected, progress: habit.findProgress(from: dateSelected))
-                        .overlay(
-                            NavigationLink {
-                                HabitView(habit: habit, date: $dateSelected)
-                            } label: {
-                                EmptyView()
-                            }.opacity(0)
-                        )
+                            .overlay(
+                                NavigationLink {
+                                    HabitView(habit: habit, date: $dateSelected)
+                                } label: {
+                                    EmptyView()
+                                }.opacity(0)
+                            )
                     }
                     
                 }
@@ -130,20 +130,6 @@ struct HabitListView: View {
             .scrollContentBackground(.hidden)
             .environment(\.defaultMinListRowHeight, 80)
             .animation(.spring(), value: openHabits)
-            .toolbar {
-                Button {
-                    createHabit = DataOperation(withContext: moc)
-                } label: {
-                    Label("Add", systemImage: "plus")
-                }
-            }
-            .sheet(item: $createHabit) { create in
-                NavigationStack {
-                    EditHabitView(habit: create.childObject)
-                        .navigationTitle("New habit")
-                }
-                .environment(\.managedObjectContext, create.childContext)
-            }
         }
     }
 }

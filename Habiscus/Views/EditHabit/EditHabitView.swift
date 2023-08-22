@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+// TODO: Add monthly, yearly options
 enum RepeatOptions: String, CaseIterable, Identifiable {
-    case daily, weekly, monthly, yearly, weekdays, weekends
+    case daily, weekly, weekdays, weekends
     
     var id: Self { self }
 }
@@ -42,8 +43,6 @@ struct EditHabitView: View {
             .weekly: weekdays,
             .weekdays: [.monday, .tuesday, .wednesday, .thursday, .friday],
             .weekends: [.saturday, .sunday],
-            .monthly: [],
-            .yearly: []
         ]
     }
     
@@ -53,7 +52,7 @@ struct EditHabitView: View {
         self._startDate = State(initialValue: habit.startDate ?? Calendar.current.startOfDay(for: Date()))
         self._weekdays = State(initialValue: (habit.weekdays != nil) ? Set(habit.weekdaysArray) : [Date().currentWeekday])
         self._notifications = State(initialValue: habit.notificationsArray)
-        if let created = habit.createdAt {
+        if let _ = habit.createdAt {
             if habit.notificationsArray.count > 0 {
                 if let firstNotification = habit.notificationsArray.first {
                     self._selectedTime = State(initialValue: firstNotification.wrappedTime)
