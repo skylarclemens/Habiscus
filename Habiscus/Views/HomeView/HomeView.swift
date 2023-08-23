@@ -35,6 +35,7 @@ struct HomeView: View {
                     MultiWeekView(selectedDate: $dateSelected)
                         .frame(height: 60)
                         .offset(y: -15)
+                        .padding(.bottom, 16)
                 }
                 HabitListView(dateSelected: $dateSelected, weekdayFilter: dateSelected.currentWeekdayString)
             }
@@ -87,6 +88,8 @@ struct HomeView_Previews: PreviewProvider {
         NavigationStack {
             HomeView(dateSelected: .constant(Date()))
                 .environment(\.managedObjectContext, dataController.container.viewContext)
+                .tint(.pink)
         }
+        
     }
 }

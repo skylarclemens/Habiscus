@@ -12,6 +12,12 @@ struct HabitRowView: View {
     @ObservedObject var habit: Habit
     @Binding var date: Date
     
+    @EnvironmentObject var toastManager: ToastManager
+    
+    @State private var showAlert: Bool = false
+    @State private var isSuccess: Bool = false
+    @State private var successMessage: String = ""
+    
     init(habit: Habit, date: Binding<Date>, progress: Progress? = nil) {
         self.habit = habit
         self._date = date
@@ -37,13 +43,6 @@ struct HabitRowView: View {
             return progress.isSkipped
         }
         return false
-    }
-    
-    var isProgressEmpty: Bool {
-        if let progress = progress {
-            return progress.countsArray.isEmpty
-        }
-        return true
     }
     
     private var habitManager: HabitManager {
@@ -84,7 +83,8 @@ struct HabitRowView: View {
         .contextMenu {
             Group {
                 if !habit.isArchived {
-                    if !isProgressEmpty {
+                    if let progress = progress,
+                       !progress.isEmpty {
                         Button {
                             habitManager.undoLastCount(from: date)
                         } label: {
@@ -111,13 +111,61 @@ struct HabitRowView: View {
                         }
                     }
                     Button {
-                        habitManager.archiveHabit()
+                        withAnimation {
+                            do {
+                                try habitManager.archiveHabit()
+                                toastManager.successTitle = "\(habit.wrappedName) has been archived"
+                                toastManager.isSuccess = true
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleSuccess()
+                            } catch let error {
+                                print(error.localizedDescription)
+                                toastManager.errorMessage = "Error while archiving"
+                                toastManager.isSuccess = false
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleError()
+                            }
+                        }
                     } label: {
                         Label("Archive", systemImage: "archivebox")
                     }
+                } else {
+                    Button {
+                        withAnimation {
+                            do {
+                                toastManager.successTitle = "\(habit.wrappedName) has been restored"
+                                try habitManager.unarchiveHabit()
+                                toastManager.isSuccess = true
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleSuccess()
+                            } catch let error {
+                                print(error.localizedDescription)
+                                toastManager.errorMessage = "Error while restoring"
+                                toastManager.isSuccess = false
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleError()
+                            }
+                        }
+                    } label: {
+                        Label("Restore from archive", systemImage: "arrow.uturn.backward")
+                    }
                 }
                 Button(role: .destructive) {
-                    habitManager.removeHabit()
+                    withAnimation {
+                        do {
+                            toastManager.successTitle = "\(habit.wrappedName) has been deleted"
+                            try habitManager.removeHabit()
+                            toastManager.isSuccess = true
+                            toastManager.showAlert = true
+                            HapticManager.shared.simpleSuccess()
+                        } catch let error {
+                            print(error.localizedDescription)
+                            toastManager.errorMessage = "Error while deleting"
+                            toastManager.isSuccess = false
+                            toastManager.showAlert = true
+                            HapticManager.shared.simpleError()
+                        }
+                    }
                 } label: {
                     Label("Delete", systemImage: "trash")
                 }

@@ -29,4 +29,20 @@ class DataController: ObservableObject {
             self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         }
     }
+    
+    func batchDelete(of entityName: String) throws {
+        let context = self.container.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        deleteRequest.resultType = .resultTypeObjectIDs
+        
+        do {
+            let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
+            let deleteResult: [AnyHashable: Any] = [NSDeletedObjectsKey: result?.result as? [NSManagedObjectID] ?? []]
+            
+            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: deleteResult, into: [context])
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
 }

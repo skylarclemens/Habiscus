@@ -11,6 +11,9 @@ import CoreHaptics
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
+    @Environment(\.colorScheme) var colorScheme
+    @StateObject var toastManager = ToastManager.shared
+    
     @State private var dateSelected: Date = Date()
     
     var body: some View {
@@ -21,6 +24,11 @@ struct ContentView: View {
         .onAppear {
             HapticManager.shared.prepareHaptics()
         }
+        .colorSchemeStyle()
+        .toast(isPresenting: $toastManager.showAlert) {
+            ActionAlertView(isSuccess: $toastManager.isSuccess, successTitle: toastManager.successTitle, errorMessage: toastManager.errorMessage)
+        }
+        .environmentObject(toastManager)
     }
 }
 
@@ -29,5 +37,6 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .environment(\.managedObjectContext, dataController.container.viewContext)
+            .environmentObject(ToastManager())
     }
 }

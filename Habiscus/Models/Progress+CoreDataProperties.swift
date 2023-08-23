@@ -58,6 +58,10 @@ extension Progress {
     public func checkCompleted() -> Bool {
         totalCount >= wrappedHabit.goalNumber
     }
+    
+    public var isEmpty: Bool {
+        countsArray.count == 0
+    }
 
 }
 

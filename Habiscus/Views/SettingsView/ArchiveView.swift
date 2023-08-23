@@ -31,7 +31,6 @@ struct ArchiveView: View {
         }
         .listStyle(.grouped)
         .navigationTitle("Archive")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
