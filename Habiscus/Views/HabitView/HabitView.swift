@@ -188,9 +188,9 @@ struct HabitView: View {
                     }
                 }
                 .toolbar {
-                    if !habit.isArchived {
-                        ToolbarItem {
-                            Menu {
+                    ToolbarItem {
+                        Menu {
+                            if !habit.isArchived {
                                 Button {
                                     updateHabit = DataOperation(withExistsingData: habit, in: moc)
                                 } label: {
@@ -217,14 +217,49 @@ struct HabitView: View {
                                     Label("Archive", systemImage: "archivebox")
                                 }
                                 Button(role: .destructive) {
-                                    habitManager.removeHabit()
+                                    withAnimation {
+                                        do {
+                                            toastManager.successTitle = "\(habit.wrappedName) has been deleted"
+                                            try habitManager.removeHabit()
+                                            toastManager.isSuccess = true
+                                            toastManager.showAlert = true
+                                            HapticManager.shared.simpleSuccess()
+                                        } catch let error {
+                                            print(error.localizedDescription)
+                                            toastManager.errorMessage = "Error while deleting"
+                                            toastManager.isSuccess = false
+                                            toastManager.showAlert = true
+                                            HapticManager.shared.simpleError()
+                                        }
+                                    }
                                     dismiss()
                                 } label: {
                                     Label("Delete", systemImage: "trash")
                                 }
-                            } label: {
-                                Image(systemName: "ellipsis")
+                            } else {
+                                Button {
+                                    withAnimation {
+                                        do {
+                                            toastManager.successTitle = "\(habit.wrappedName) has been restored"
+                                            try habitManager.unarchiveHabit()
+                                            toastManager.isSuccess = true
+                                            toastManager.showAlert = true
+                                            HapticManager.shared.simpleSuccess()
+                                        } catch let error {
+                                            print(error.localizedDescription)
+                                            toastManager.errorMessage = "Error while restoring"
+                                            toastManager.isSuccess = false
+                                            toastManager.showAlert = true
+                                            HapticManager.shared.simpleError()
+                                        }
+                                    }
+                                    dismiss()
+                                } label: {
+                                    Label("Restore from archive", systemImage: "arrow.uturn.backward")
+                                }
                             }
+                        } label: {
+                            Image(systemName: "ellipsis")
                         }
                     }
                 }

@@ -117,7 +117,15 @@ struct HabitManager {
         }
     }
     
-    func removeHabit(_ habit: Habit? = nil) {
+    func unarchiveHabit(_ habit: Habit? = nil) throws {
+        guard let habit = getHabit(habit) else {
+            return
+        }
+        habit.isArchived = false
+        try? moc.save()
+    }
+    
+    func removeHabit(_ habit: Habit? = nil) throws {
         guard let habit = getHabit(habit) else {
             return
         }
