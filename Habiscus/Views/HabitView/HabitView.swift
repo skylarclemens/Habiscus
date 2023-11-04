@@ -21,7 +21,7 @@ struct HabitView: View {
     }
     
     private var habitManager: HabitManager {
-        HabitManager(context: moc, habit: habit)
+        HabitManager(habit: habit)
     }
     
     private var showEntries: Bool {

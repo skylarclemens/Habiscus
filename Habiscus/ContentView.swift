@@ -13,11 +13,12 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
     @StateObject var toastManager = ToastManager.shared
+    @StateObject var navigator = Navigator.shared
     
     @State private var dateSelected: Date = Date()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigator.path) {
             HomeView(dateSelected: $dateSelected)
         }
         .tint(.pink)
@@ -29,6 +30,7 @@ struct ContentView: View {
             ActionAlertView(isSuccess: $toastManager.isSuccess, successTitle: toastManager.successTitle, errorMessage: toastManager.errorMessage)
         }
         .environmentObject(toastManager)
+        .environmentObject(navigator)
     }
 }
 
@@ -38,5 +40,6 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
             .environment(\.managedObjectContext, dataController.container.viewContext)
             .environmentObject(ToastManager())
+            .environmentObject(Navigator())
     }
 }

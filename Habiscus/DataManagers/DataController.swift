@@ -10,7 +10,7 @@ import Foundation
 
 class DataController: ObservableObject {
     static let shared = DataController()
-    
+        
     let container: NSPersistentContainer
     
     init(inMemory: Bool = false) {
@@ -30,6 +30,21 @@ class DataController: ObservableObject {
         }
     }
     
+    func getContext() -> NSManagedObjectContext {
+        return self.container.viewContext
+    }
+    
+    func saveContext() {
+        let context = getContext()
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch let error {
+                print("Could not save context: \(error)")
+            }
+        }
+    }
+    
     func batchDelete(of entityName: String) throws {
         let context = self.container.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
@@ -44,5 +59,15 @@ class DataController: ObservableObject {
         } catch let error {
             print(error.localizedDescription)
         }
+    }
+}
+
+public extension URL {
+    static func storeURL(for appGroup: String, databaseName: String) -> URL {
+        guard let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            fatalError("Shared file container could not be created.")
+        }
+        
+        return container.appendingPathComponent("\(databaseName).sqlite")
     }
 }

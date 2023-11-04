@@ -1,8 +1,8 @@
 //
 //  Progress+CoreDataProperties.swift
-//  Habiscus
+//  HabiscusAppIntents
 //
-//  Created by Skylar Clemens on 8/19/23.
+//  Created by Skylar Clemens on 8/23/23.
 //
 //
 

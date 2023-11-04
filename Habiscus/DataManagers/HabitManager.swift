@@ -10,16 +10,14 @@ import CoreData
 import UserNotifications
 
 struct HabitManager {
-    private let moc: NSManagedObjectContext
+    private let moc = DataController.shared.container.viewContext
     private let managedHabit: Habit?
     
-    init(context: NSManagedObjectContext) {
-        self.moc = context
+    init() {
         self.managedHabit = nil
     }
     
-    init(context: NSManagedObjectContext, habit: Habit) {
-        self.moc = context
+    init(habit: Habit) {
         self.managedHabit = habit
     }
     
@@ -104,6 +102,23 @@ struct HabitManager {
         try? moc.save()
     }
     
+    func markHabitComplete(_ habit: Habit? = nil, date: Date?) {
+        guard let habit = getHabit(habit) else {
+            return
+        }
+        let selectedDate = date ?? Date()
+
+        if let progress = habit.findProgress(from: selectedDate) {
+            let currentCount = progress.totalCount
+            let neededCounts = habit.goalNumber - currentCount
+            addNewCount(progress: progress, date: selectedDate, habit: habit, amount: neededCounts)
+        } else {
+            addNewProgress(date: selectedDate, amount: habit.goalNumber)
+        }
+        
+        try? moc.save()
+    }
+    
     func archiveHabit(_ habit: Habit? = nil) throws {
         guard let habit = getHabit(habit) else {
             return
@@ -132,6 +147,27 @@ struct HabitManager {
         removeAllNotifications(habit)
         moc.delete(habit)
         try? moc.save()
+    }
+    
+    func removeHabit(_ habit: Habit? = nil, toastManager: ToastManager) throws {
+        guard let habit = getHabit(habit) else {
+            return
+        }
+        toastManager.successTitle = "\(habit.wrappedName) has been deleted"
+        removeAllNotifications(habit)
+        moc.delete(habit)
+        do {
+            try moc.save()
+            toastManager.isSuccess = true
+            toastManager.showAlert = true
+            HapticManager.shared.simpleSuccess()
+        } catch let error {
+            print(error.localizedDescription)
+            toastManager.errorMessage = "Error while deleting"
+            toastManager.isSuccess = false
+            toastManager.showAlert = true
+            HapticManager.shared.simpleError()
+        }
     }
     
     func removeAllNotifications(_ habit: Habit? = nil) {
