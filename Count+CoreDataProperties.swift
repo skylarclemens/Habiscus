@@ -1,8 +1,8 @@
 //
 //  Count+CoreDataProperties.swift
-//  Habiscus
+//  HabiscusAppIntents
 //
-//  Created by Skylar Clemens on 7/28/23.
+//  Created by Skylar Clemens on 8/23/23.
 //
 //
 
@@ -16,10 +16,10 @@ extension Count {
         return NSFetchRequest<Count>(entityName: "Count")
     }
 
+    @NSManaged public var amount: Int16
     @NSManaged public var createdAt: Date?
     @NSManaged public var date: Date?
     @NSManaged public var id: UUID?
-    @NSManaged public var amount: Int16
     @NSManaged public var progress: Progress?
     
     public var wrappedCreatedDate: Date {
@@ -37,6 +37,7 @@ extension Count {
     public var dateString: String {
         date?.formatted() ?? "Unknown date"
     }
+
 }
 
 extension Count : Identifiable {

@@ -54,7 +54,7 @@ struct AddCountView: View {
 struct AddCountView_Previews: PreviewProvider {
     static var dataController = DataController()
     static var moc = dataController.container.viewContext
-    static var habitManager = HabitManager(context: moc)
+    static var habitManager = HabitManager()
     static var previews: some View {
         let habit = Habit(context: moc)
         let count = Count(context: moc)
@@ -69,6 +69,6 @@ struct AddCountView_Previews: PreviewProvider {
         progress.addToCounts(count)
         habit.addToProgress(progress)
         
-        return AddCountView(habit: habit, date: .constant(Date.now), habitManager: HabitManager(context: moc))
+        return AddCountView(habit: habit, date: .constant(Date.now), habitManager: HabitManager())
     }
 }

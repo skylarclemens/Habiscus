@@ -23,6 +23,7 @@ struct NoHabitsView: View {
 
 struct HabitListView: View {
     @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject private var navigator: Navigator
     @Binding var dateSelected: Date
 
     @FetchRequest var habits: FetchedResults<Habit>
@@ -123,6 +124,9 @@ struct HabitListView: View {
         .listStyle(.grouped)
         .scrollContentBackground(.hidden)
         .environment(\.defaultMinListRowHeight, 80)
+        .navigationDestination(for: Habit.self) { habit in
+            HabitView(habit: habit, date: $dateSelected)
+        }
         .animation(.spring(), value: openHabits)
         .emptyState(isEmpty: habits.count == 0) {
             ScrollView {

@@ -1,8 +1,8 @@
 //
 //  Habit+CoreDataProperties.swift
-//  Habiscus
+//  HabiscusAppIntents
 //
-//  Created by Skylar Clemens on 8/21/23.
+//  Created by Skylar Clemens on 8/23/23.
 //
 //
 
@@ -31,9 +31,9 @@ extension Habit {
     @NSManaged public var startDate: Date?
     @NSManaged public var unit: String?
     @NSManaged public var weekdays: String?
-    @NSManaged public var progress: NSSet?
     @NSManaged public var notifications: NSSet?
-    
+    @NSManaged public var progress: NSSet?
+
     public var wrappedName: String {
         name ?? "Unkown name"
     }
@@ -231,6 +231,23 @@ extension Habit {
     public func getLongestStreak() -> Int {
         calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray).max() ?? 0
     }
+    
+}
+
+// MARK: Generated accessors for notifications
+extension Habit {
+
+    @objc(addNotificationsObject:)
+    @NSManaged public func addToNotifications(_ value: Notification)
+
+    @objc(removeNotificationsObject:)
+    @NSManaged public func removeFromNotifications(_ value: Notification)
+
+    @objc(addNotifications:)
+    @NSManaged public func addToNotifications(_ values: NSSet)
+
+    @objc(removeNotifications:)
+    @NSManaged public func removeFromNotifications(_ values: NSSet)
 
 }
 
@@ -248,23 +265,6 @@ extension Habit {
 
     @objc(removeProgress:)
     @NSManaged public func removeFromProgress(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for notifications
-extension Habit {
-
-    @objc(addNotificationsObject:)
-    @NSManaged public func addToNotifications(_ value: Notification)
-
-    @objc(removeNotificationsObject:)
-    @NSManaged public func removeFromNotifications(_ value: Notification)
-
-    @objc(addNotifications:)
-    @NSManaged public func addToNotifications(_ values: NSSet)
-
-    @objc(removeNotifications:)
-    @NSManaged public func removeFromNotifications(_ values: NSSet)
 
 }
 

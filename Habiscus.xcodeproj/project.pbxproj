@@ -12,9 +12,13 @@
 		7E12616F2A7446B3009F15C9 /* Progress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */; };
 		7E1261702A7446B3009F15C9 /* Progress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */; };
 		7E13C7562A8441EE006EBA82 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E13C7552A8441EE006EBA82 /* StatisticsView.swift */; };
+		7E3305B32A96CDCA0017678B /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3305B22A96CDCA0017678B /* Errors.swift */; };
 		7E34D8762A82EE9700A7D649 /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D8752A82EE9700A7D649 /* IconPickerView.swift */; };
 		7E34D87E2A82F47300A7D649 /* EmojiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D87D2A82F47300A7D649 /* EmojiManager.swift */; };
 		7E36B7422A956F28006D4632 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36B7412A956F28006D4632 /* ToastManager.swift */; };
+		7E3AE2182A96D37600BFAC65 /* HabiscusAppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DF2CB2A96A66900890B8E /* HabiscusAppIntents.swift */; };
+		7E3AE2192A96D37900BFAC65 /* HabiscusShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DF2D92A96AD6C00890B8E /* HabiscusShortcuts.swift */; };
+		7E3AE21A2A96D37B00BFAC65 /* HabitEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DF2DB2A96ADF400890B8E /* HabitEntity.swift */; };
 		7E3BE9142A8C27EA008C1503 /* AddCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3BE9132A8C27EA008C1503 /* AddCountView.swift */; };
 		7E4EAC762A93D91700EC16A5 /* Notification+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */; };
 		7E4EAC772A93D91700EC16A5 /* Notification+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC732A93D91700EC16A5 /* Notification+CoreDataProperties.swift */; };
@@ -22,6 +26,7 @@
 		7E4EAC792A93D91700EC16A5 /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC752A93D91700EC16A5 /* Habit+CoreDataProperties.swift */; };
 		7E4EAC7C2A9401E900EC16A5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC7B2A9401E900EC16A5 /* SettingsView.swift */; };
 		7E4EAC7E2A94030400EC16A5 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC7D2A94030400EC16A5 /* ArchiveView.swift */; };
+		7E4EF3E52A96C9E60006E33C /* HabitsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EF3E42A96C9E60006E33C /* HabitsManager.swift */; };
 		7E56091D2A9428CC0003568D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56091C2A9428CC0003568D /* HomeView.swift */; };
 		7E5609202A951C880003568D /* ColorSchemeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56091F2A951C880003568D /* ColorSchemeViewModifier.swift */; };
 		7E5609222A9522410003568D /* AppearanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5609212A9522410003568D /* AppearanceView.swift */; };
@@ -40,6 +45,7 @@
 		7E80A7ED2A7D9CFB0035F658 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */; };
 		7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E83225C2A72F3E200042486 /* HabitListView.swift */; };
 		7E8C91232A7302EF0006055C /* GoalCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C91222A7302EF0006055C /* GoalCounterView.swift */; };
+		7E911C492A97D1DA00CB7B7B /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E911C482A97D1DA00CB7B7B /* Navigator.swift */; };
 		7E93174F2A7D84160074E210 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E93174E2A7D84160074E210 /* HapticManager.swift */; };
 		7EA68A782A79555A001C6067 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA68A772A79555A001C6067 /* Date.swift */; };
 		7EA6C3ED2A72950C00DA4C41 /* MultiWeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6C3EC2A72950C00DA4C41 /* MultiWeekView.swift */; };
@@ -66,12 +72,30 @@
 		7EFE65BA2A928391009E655F /* DataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE65B92A928391009E655F /* DataOperation.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		7E2DF2D42A96A66900890B8E /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed ExtensionKit Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		7E06CD0A2A9122E400B64FB3 /* Previewing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Previewing.swift; sourceTree = "<group>"; };
 		7E1261612A742200009F15C9 /* HabitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitManager.swift; sourceTree = "<group>"; };
 		7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7E13C7552A8441EE006EBA82 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		7E2DF2C22A96A30200890B8E /* Habiscus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Habiscus.entitlements; sourceTree = "<group>"; };
+		7E2DF2CB2A96A66900890B8E /* HabiscusAppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusAppIntents.swift; sourceTree = "<group>"; };
+		7E2DF2D92A96AD6C00890B8E /* HabiscusShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusShortcuts.swift; sourceTree = "<group>"; };
+		7E2DF2DB2A96ADF400890B8E /* HabitEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitEntity.swift; sourceTree = "<group>"; };
+		7E3305B22A96CDCA0017678B /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		7E34D8752A82EE9700A7D649 /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
 		7E34D87D2A82F47300A7D649 /* EmojiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiManager.swift; sourceTree = "<group>"; };
 		7E36B7412A956F28006D4632 /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
@@ -82,6 +106,7 @@
 		7E4EAC752A93D91700EC16A5 /* Habit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7E4EAC7B2A9401E900EC16A5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		7E4EAC7D2A94030400EC16A5 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
+		7E4EF3E42A96C9E60006E33C /* HabitsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsManager.swift; sourceTree = "<group>"; };
 		7E56091C2A9428CC0003568D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7E56091F2A951C880003568D /* ColorSchemeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewModifier.swift; sourceTree = "<group>"; };
 		7E5609212A9522410003568D /* AppearanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceView.swift; sourceTree = "<group>"; };
@@ -100,7 +125,9 @@
 		7E80A7EA2A7D9CC90035F658 /* complete.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = complete.mp3; sourceTree = "<group>"; };
 		7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		7E83225C2A72F3E200042486 /* HabitListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitListView.swift; sourceTree = "<group>"; };
+		7E896A102A96743A00458094 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7E8C91222A7302EF0006055C /* GoalCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCounterView.swift; sourceTree = "<group>"; };
+		7E911C482A97D1DA00CB7B7B /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		7E93174E2A7D84160074E210 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		7EA68A772A79555A001C6067 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7EA6C3EC2A72950C00DA4C41 /* MultiWeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiWeekView.swift; sourceTree = "<group>"; };
@@ -110,7 +137,6 @@
 		7EB1C7792A83E2A7008CB6C3 /* emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 		7EB7708F2A8423BE00559D73 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
 		7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
-		7ED7BFE42A82BB6C00952EFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountGridView.swift; sourceTree = "<group>"; };
 		7EE16BCF2A9015D1002720DC /* EditHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHabitView.swift; sourceTree = "<group>"; };
 		7EE5ED2E2A8E79AA007424CD /* RemindersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersView.swift; sourceTree = "<group>"; };
@@ -145,6 +171,25 @@
 				7E06CD0A2A9122E400B64FB3 /* Previewing.swift */,
 			);
 			path = Previews;
+			sourceTree = "<group>";
+		};
+		7E2578272A96C0FE006EE2D2 /* AppIntents */ = {
+			isa = PBXGroup;
+			children = (
+				7E2DF2CB2A96A66900890B8E /* HabiscusAppIntents.swift */,
+				7E2DF2D92A96AD6C00890B8E /* HabiscusShortcuts.swift */,
+				7E2DF2DB2A96ADF400890B8E /* HabitEntity.swift */,
+			);
+			path = AppIntents;
+			sourceTree = "<group>";
+		};
+		7E3305B12A96CDC20017678B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				7E3305B22A96CDCA0017678B /* Errors.swift */,
+				7E911C482A97D1DA00CB7B7B /* Navigator.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		7E4EAC7A2A94013800EC16A5 /* SettingsView */ = {
@@ -188,6 +233,14 @@
 		7E67A7932A6B52B9001E0C23 = {
 			isa = PBXGroup;
 			children = (
+				7E4EAC742A93D91700EC16A5 /* Habit+CoreDataClass.swift */,
+				7E4EAC752A93D91700EC16A5 /* Habit+CoreDataProperties.swift */,
+				7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */,
+				7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */,
+				7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */,
+				7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */,
+				7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */,
+				7E4EAC732A93D91700EC16A5 /* Notification+CoreDataProperties.swift */,
 				7E67A79E2A6B52B9001E0C23 /* Habiscus */,
 				7E67A79D2A6B52B9001E0C23 /* Products */,
 			);
@@ -204,13 +257,15 @@
 		7E67A79E2A6B52B9001E0C23 /* Habiscus */ = {
 			isa = PBXGroup;
 			children = (
+				7E3305B12A96CDC20017678B /* Helpers */,
+				7E2DF2C22A96A30200890B8E /* Habiscus.entitlements */,
 				7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */,
 				7E67A7A12A6B52B9001E0C23 /* ContentView.swift */,
-				7ED7BFE42A82BB6C00952EFD /* Info.plist */,
-				7ED504242A8FDF5F00E08440 /* Models */,
+				7E896A102A96743A00458094 /* Info.plist */,
 				7EFA41942A80222C00D2F8E3 /* Calendars */,
 				7EFA41912A80220200D2F8E3 /* Views */,
 				7EFA41902A8021CD00D2F8E3 /* DataManagers */,
+				7E2578272A96C0FE006EE2D2 /* AppIntents */,
 				7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */,
 				7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */,
 				7E80A7EE2A7D9E0F0035F658 /* Sounds */,
@@ -256,21 +311,6 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		7ED504242A8FDF5F00E08440 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				7E4EAC742A93D91700EC16A5 /* Habit+CoreDataClass.swift */,
-				7E4EAC752A93D91700EC16A5 /* Habit+CoreDataProperties.swift */,
-				7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */,
-				7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */,
-				7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */,
-				7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */,
-				7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */,
-				7E4EAC732A93D91700EC16A5 /* Notification+CoreDataProperties.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		7EE5ED2D2A8E7977007424CD /* EditHabit */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				7E1261612A742200009F15C9 /* HabitManager.swift */,
+				7E4EF3E42A96C9E60006E33C /* HabitsManager.swift */,
 				7EA9FEA92A82F6960084A843 /* Bundle-Decodable.swift */,
 				7E34D87D2A82F47300A7D649 /* EmojiManager.swift */,
 				7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */,
@@ -358,6 +399,7 @@
 				7E67A7982A6B52B9001E0C23 /* Sources */,
 				7E67A7992A6B52B9001E0C23 /* Frameworks */,
 				7E67A79A2A6B52B9001E0C23 /* Resources */,
+				7E2DF2D42A96A66900890B8E /* Embed ExtensionKit Extensions */,
 			);
 			buildRules = (
 			);
@@ -375,7 +417,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					7E67A79B2A6B52B9001E0C23 = {
@@ -427,17 +469,21 @@
 				7E36B7422A956F28006D4632 /* ToastManager.swift in Sources */,
 				7EE5ED332A8E7B4C007424CD /* DateOptions.swift in Sources */,
 				7EA68A782A79555A001C6067 /* Date.swift in Sources */,
+				7E3AE2182A96D37600BFAC65 /* HabiscusAppIntents.swift in Sources */,
 				7EFE65BA2A928391009E655F /* DataOperation.swift in Sources */,
 				7E67A7A22A6B52B9001E0C23 /* ContentView.swift in Sources */,
+				7E911C492A97D1DA00CB7B7B /* Navigator.swift in Sources */,
 				7EA6C3ED2A72950C00DA4C41 /* MultiWeekView.swift in Sources */,
 				7E4EAC792A93D91700EC16A5 /* Habit+CoreDataProperties.swift in Sources */,
 				7EE5ED352A8E7E42007424CD /* NotificationManager.swift in Sources */,
 				7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */,
 				7E697DD42A843B84000EC5D8 /* HabitView.swift in Sources */,
 				7E4EAC7C2A9401E900EC16A5 /* SettingsView.swift in Sources */,
+				7E4EF3E52A96C9E60006E33C /* HabitsManager.swift in Sources */,
 				7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */,
 				7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */,
 				7EF7DCC72A8D15C7007AF16C /* Weekday.swift in Sources */,
+				7E3AE21A2A96D37B00BFAC65 /* HabitEntity.swift in Sources */,
 				7E93174F2A7D84160074E210 /* HapticManager.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,
 				7E56091D2A9428CC0003568D /* HomeView.swift in Sources */,
@@ -455,6 +501,7 @@
 				7EAAB24D2A8BD9C00075F9EB /* WeekView.swift in Sources */,
 				7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */,
 				7EA9FEAA2A82F6960084A843 /* Bundle-Decodable.swift in Sources */,
+				7E3AE2192A96D37900BFAC65 /* HabiscusShortcuts.swift in Sources */,
 				7EE5ED312A8E7AC5007424CD /* ColorPickerView.swift in Sources */,
 				7E1261702A7446B3009F15C9 /* Progress+CoreDataProperties.swift in Sources */,
 				7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */,
@@ -470,6 +517,7 @@
 				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
 				7E4EAC7E2A94030400EC16A5 /* ArchiveView.swift in Sources */,
 				7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */,
+				7E3305B32A96CDCA0017678B /* Errors.swift in Sources */,
 				7E5609282A9541940003568D /* ToastViewModifier.swift in Sources */,
 				7E34D8762A82EE9700A7D649 /* IconPickerView.swift in Sources */,
 				7E56092D2A95462D0003568D /* AlertView.swift in Sources */,
@@ -596,8 +644,10 @@
 		7E67A7AB2A6B52BA001E0C23 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Habiscus/Habiscus.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Habiscus/Preview Content\"";
@@ -625,8 +675,10 @@
 		7E67A7AC2A6B52BA001E0C23 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Habiscus/Habiscus.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Habiscus/Preview Content\"";

@@ -46,7 +46,7 @@ struct HabitRowView: View {
     }
     
     private var habitManager: HabitManager {
-        HabitManager(context: moc, habit: habit)
+        HabitManager(habit: habit)
     }
     
     var body: some View {
