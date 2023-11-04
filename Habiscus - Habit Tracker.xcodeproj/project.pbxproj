@@ -115,7 +115,7 @@
 		7E5609292A9541CF0003568D /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		7E56092C2A95462D0003568D /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		7E56092E2A9566C90003568D /* EmptyViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewModifier.swift; sourceTree = "<group>"; };
-		7E67A79C2A6B52B9001E0C23 /* Habiscus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habiscus.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E67A79C2A6B52B9001E0C23 /* Habiscus - Habit Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Habiscus - Habit Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusApp.swift; sourceTree = "<group>"; };
 		7E67A7A12A6B52B9001E0C23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -249,7 +249,7 @@
 		7E67A79D2A6B52B9001E0C23 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7E67A79C2A6B52B9001E0C23 /* Habiscus.app */,
+				7E67A79C2A6B52B9001E0C23 /* Habiscus - Habit Tracker.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -257,7 +257,6 @@
 		7E67A79E2A6B52B9001E0C23 /* Habiscus */ = {
 			isa = PBXGroup;
 			children = (
-				7E3305B12A96CDC20017678B /* Helpers */,
 				7E2DF2C22A96A30200890B8E /* Habiscus.entitlements */,
 				7E67A79F2A6B52B9001E0C23 /* HabiscusApp.swift */,
 				7E67A7A12A6B52B9001E0C23 /* ContentView.swift */,
@@ -265,6 +264,8 @@
 				7EFA41942A80222C00D2F8E3 /* Calendars */,
 				7EFA41912A80220200D2F8E3 /* Views */,
 				7EFA41902A8021CD00D2F8E3 /* DataManagers */,
+				7EA26B452AF6CDEE00079017 /* Resources */,
+				7E3305B12A96CDC20017678B /* Helpers */,
 				7E2578272A96C0FE006EE2D2 /* AppIntents */,
 				7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */,
 				7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */,
@@ -277,7 +278,6 @@
 		7E67A7A52A6B52BA001E0C23 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				7EB1C7792A83E2A7008CB6C3 /* emoji.json */,
 				7E67A7A62A6B52BA001E0C23 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -298,6 +298,14 @@
 				7E80A7EA2A7D9CC90035F658 /* complete.mp3 */,
 			);
 			path = Sounds;
+			sourceTree = "<group>";
+		};
+		7EA26B452AF6CDEE00079017 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7EB1C7792A83E2A7008CB6C3 /* emoji.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		7EB7708E2A8423B000559D73 /* Components */ = {
@@ -328,7 +336,6 @@
 				7E1261612A742200009F15C9 /* HabitManager.swift */,
 				7E4EF3E42A96C9E60006E33C /* HabitsManager.swift */,
 				7EA9FEA92A82F6960084A843 /* Bundle-Decodable.swift */,
-				7E34D87D2A82F47300A7D649 /* EmojiManager.swift */,
 				7E67A7AF2A6B5A88001E0C23 /* FileManager.swift */,
 				7E93174E2A7D84160074E210 /* HapticManager.swift */,
 				7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */,
@@ -336,6 +343,7 @@
 				7EE5ED342A8E7E42007424CD /* NotificationManager.swift */,
 				7EFE65B92A928391009E655F /* DataOperation.swift */,
 				7E36B7412A956F28006D4632 /* ToastManager.swift */,
+				7E34D87D2A82F47300A7D649 /* EmojiManager.swift */,
 			);
 			path = DataManagers;
 			sourceTree = "<group>";
@@ -392,9 +400,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7E67A79B2A6B52B9001E0C23 /* Habiscus */ = {
+		7E67A79B2A6B52B9001E0C23 /* Habiscus - Habit Tracker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7E67A7AA2A6B52BA001E0C23 /* Build configuration list for PBXNativeTarget "Habiscus" */;
+			buildConfigurationList = 7E67A7AA2A6B52BA001E0C23 /* Build configuration list for PBXNativeTarget "Habiscus - Habit Tracker" */;
 			buildPhases = (
 				7E67A7982A6B52B9001E0C23 /* Sources */,
 				7E67A7992A6B52B9001E0C23 /* Frameworks */,
@@ -405,9 +413,9 @@
 			);
 			dependencies = (
 			);
-			name = Habiscus;
+			name = "Habiscus - Habit Tracker";
 			productName = Habiscus;
-			productReference = 7E67A79C2A6B52B9001E0C23 /* Habiscus.app */;
+			productReference = 7E67A79C2A6B52B9001E0C23 /* Habiscus - Habit Tracker.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -425,7 +433,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7E67A7972A6B52B9001E0C23 /* Build configuration list for PBXProject "Habiscus" */;
+			buildConfigurationList = 7E67A7972A6B52B9001E0C23 /* Build configuration list for PBXProject "Habiscus - Habit Tracker" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -438,7 +446,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7E67A79B2A6B52B9001E0C23 /* Habiscus */,
+				7E67A79B2A6B52B9001E0C23 /* Habiscus - Habit Tracker */,
 			);
 		};
 /* End PBXProject section */
@@ -655,6 +663,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Habiscus/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Habiscus - Habit Tracker";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -686,6 +696,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Habiscus/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Habiscus - Habit Tracker";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -706,7 +718,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7E67A7972A6B52B9001E0C23 /* Build configuration list for PBXProject "Habiscus" */ = {
+		7E67A7972A6B52B9001E0C23 /* Build configuration list for PBXProject "Habiscus - Habit Tracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7E67A7A82A6B52BA001E0C23 /* Debug */,
@@ -715,7 +727,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7E67A7AA2A6B52BA001E0C23 /* Build configuration list for PBXNativeTarget "Habiscus" */ = {
+		7E67A7AA2A6B52BA001E0C23 /* Build configuration list for PBXNativeTarget "Habiscus - Habit Tracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7E67A7AB2A6B52BA001E0C23 /* Debug */,
