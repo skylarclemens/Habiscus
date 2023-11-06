@@ -103,12 +103,12 @@ struct HabiscusWidget: Widget {
     }
     
     func makeWidgetConfiguration() -> some WidgetConfiguration {
-        if #available(iOS 17.0, macOS 14.0, *) {
+        if #available(iOS 17.0, *) {
             return AppIntentConfiguration(kind: kind,
                                           intent: WidgetHabitSelection.self,
                                           provider: HabitIntentProvider()) { entry in
                 HabiscusWidgetEntryView(entry: entry)
-                    .containerBackground(.fill.secondary, for: .widget)
+                    .padding()
             }.supportedFamilies([.systemSmall])
                 .contentMarginsDisabled()
         } else {
@@ -121,19 +121,32 @@ struct HabiscusWidget: Widget {
     }
 }
 
-/*struct HabiscusWidget_Previews: PreviewProvider {
+struct HabiscusWidget_Previews: PreviewProvider {
     static var previews: some View {
         Previewing(\.habit) { habit in
-            let entry = SimpleEntry(habit: HabitModel(habit: habit), date: Date())
+            let entry = SimpleEntry(habit: HabitEntity(habit: habit), date: Date())
             HabiscusWidgetEntryView(entry: entry)
-                .containerBackground(.fill.secondary, for: .widget)
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
         }
     }
-}*/
+}
 
-#Preview(as: .systemSmall) {
+/*#Preview(as: .systemSmall) {
     HabiscusWidget()
 } timeline: {
     SimpleEntry(habit: HabitEntity.example, date: Date())
+}*/
+
+extension View {
+     func widgetBackground(_ backgroundView: some View) -> some View {
+         if #available(iOSApplicationExtension 17.0, *) {
+             return containerBackground(for: .widget) {
+                 backgroundView
+             }
+         } else {
+             return background {
+                 backgroundView
+             }
+         }
+    }
 }
