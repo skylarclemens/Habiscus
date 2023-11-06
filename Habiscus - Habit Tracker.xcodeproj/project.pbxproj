@@ -27,6 +27,7 @@
 		7E4EAC7C2A9401E900EC16A5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC7B2A9401E900EC16A5 /* SettingsView.swift */; };
 		7E4EAC7E2A94030400EC16A5 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC7D2A94030400EC16A5 /* ArchiveView.swift */; };
 		7E4EF3E52A96C9E60006E33C /* HabitsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EF3E42A96C9E60006E33C /* HabitsManager.swift */; };
+		7E5074CE2AF718E500872D4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */; };
 		7E56091D2A9428CC0003568D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56091C2A9428CC0003568D /* HomeView.swift */; };
 		7E5609202A951C880003568D /* ColorSchemeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56091F2A951C880003568D /* ColorSchemeViewModifier.swift */; };
 		7E5609222A9522410003568D /* AppearanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5609212A9522410003568D /* AppearanceView.swift */; };
@@ -44,9 +45,41 @@
 		7E80A7EB2A7D9CC90035F658 /* complete.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7E80A7EA2A7D9CC90035F658 /* complete.mp3 */; };
 		7E80A7ED2A7D9CFB0035F658 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */; };
 		7E83225D2A72F3E200042486 /* HabitListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E83225C2A72F3E200042486 /* HabitListView.swift */; };
+		7E8460D22AF6E62A008043B6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E8460D12AF6E62A008043B6 /* WidgetKit.framework */; };
+		7E8460D42AF6E62A008043B6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E8460D32AF6E62A008043B6 /* SwiftUI.framework */; };
+		7E8460D72AF6E62A008043B6 /* HabiscusWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8460D62AF6E62A008043B6 /* HabiscusWidgetBundle.swift */; };
+		7E8460D92AF6E62A008043B6 /* HabiscusWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8460D82AF6E62A008043B6 /* HabiscusWidget.swift */; };
+		7E8460DB2AF6E62D008043B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E8460DA2AF6E62D008043B6 /* Assets.xcassets */; };
+		7E8460DF2AF6E62D008043B6 /* HabiscusWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7E8460CF2AF6E62A008043B6 /* HabiscusWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7E8460E62AF6E8C9008043B6 /* SmallHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8460E42AF6E6D6008043B6 /* SmallHabitView.swift */; };
+		7E8460E72AF6E8D9008043B6 /* GoalCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C91222A7302EF0006055C /* GoalCounterView.swift */; };
+		7E8460E82AF6E8E3008043B6 /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC742A93D91700EC16A5 /* Habit+CoreDataClass.swift */; };
+		7E8460E92AF6E8E3008043B6 /* Progress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616D2A7446B3009F15C9 /* Progress+CoreDataClass.swift */; };
+		7E8460EA2AF6E8E3008043B6 /* Count+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */; };
+		7E8460EB2AF6E8E3008043B6 /* Count+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */; };
+		7E8460EC2AF6E8E3008043B6 /* Habit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC752A93D91700EC16A5 /* Habit+CoreDataProperties.swift */; };
+		7E8460ED2AF6E8E3008043B6 /* Progress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12616E2A7446B3009F15C9 /* Progress+CoreDataProperties.swift */; };
+		7E8460EE2AF6E8E7008043B6 /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF7DCC62A8D15C7007AF16C /* Weekday.swift */; };
+		7E8460EF2AF6E8EA008043B6 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA68A772A79555A001C6067 /* Date.swift */; };
+		7E8460F02AF6E8FF008043B6 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB7708F2A8423BE00559D73 /* IconView.swift */; };
+		7E8460F12AF6E907008043B6 /* Previewing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E06CD0A2A9122E400B64FB3 /* Previewing.swift */; };
+		7E8460F22AF6E915008043B6 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */; };
+		7E8460F42AF6E937008043B6 /* Notification+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */; };
+		7E8460F52AF6E937008043B6 /* Notification+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC732A93D91700EC16A5 /* Notification+CoreDataProperties.swift */; };
+		7E8460F62AF6ED21008043B6 /* HabitsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EF3E42A96C9E60006E33C /* HabitsManager.swift */; };
+		7E8460F72AF6ED2E008043B6 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3305B22A96CDCA0017678B /* Errors.swift */; };
+		7E8460F82AF6EF17008043B6 /* Habiscus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DE82A6DDBC90058CDF8 /* Habiscus.xcdatamodeld */; };
 		7E8C91232A7302EF0006055C /* GoalCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C91222A7302EF0006055C /* GoalCounterView.swift */; };
 		7E911C492A97D1DA00CB7B7B /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E911C482A97D1DA00CB7B7B /* Navigator.swift */; };
 		7E93174F2A7D84160074E210 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E93174E2A7D84160074E210 /* HapticManager.swift */; };
+		7E9684432AF9699900BBCAD4 /* HabitEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DF2DB2A96ADF400890B8E /* HabitEntity.swift */; };
+		7E96844A2AF96AC400BBCAD4 /* HabitIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9684482AF96A9400BBCAD4 /* HabitIntent.swift */; };
+		7E96844B2AF96ACE00BBCAD4 /* HabitIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9684482AF96A9400BBCAD4 /* HabitIntent.swift */; };
+		7E96844E2AF97FA900BBCAD4 /* HabitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E96844C2AF97FA400BBCAD4 /* HabitModel.swift */; };
+		7E9684532AF9900E00BBCAD4 /* HabitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1261612A742200009F15C9 /* HabitManager.swift */; };
+		7E9684542AF9902000BBCAD4 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36B7412A956F28006D4632 /* ToastManager.swift */; };
+		7E9684552AF9902200BBCAD4 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5ED342A8E7E42007424CD /* NotificationManager.swift */; };
+		7E9684562AF9902900BBCAD4 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E93174E2A7D84160074E210 /* HapticManager.swift */; };
 		7EA68A782A79555A001C6067 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA68A772A79555A001C6067 /* Date.swift */; };
 		7EA6C3ED2A72950C00DA4C41 /* MultiWeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6C3EC2A72950C00DA4C41 /* MultiWeekView.swift */; };
 		7EA6C3EF2A7295C100DA4C41 /* Week.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA6C3EE2A7295C100DA4C41 /* Week.swift */; };
@@ -72,6 +105,16 @@
 		7EFE65BA2A928391009E655F /* DataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE65B92A928391009E655F /* DataOperation.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7E8460DD2AF6E62D008043B6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E67A7942A6B52B9001E0C23 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7E8460CE2AF6E62A008043B6;
+			remoteInfo = HabiscusWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		7E2DF2D42A96A66900890B8E /* Embed ExtensionKit Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -81,6 +124,17 @@
 			files = (
 			);
 			name = "Embed ExtensionKit Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E8460E02AF6E62D008043B6 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7E8460DF2AF6E62D008043B6 /* HabiscusWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -125,10 +179,21 @@
 		7E80A7EA2A7D9CC90035F658 /* complete.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = complete.mp3; sourceTree = "<group>"; };
 		7E80A7EC2A7D9CFB0035F658 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		7E83225C2A72F3E200042486 /* HabitListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitListView.swift; sourceTree = "<group>"; };
+		7E8460CF2AF6E62A008043B6 /* HabiscusWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HabiscusWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E8460D12AF6E62A008043B6 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		7E8460D32AF6E62A008043B6 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		7E8460D62AF6E62A008043B6 /* HabiscusWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusWidgetBundle.swift; sourceTree = "<group>"; };
+		7E8460D82AF6E62A008043B6 /* HabiscusWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiscusWidget.swift; sourceTree = "<group>"; };
+		7E8460DA2AF6E62D008043B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7E8460DC2AF6E62D008043B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E8460E42AF6E6D6008043B6 /* SmallHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallHabitView.swift; sourceTree = "<group>"; };
+		7E8460F92AF6EFA6008043B6 /* HabiscusWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HabiscusWidgetExtension.entitlements; sourceTree = "<group>"; };
 		7E896A102A96743A00458094 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7E8C91222A7302EF0006055C /* GoalCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalCounterView.swift; sourceTree = "<group>"; };
 		7E911C482A97D1DA00CB7B7B /* Navigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		7E93174E2A7D84160074E210 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		7E9684482AF96A9400BBCAD4 /* HabitIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitIntent.swift; sourceTree = "<group>"; };
+		7E96844C2AF97FA400BBCAD4 /* HabitModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitModel.swift; sourceTree = "<group>"; };
 		7EA68A772A79555A001C6067 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7EA6C3EC2A72950C00DA4C41 /* MultiWeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiWeekView.swift; sourceTree = "<group>"; };
 		7EA6C3EE2A7295C100DA4C41 /* Week.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Week.swift; sourceTree = "<group>"; };
@@ -159,6 +224,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E8460CC2AF6E62A008043B6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E8460D42AF6E62A008043B6 /* SwiftUI.framework in Frameworks */,
+				7E8460D22AF6E62A008043B6 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +316,8 @@
 				7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */,
 				7E4EAC732A93D91700EC16A5 /* Notification+CoreDataProperties.swift */,
 				7E67A79E2A6B52B9001E0C23 /* Habiscus */,
+				7E8460D52AF6E62A008043B6 /* HabiscusWidget */,
+				7E8460D02AF6E62A008043B6 /* Frameworks */,
 				7E67A79D2A6B52B9001E0C23 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -250,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				7E67A79C2A6B52B9001E0C23 /* Habiscus - Habit Tracker.app */,
+				7E8460CF2AF6E62A008043B6 /* HabiscusWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -298,6 +375,54 @@
 				7E80A7EA2A7D9CC90035F658 /* complete.mp3 */,
 			);
 			path = Sounds;
+			sourceTree = "<group>";
+		};
+		7E8460D02AF6E62A008043B6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7E8460D12AF6E62A008043B6 /* WidgetKit.framework */,
+				7E8460D32AF6E62A008043B6 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7E8460D52AF6E62A008043B6 /* HabiscusWidget */ = {
+			isa = PBXGroup;
+			children = (
+				7E9684502AF98B9D00BBCAD4 /* Data */,
+				7E96844F2AF98B8F00BBCAD4 /* Views */,
+				7E9684472AF96A8A00BBCAD4 /* Intents */,
+				7E8460F92AF6EFA6008043B6 /* HabiscusWidgetExtension.entitlements */,
+				7E8460D62AF6E62A008043B6 /* HabiscusWidgetBundle.swift */,
+				7E8460D82AF6E62A008043B6 /* HabiscusWidget.swift */,
+				7E8460DA2AF6E62D008043B6 /* Assets.xcassets */,
+				7E8460DC2AF6E62D008043B6 /* Info.plist */,
+			);
+			path = HabiscusWidget;
+			sourceTree = "<group>";
+		};
+		7E9684472AF96A8A00BBCAD4 /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				7E9684482AF96A9400BBCAD4 /* HabitIntent.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
+		7E96844F2AF98B8F00BBCAD4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7E8460E42AF6E6D6008043B6 /* SmallHabitView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7E9684502AF98B9D00BBCAD4 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				7E96844C2AF97FA400BBCAD4 /* HabitModel.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		7EA26B452AF6CDEE00079017 /* Resources */ = {
@@ -408,15 +533,34 @@
 				7E67A7992A6B52B9001E0C23 /* Frameworks */,
 				7E67A79A2A6B52B9001E0C23 /* Resources */,
 				7E2DF2D42A96A66900890B8E /* Embed ExtensionKit Extensions */,
+				7E8460E02AF6E62D008043B6 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7E8460DE2AF6E62D008043B6 /* PBXTargetDependency */,
 			);
 			name = "Habiscus - Habit Tracker";
 			productName = Habiscus;
 			productReference = 7E67A79C2A6B52B9001E0C23 /* Habiscus - Habit Tracker.app */;
 			productType = "com.apple.product-type.application";
+		};
+		7E8460CE2AF6E62A008043B6 /* HabiscusWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E8460E32AF6E62D008043B6 /* Build configuration list for PBXNativeTarget "HabiscusWidgetExtension" */;
+			buildPhases = (
+				7E8460CB2AF6E62A008043B6 /* Sources */,
+				7E8460CC2AF6E62A008043B6 /* Frameworks */,
+				7E8460CD2AF6E62A008043B6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HabiscusWidgetExtension;
+			productName = HabiscusWidgetExtension;
+			productReference = 7E8460CF2AF6E62A008043B6 /* HabiscusWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -430,6 +574,9 @@
 				TargetAttributes = {
 					7E67A79B2A6B52B9001E0C23 = {
 						CreatedOnToolsVersion = 14.3.1;
+					};
+					7E8460CE2AF6E62A008043B6 = {
+						CreatedOnToolsVersion = 15.0.1;
 					};
 				};
 			};
@@ -447,6 +594,7 @@
 			projectRoot = "";
 			targets = (
 				7E67A79B2A6B52B9001E0C23 /* Habiscus - Habit Tracker */,
+				7E8460CE2AF6E62A008043B6 /* HabiscusWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -460,6 +608,15 @@
 				7E80A7EB2A7D9CC90035F658 /* complete.mp3 in Resources */,
 				7EB1C77A2A83E2A7008CB6C3 /* emoji.json in Resources */,
 				7E67A7A42A6B52BA001E0C23 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E8460CD2AF6E62A008043B6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E5074CE2AF718E500872D4A /* Assets.xcassets in Resources */,
+				7E8460DB2AF6E62D008043B6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +680,7 @@
 				7EE5ED2F2A8E79AA007424CD /* RemindersView.swift in Sources */,
 				7E4EAC782A93D91700EC16A5 /* Habit+CoreDataClass.swift in Sources */,
 				7E67A7B02A6B5A88001E0C23 /* FileManager.swift in Sources */,
+				7E96844B2AF96ACE00BBCAD4 /* HabitIntent.swift in Sources */,
 				7E4EAC7E2A94030400EC16A5 /* ArchiveView.swift in Sources */,
 				7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */,
 				7E3305B32A96CDCA0017678B /* Errors.swift in Sources */,
@@ -532,7 +690,49 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7E8460CB2AF6E62A008043B6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E9684532AF9900E00BBCAD4 /* HabitManager.swift in Sources */,
+				7E8460EE2AF6E8E7008043B6 /* Weekday.swift in Sources */,
+				7E8460D72AF6E62A008043B6 /* HabiscusWidgetBundle.swift in Sources */,
+				7E8460D92AF6E62A008043B6 /* HabiscusWidget.swift in Sources */,
+				7E8460F02AF6E8FF008043B6 /* IconView.swift in Sources */,
+				7E9684542AF9902000BBCAD4 /* ToastManager.swift in Sources */,
+				7E9684552AF9902200BBCAD4 /* NotificationManager.swift in Sources */,
+				7E96844A2AF96AC400BBCAD4 /* HabitIntent.swift in Sources */,
+				7E9684432AF9699900BBCAD4 /* HabitEntity.swift in Sources */,
+				7E96844E2AF97FA900BBCAD4 /* HabitModel.swift in Sources */,
+				7E8460E72AF6E8D9008043B6 /* GoalCounterView.swift in Sources */,
+				7E8460E62AF6E8C9008043B6 /* SmallHabitView.swift in Sources */,
+				7E8460EA2AF6E8E3008043B6 /* Count+CoreDataClass.swift in Sources */,
+				7E8460EB2AF6E8E3008043B6 /* Count+CoreDataProperties.swift in Sources */,
+				7E8460EF2AF6E8EA008043B6 /* Date.swift in Sources */,
+				7E8460ED2AF6E8E3008043B6 /* Progress+CoreDataProperties.swift in Sources */,
+				7E9684562AF9902900BBCAD4 /* HapticManager.swift in Sources */,
+				7E8460F42AF6E937008043B6 /* Notification+CoreDataClass.swift in Sources */,
+				7E8460F22AF6E915008043B6 /* DataController.swift in Sources */,
+				7E8460E92AF6E8E3008043B6 /* Progress+CoreDataClass.swift in Sources */,
+				7E8460F52AF6E937008043B6 /* Notification+CoreDataProperties.swift in Sources */,
+				7E8460EC2AF6E8E3008043B6 /* Habit+CoreDataProperties.swift in Sources */,
+				7E8460F72AF6ED2E008043B6 /* Errors.swift in Sources */,
+				7E8460E82AF6E8E3008043B6 /* Habit+CoreDataClass.swift in Sources */,
+				7E8460F82AF6EF17008043B6 /* Habiscus.xcdatamodeld in Sources */,
+				7E8460F62AF6ED21008043B6 /* HabitsManager.swift in Sources */,
+				7E8460F12AF6E907008043B6 /* Previewing.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7E8460DE2AF6E62D008043B6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7E8460CE2AF6E62A008043B6 /* HabiscusWidgetExtension */;
+			targetProxy = 7E8460DD2AF6E62D008043B6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		7E67A7A82A6B52BA001E0C23 /* Debug */ = {
@@ -715,6 +915,73 @@
 			};
 			name = Release;
 		};
+		7E8460E12AF6E62D008043B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = HabiscusWidget/HabiscusWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2798XB6UZN;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HabiscusWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HabiscusWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SkylarClemens.Habiscus.HabiscusWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7E8460E22AF6E62D008043B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = HabiscusWidget/HabiscusWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2798XB6UZN;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HabiscusWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HabiscusWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SkylarClemens.Habiscus.HabiscusWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -732,6 +999,15 @@
 			buildConfigurations = (
 				7E67A7AB2A6B52BA001E0C23 /* Debug */,
 				7E67A7AC2A6B52BA001E0C23 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7E8460E32AF6E62D008043B6 /* Build configuration list for PBXNativeTarget "HabiscusWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E8460E12AF6E62D008043B6 /* Debug */,
+				7E8460E22AF6E62D008043B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -29,8 +29,20 @@ struct HabitEntity: AppEntity, Identifiable {
     @Property(title: "Ends on")
     var endDate: Date?
     
+    @Property(title: "Icon")
+    var icon: String
+    
     @Property(title: "Color")
     var color: String
+    
+    @Property(title: "Today's count")
+    var count: Int
+    
+    @Property(title: "Goal")
+    var goal: Int
+    
+    @Property(title: "Unit")
+    var unit: String
     
     @Property(title: "Last updated")
     var lastUpdated: Date
@@ -38,7 +50,7 @@ struct HabitEntity: AppEntity, Identifiable {
     @Property(title: "Archived")
     var isArchived: Bool
     
-    init(id: UUID, name: String?, createdAt: Date?, startDate: Date?, endDate: Date?, color: String?, lastUpdated: Date?, isArchived: Bool) {
+    init(id: UUID, name: String?, createdAt: Date?, startDate: Date?, endDate: Date?, icon: String, color: String?, count: Int, goal: Int, unit: String, lastUpdated: Date?, isArchived: Bool) {
         let habitName = name ?? "Unknown name"
         
         self.id = id
@@ -46,41 +58,44 @@ struct HabitEntity: AppEntity, Identifiable {
         self.createdAt = createdAt ?? Date()
         self.startDate = startDate ?? Date()
         self.endDate = endDate
+        self.icon = icon
         self.color = color ?? "pink"
+        self.count = count
+        self.goal = goal
+        self.unit = unit
         self.lastUpdated = lastUpdated ?? Date()
         self.isArchived = isArchived
     }
+    
+    init(habit: Habit) {
+        self.id = habit.id!
+        self.name = habit.wrappedName
+        self.createdAt = habit.createdDate
+        self.startDate = habit.startDate ?? Date()
+        self.endDate = habit.endDate
+        self.icon = habit.emojiIcon
+        self.color = habit.color ?? "pink"
+        self.count = habit.getCountByDate(from: Date())
+        self.goal = habit.goalNumber
+        self.unit = habit.wrappedUnit
+        self.lastUpdated = habit.lastUpdated ?? Date()
+        self.isArchived = habit.isArchived
+    }
+    
+    static let example: HabitEntity = HabitEntity(id: UUID(), name: "Habit", createdAt: Date(), startDate: Date(), endDate: nil, icon: "👍", color: "blue", count: 1, goal: 2, unit: "completed", lastUpdated: Date(), isArchived: false)
 }
 
 struct HabitQuery: EntityPropertyQuery {
     func entities(for identifiers: [UUID]) async throws -> [HabitEntity] {
         return try HabitsManager.shared.findHabits(for: identifiers).map {
-            HabitEntity(
-                id: $0.id!,
-                name: $0.name,
-                createdAt: $0.createdAt,
-                startDate: $0.startDate,
-                endDate: $0.endDate,
-                color: $0.color,
-                lastUpdated: $0.lastUpdated,
-                isArchived: $0.isArchived
-            )
+            HabitEntity(habit: $0)
         }
     }
     
     func suggestedEntities() async throws -> [HabitEntity] {
         let habits = HabitsManager.shared.getAllHabits().filter { !$0.isArchived }
         return habits.map {
-            HabitEntity(
-                id: $0.id!,
-                name: $0.name,
-                createdAt: $0.createdAt,
-                startDate: $0.startDate,
-                endDate: $0.endDate,
-                color: $0.color,
-                lastUpdated: $0.lastUpdated,
-                isArchived: $0.isArchived
-            )
+            HabitEntity(habit: $0)
         }
     }
     
@@ -90,16 +105,12 @@ struct HabitQuery: EntityPropertyQuery {
         }
         
         return filteredHabits.map {
-            HabitEntity(
-                id: $0.id!,
-                name: $0.name,
-                createdAt: $0.createdAt,
-                startDate: $0.startDate,
-                endDate: $0.endDate,
-                color: $0.color,
-                lastUpdated: $0.lastUpdated,
-                isArchived: $0.isArchived)
+            HabitEntity(habit: $0)
         }
+    }
+    
+    func defaultResult() async -> HabitEntity? {
+        try? await suggestedEntities().first
     }
     
     static var sortingOptions = SortingOptions {
@@ -143,15 +154,7 @@ struct HabitQuery: EntityPropertyQuery {
         let sortDescriptors = toSortDescriptor(sortedBy)
         let matchingHabits = try context.fetch(request)
         return matchingHabits.map {
-            HabitEntity(
-                id: $0.id!,
-                name: $0.name,
-                createdAt: $0.createdAt,
-                startDate: $0.startDate,
-                endDate: $0.endDate,
-                color: $0.color,
-                lastUpdated: $0.lastUpdated,
-                isArchived: $0.isArchived)
+            HabitEntity(habit: $0)
         }
     }
     

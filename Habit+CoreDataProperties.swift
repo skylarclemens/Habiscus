@@ -152,6 +152,13 @@ extension Habit {
         return nil
     }
     
+    public func getCountByDate(from date: Date) -> Int {
+        guard let progress = findProgress(from: date) else {
+            return 0
+        }
+        return progress.totalCount
+    }
+    
     // Compares day the habit was first created and day since first progress to find starting day
     // Divides total completed progress count over number of days since each day has one progress object
     // Returns percentage

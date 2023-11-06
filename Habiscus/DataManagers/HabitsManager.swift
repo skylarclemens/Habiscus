@@ -27,6 +27,18 @@ class HabitsManager: ObservableObject {
         return []
     }
     
+    func getAllActiveHabits() throws -> [Habit] {
+        let request: NSFetchRequest<Habit> = Habit.fetchRequest()
+        request.predicate = NSPredicate(format: "isArchived == NO")
+        request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
+        do {
+            return try context.fetch(request)
+        } catch let error {
+            print("Fetch all active habits failed: \(error.localizedDescription)")
+        }
+        return []
+    }
+    
     func findHabit(id: UUID) throws -> Habit {
         let request: NSFetchRequest<Habit> = Habit.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", id as CVarArg)

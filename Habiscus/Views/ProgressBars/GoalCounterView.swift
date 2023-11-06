@@ -13,6 +13,7 @@ struct GoalCounterView: View {
     var size: CGFloat = 50
     @Binding var date: Date
     var showIcon: Bool = false
+    var checkmarkSize: CGFloat = 15
     
     private var currentGoalCount: Int {
         if let progress = habit.findProgress(from: date) {
@@ -28,7 +29,7 @@ struct GoalCounterView: View {
         ZStack {
             HStack {
                 if goalCompletion >= 1 {
-                    AnimatedCheckmark(animationDuration: 1.25)
+                    AnimatedCheckmark(animationDuration: 1.25, size: checkmarkSize)
                 } else {
                     if let char = habit.icon,
                        showIcon {
@@ -67,6 +68,7 @@ struct Checkmark: Shape {
 struct AnimatedCheckmark: View {
     var animationDuration: Double = 0.75
     var color: Color = .white
+    @State var size: CGFloat = 15
     @State private var innerTrimEnd: CGFloat = 0
     @State private var scale = 1.0
     var body: some View {
@@ -74,7 +76,7 @@ struct AnimatedCheckmark: View {
             Checkmark()
                 .trim(from: 0, to: innerTrimEnd)
                 .stroke(color, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
-                .frame(width: 15, height: 15)
+                .frame(width: size, height: size)
                 .scaleEffect(scale)
         }
         .onAppear {

@@ -15,6 +15,9 @@ class DataController: ObservableObject {
     
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Habiscus")
+        let url = URL.storeURL(for: "group.com.SkylarClemens.Habiscus", databaseName: "Habiscus")
+        let storeDescription = NSPersistentStoreDescription(url: url)
+        container.persistentStoreDescriptions = [storeDescription]
         
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")

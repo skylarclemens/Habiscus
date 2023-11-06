@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import UserNotifications
+import WidgetKit
 
 struct HabitManager {
     private let moc = DataController.shared.container.viewContext
@@ -36,6 +37,7 @@ struct HabitManager {
         
         updateProgress(progress)
         try? moc.save()
+        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
     // Makes sure the date is today or earlier
@@ -70,6 +72,7 @@ struct HabitManager {
         habit.lastUpdated = Date()
         
         try? moc.save()
+        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
     func setProgressSkip(_ habit: Habit? = nil, progress: Progress, skip: Bool) {
@@ -79,6 +82,7 @@ struct HabitManager {
         habit.lastUpdated = Date()
         
         try? moc.save()
+        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
     func skipNewProgress(_ habit: Habit? = nil, on date: Date) {
@@ -100,6 +104,7 @@ struct HabitManager {
         habit.lastUpdated = Date()
         
         try? moc.save()
+        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
     func markHabitComplete(_ habit: Habit? = nil, date: Date?) {
