@@ -29,6 +29,9 @@ struct ContentView: View {
         .toast(isPresenting: $toastManager.showAlert) {
             ActionAlertView(isSuccess: $toastManager.isSuccess, successTitle: toastManager.successTitle, errorMessage: toastManager.errorMessage)
         }
+        .onOpenURL { url in
+            navigator.handleIncomingURL(url)
+        }
         .environmentObject(toastManager)
         .environmentObject(navigator)
     }

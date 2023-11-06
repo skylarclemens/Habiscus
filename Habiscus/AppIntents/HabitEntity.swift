@@ -50,6 +50,10 @@ struct HabitEntity: AppEntity, Identifiable {
     @Property(title: "Archived")
     var isArchived: Bool
     
+    var url: URL? {
+        URL(string: "habiscus://open-habit?id=\(id)")
+    }
+    
     init(id: UUID, name: String?, createdAt: Date?, startDate: Date?, endDate: Date?, icon: String, color: String?, count: Int, goal: Int, unit: String, lastUpdated: Date?, isArchived: Bool) {
         let habitName = name ?? "Unknown name"
         

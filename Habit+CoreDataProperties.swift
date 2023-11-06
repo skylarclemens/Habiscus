@@ -50,6 +50,10 @@ extension Habit {
         icon ?? ""
     }
     
+    public var url: URL? {
+        URL(string: "habiscus://open-habit?id=\(id!)")
+    }
+    
     public var weekdaysStrings: [String] {
         let weekdaysComponents = weekdays?.components(separatedBy: ",")
         return weekdaysComponents?.compactMap { $0.trimmingCharacters(in: .whitespaces) } ?? []

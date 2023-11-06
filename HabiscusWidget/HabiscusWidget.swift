@@ -86,6 +86,7 @@ struct HabiscusWidgetEntryView : View {
         VStack {
             if let habit = entry.habit {
                 SmallHabitView(habit: habit)
+                    .widgetURL(habit.url)
             }
         }
     }
