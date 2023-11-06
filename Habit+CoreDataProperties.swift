@@ -50,6 +50,10 @@ extension Habit {
         icon ?? ""
     }
     
+    public var url: URL? {
+        URL(string: "habiscus://open-habit?id=\(id!)")
+    }
+    
     public var weekdaysStrings: [String] {
         let weekdaysComponents = weekdays?.components(separatedBy: ",")
         return weekdaysComponents?.compactMap { $0.trimmingCharacters(in: .whitespaces) } ?? []
@@ -150,6 +154,13 @@ extension Habit {
             })
         }
         return nil
+    }
+    
+    public func getCountByDate(from date: Date) -> Int {
+        guard let progress = findProgress(from: date) else {
+            return 0
+        }
+        return progress.totalCount
     }
     
     // Compares day the habit was first created and day since first progress to find starting day
