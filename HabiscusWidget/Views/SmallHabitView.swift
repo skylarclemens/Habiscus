@@ -17,7 +17,7 @@ struct SmallHabitView: View {
                 WidgetGoalCounter(size: 40, date: Date(), count: habit.count, goal: habit.goal, icon: habit.icon, checkmarkSize: 10)
                 Spacer()
                 if #available(iOS 17.0, *) {
-                    Button(intent: AddCountToHabit(habit: habit, date: Date(), amount: 1)) {
+                    Button(intent: AddCountToHabit(habit: habit, date: Date())) {
                         Label("Add", systemImage: "plus")
                     }
                     .labelStyle(.iconOnly)

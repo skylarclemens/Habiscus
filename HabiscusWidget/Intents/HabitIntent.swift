@@ -35,9 +35,9 @@ struct AddCountToHabit: AppIntent {
     var date: Date
     
     @Parameter(title: "Amount")
-    var amount: Int
+    var amount: Int?
     
-    init(habit: HabitEntity, date: Date, amount: Int) {
+    init(habit: HabitEntity, date: Date, amount: Int? = nil) {
         self.habit = habit
         self.date = date
         self.amount = amount
@@ -56,6 +56,10 @@ struct AddCountToHabit: AppIntent {
         }
         
         let habitManager = HabitManager(habit: selectedHabit)
+        
+        if amount == nil {
+            amount = selectedHabit.defaultCountNumber
+        }
         
         if let progress = selectedHabit.findProgress(from: date) {
             habitManager.addNewCount(progress: progress, date: date, amount: amount)

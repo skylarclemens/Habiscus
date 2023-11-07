@@ -22,7 +22,11 @@ struct AddCountView: View {
     
     var body: some View {
         Button {
-            showAddCountAlert.toggle()
+            if habit.customCount {
+                showAddCountAlert.toggle()
+            } else {
+                handleAddCount(habit.defaultCountNumber)
+            }
         } label: {
             Image(systemName: "plus")
                 .bold()
@@ -40,14 +44,19 @@ struct AddCountView: View {
                 .keyboardType(.numberPad)
             Button("Cancel", role: .cancel) { }
             Button("OK") {
-                if let progress = progress { habitManager.addNewCount(progress: progress, date: date, habit: habit, amount: countAmount)
-                } else {
-                    habitManager.addNewProgress(date: date, amount: countAmount)
-                }
-                
-                HapticManager.shared.simpleSuccess()
+                handleAddCount(countAmount)
             }
         }
+    }
+    
+    func handleAddCount(_ amount: Int) {
+        if let progress = progress {
+            habitManager.addNewCount(progress: progress, date: date, habit: habit, amount: amount)
+        } else {
+            habitManager.addNewProgress(date: date, amount: countAmount)
+        }
+        
+        HapticManager.shared.simpleSuccess()
     }
 }
 

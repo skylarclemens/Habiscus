@@ -1,8 +1,8 @@
 //
 //  Habit+CoreDataProperties.swift
-//  HabiscusAppIntents
+//  Habiscus - Habit Tracker
 //
-//  Created by Skylar Clemens on 8/23/23.
+//  Created by Skylar Clemens on 11/7/23.
 //
 //
 
@@ -31,13 +31,15 @@ extension Habit {
     @NSManaged public var startDate: Date?
     @NSManaged public var unit: String?
     @NSManaged public var weekdays: String?
+    @NSManaged public var defaultCount: Int16
+    @NSManaged public var customCount: Bool
     @NSManaged public var notifications: NSSet?
     @NSManaged public var progress: NSSet?
-
+    
     public var wrappedName: String {
         name ?? "Unkown name"
     }
-
+    
     public var createdDate: Date {
         createdAt ?? Date()
     }
@@ -63,11 +65,11 @@ extension Habit {
     public var weekdaysArray: [Weekday] {
         weekdaysStrings.compactMap { Weekday(rawValue: $0.localizedLowercase) ?? nil }
     }
-
+    
     public var formattedCreatedDate: String {
         createdAt?.formatted(.dateTime.day().month().year()) ?? "Date not found"
     }
-
+    
     public var progressArray: [Progress] {
         let set = progress as? Set<Progress> ?? []
         return set.sorted {
@@ -95,28 +97,32 @@ extension Habit {
         }
         return nil
     }
-
+    
     public var lastUpdatedDate: Date {
         lastUpdated ?? Date()
     }
-
+    
     public var habitColor: Color {
         Color(color ?? "pink")
     }
-
+    
     public var goalNumber: Int {
         Int(goal)
     }
-
+    
     // TODO: Switch to Goal
     public var goalInterval: Int {
         Int(interval)
     }
     
+    public var defaultCountNumber: Int {
+        Int(defaultCount)
+    }
+    
     public var goalFrequency: String {
         frequency ?? ""
     }
-
+    
     public var allCountsArray: [Count] {
         var tempCountArray: [Count] = []
         progressArray.forEach { item in
@@ -126,23 +132,23 @@ extension Habit {
         }
         return tempCountArray
     }
-
+    
     public func findProgress(from date: Date) -> Progress? {
         if let progressObjects = self.progress?.allObjects as? [Progress],
-            let progressOnDate = progressObjects.first(where: {
-            Calendar.current.isDate($0.wrappedDate, inSameDayAs: date)
-        }) {
+           let progressOnDate = progressObjects.first(where: {
+               Calendar.current.isDate($0.wrappedDate, inSameDayAs: date)
+           }) {
             return progressOnDate
         }
         return nil
     }
-
+    
     public func lastUpdatedProgress() -> Progress {
         return self.progressArray.reduce(self.progressArray[0], {
             $0.wrappedLastUpdated > $1.wrappedLastUpdated ? $0 : $1
         })
     }
-
+    
     public func mostRecentCount(from date: Date) -> Count? {
         guard let progress = findProgress(from: date) else {
             return nil
@@ -178,7 +184,7 @@ extension Habit {
         
         return (Double(completedProgress) / Double(progressDays) * 100)
     }
-
+    
     // Starts progress array at most recent, assumed that progress is array is already sorted
     // If first progress is not completed or is more than one day from today, returns a streak of 0
     // Returns first, most recent, streak of streak array
@@ -189,14 +195,14 @@ extension Habit {
         else {
             return 0
         }
-
+        
         var streaks: [Int] = []
         if Calendar.current.isDateInToday(mostRecentProgress.wrappedDate) || (closestProgress.isCompleted) {
             streaks = calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray)
         }
         return streaks.first ?? 0
     }
-
+    
     // Adds to streak if compared dates are completed and proper length apart
     // Returns array of all streaks
     public func calculateStreaksArray(from: [Progress]? = nil, onDays daysToCheck: [Weekday]) -> [Int] {
@@ -237,12 +243,11 @@ extension Habit {
         
         return streakArray
     }
-
+    
     // Gets the highest number in the streak array
     public func getLongestStreak() -> Int {
         calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray).max() ?? 0
     }
-    
 }
 
 // MARK: Generated accessors for notifications

@@ -154,8 +154,8 @@ struct HabitQuery: EntityPropertyQuery {
     ) async throws -> [HabitEntity] {
         let context = DataController.shared.container.viewContext
         let request: NSFetchRequest<Habit> = Habit.fetchRequest()
-        let predicate = NSCompoundPredicate(type: mode == .and ? .and : .or, subpredicates: comparators)
-        let sortDescriptors = toSortDescriptor(sortedBy)
+        //let predicate = NSCompoundPredicate(type: mode == .and ? .and : .or, subpredicates: comparators)
+        //let sortDescriptors = toSortDescriptor(sortedBy)
         let matchingHabits = try context.fetch(request)
         return matchingHabits.map {
             HabitEntity(habit: $0)

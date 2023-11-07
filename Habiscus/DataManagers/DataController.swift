@@ -7,29 +7,77 @@
 
 import CoreData
 import Foundation
+import CloudKit
 
 class DataController: ObservableObject {
     static let shared = DataController()
         
-    let container: NSPersistentContainer
+    let container: NSPersistentCloudKitContainer
     
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Habiscus")
+        container = NSPersistentCloudKitContainer(name: "Habiscus")
+        
         let url = URL.storeURL(for: "group.com.SkylarClemens.Habiscus", databaseName: "Habiscus")
         let storeDescription = NSPersistentStoreDescription(url: url)
+        storeDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        storeDescription.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        storeDescription.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.SkylarClemens.Habiscus")
         container.persistentStoreDescriptions = [storeDescription]
         
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
         }
         
+        guard let path = container.persistentStoreDescriptions.first?.url?.path else {
+            fatalError("error getting path")
+        }
+        print("Core Data", path)
+        
         container.loadPersistentStores { description, error in
             if let error = error {
-                print("Core Data failed to load \(error.localizedDescription)")
+                fatalError("Core Data failed to load \(error.localizedDescription)")
             }
-            
-            self.container.viewContext.automaticallyMergesChangesFromParent = true
-            self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        }
+        
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        
+        #if DEBUG
+        do {
+            // Use the container to initialize the development schema.
+            let options = NSPersistentCloudKitContainerSchemaInitializationOptions()
+            try self.container.initializeCloudKitSchema(options: options)
+        } catch {
+            print("Failed to initialize schema: \(error)")
+            // Handle any errors.
+        }
+        #endif
+    }
+    
+    private func iCloudStatus() {
+        CKContainer.default().accountStatus { returnedStatus, returnedError in
+            DispatchQueue.main.async {
+                switch returnedStatus {
+                case .couldNotDetermine:
+                    print("Could not determine")
+                    return
+                case .available:
+                    print("Signed in")
+                    return
+                case .restricted:
+                    print("Restricted")
+                    return
+                case .noAccount:
+                    print("No account")
+                    return
+                case .temporarilyUnavailable:
+                    print("Temporarily unavailable")
+                    return
+                @unknown default:
+                    print("Unknown")
+                    return
+                }
+            }
         }
     }
     
