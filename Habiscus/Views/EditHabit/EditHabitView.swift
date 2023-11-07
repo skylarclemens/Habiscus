@@ -112,7 +112,7 @@ struct EditHabitView: View {
                 .listRowInsets(EdgeInsets())
                 
             }
-            Section("Goal") {
+            Section {
                 HStack {
                     TextField("count", value: $habit.goal, format: .number)
                         .keyboardType(.numberPad)
@@ -123,7 +123,6 @@ struct EditHabitView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color(UIColor.secondarySystemGroupedBackground))
                         )
-                        .padding(4)
                         .frame(maxWidth: 100)
                     TextField("time(s)", text: $habit.unit ?? "")
                         .textInputAutocapitalization(.never)
@@ -140,11 +139,20 @@ struct EditHabitView: View {
                 }
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
                 .listRowInsets(EdgeInsets())
+            } header: {
+                Text("Goal")
+            } footer: {
+                Text("Adjust the default count in 'Additional options'.")
             }
             .listRowSeparator(.hidden)
             DateOptions(frequency: $frequency, weekdays: $weekdays, interval: $habit.interval, startDate: $startDate, endDate: $habit.endDate)
             
             RemindersView(setReminders: $setReminders, selectedTime: $selectedTime, notifications: $notifications)
+            NavigationLink {
+                AdditionalOptionsView(isCustomCount: $habit.customCount, defaultCount: $habit.defaultCount)
+            } label: {
+                Text("Additional options")
+            }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

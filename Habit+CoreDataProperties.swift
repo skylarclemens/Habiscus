@@ -32,6 +32,7 @@ extension Habit {
     @NSManaged public var unit: String?
     @NSManaged public var weekdays: String?
     @NSManaged public var defaultCount: Int16
+    @NSManaged public var customCount: Bool
     @NSManaged public var notifications: NSSet?
     @NSManaged public var progress: NSSet?
     
@@ -112,6 +113,10 @@ extension Habit {
     // TODO: Switch to Goal
     public var goalInterval: Int {
         Int(interval)
+    }
+    
+    public var defaultCountNumber: Int {
+        Int(defaultCount)
     }
     
     public var goalFrequency: String {
