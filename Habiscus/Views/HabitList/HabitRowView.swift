@@ -49,6 +49,24 @@ struct HabitRowView: View {
         HabitManager(habit: habit)
     }
     
+    @State var showActionAlert: Bool = false
+    @State var alertTitle = ""
+    @State var alertMessage = ""
+    @State var alertAction: AlertAction = .archive
+    var actionButtonText: String {
+        switch alertAction {
+        case .archive:
+            return "Archive"
+        case .delete:
+            return "Delete"
+        }
+    }
+    
+    enum AlertAction {
+        case archive
+        case delete
+    }
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -111,21 +129,10 @@ struct HabitRowView: View {
                         }
                     }
                     Button {
-                        withAnimation {
-                            do {
-                                try habitManager.archiveHabit()
-                                toastManager.successTitle = "\(habit.wrappedName) has been archived"
-                                toastManager.isSuccess = true
-                                toastManager.showAlert = true
-                                HapticManager.shared.simpleSuccess()
-                            } catch let error {
-                                print(error.localizedDescription)
-                                toastManager.errorMessage = "Error while archiving"
-                                toastManager.isSuccess = false
-                                toastManager.showAlert = true
-                                HapticManager.shared.simpleError()
-                            }
-                        }
+                        self.alertTitle = "Archive \(habit.wrappedName)"
+                        self.alertMessage = "Are you sure you want to archive this habit?"
+                        self.alertAction = .archive
+                        showActionAlert = true
                     } label: {
                         Label("Archive", systemImage: "archivebox")
                     }
@@ -151,25 +158,57 @@ struct HabitRowView: View {
                     }
                 }
                 Button(role: .destructive) {
-                    withAnimation {
-                        do {
-                            toastManager.successTitle = "\(habit.wrappedName) has been deleted"
-                            try habitManager.removeHabit()
-                            toastManager.isSuccess = true
-                            toastManager.showAlert = true
-                            HapticManager.shared.simpleSuccess()
-                        } catch let error {
-                            print(error.localizedDescription)
-                            toastManager.errorMessage = "Error while deleting"
-                            toastManager.isSuccess = false
-                            toastManager.showAlert = true
-                            HapticManager.shared.simpleError()
-                        }
-                    }
+                    self.alertTitle = "Delete \(habit.wrappedName)"
+                    self.alertMessage = "Are you sure you want to permanently delete \(habit.wrappedName)?\n\nAll data associated with this habit will be deleted. You cannot undo this action."
+                    self.alertAction = .delete
+                    showActionAlert = true
                 } label: {
                     Label("Delete", systemImage: "trash")
                 }
             }
+        }
+        .alert(self.alertTitle, isPresented: $showActionAlert) {
+            Button(actionButtonText, role: .destructive) {
+                Task {
+                    switch alertAction {
+                    case .archive:
+                        withAnimation {
+                            do {
+                                try habitManager.archiveHabit()
+                                toastManager.successTitle = "\(habit.wrappedName) has been archived"
+                                toastManager.isSuccess = true
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleSuccess()
+                            } catch let error {
+                                print(error.localizedDescription)
+                                toastManager.errorMessage = "Error while archiving"
+                                toastManager.isSuccess = false
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleError()
+                            }
+                        }
+                    case .delete:
+                        withAnimation {
+                            do {
+                                toastManager.successTitle = "\(habit.wrappedName) has been deleted"
+                                try habitManager.removeHabit()
+                                toastManager.isSuccess = true
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleSuccess()
+                            } catch let error {
+                                print(error.localizedDescription)
+                                toastManager.errorMessage = "Error while deleting"
+                                toastManager.isSuccess = false
+                                toastManager.showAlert = true
+                                HapticManager.shared.simpleError()
+                            }
+                        }
+                    }
+                }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text(self.alertMessage)
         }
     }
 }
