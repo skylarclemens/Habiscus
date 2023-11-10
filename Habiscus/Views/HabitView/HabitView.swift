@@ -40,6 +40,24 @@ struct HabitView: View {
     
     @State private var showSkippedOverlay: Bool = false
     
+    @State var showActionAlert: Bool = false
+    @State var alertTitle = ""
+    @State var alertMessage = ""
+    @State var alertAction: AlertAction = .archive
+    var actionButtonText: String {
+        switch alertAction {
+        case .archive:
+            return "Archive"
+        case .delete:
+            return "Delete"
+        }
+    }
+    
+    enum AlertAction {
+        case archive
+        case delete
+    }
+    
     var body: some View {
         if habit.isDeleted {
             Text("Sorry, habit has been deleted!")
@@ -116,11 +134,11 @@ struct HabitView: View {
                         }
                     }
                     .padding(.horizontal)
+                    .frame(maxWidth: 500)
                     
-                    StatisticsView(habit: habit)
-                        .padding()
-                    
-                    VStack {
+                    VStack(alignment: .center, spacing: 16) {
+                        StatisticsView(habit: habit)
+                            .padding(.horizontal)
                         CalendarView(habit: habit, date: $date, size: 40, color: habit.habitColor)
                             .background(
                                 RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -128,9 +146,7 @@ struct HabitView: View {
                                     .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                             )
                             .padding(.horizontal)
-                    }
-                    
-                    VStack {
+                            
                         CountGridView(habit: habit, size: 14, spacing: 4)
                             .padding(.vertical, 20)
                             .background(
@@ -138,17 +154,14 @@ struct HabitView: View {
                                     .fill(.regularMaterial)
                                     .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                             )
-                            .padding()
-                    }
-                    .frame(maxWidth: .infinity)
-                    
-                    VStack {
+                            .padding(.horizontal)
+                            .frame(maxWidth: 500)
                         if showEntries {
                             VStack(alignment: .leading) {
                                 Section {
                                     ForEach(progress?.countsArray ?? []) { count in
                                         HStack(spacing: 12) {
-                                            Text("+1")
+                                            Text("+\(count.amount)")
                                                 .foregroundColor(.white)
                                                 .padding(8)
                                                 .background(
@@ -156,7 +169,7 @@ struct HabitView: View {
                                                         .fill(habit.habitColor.opacity(0.8))
                                                         .shadow(color: habit.habitColor.opacity(0.3), radius: 4, y: 2)
                                                 )
-                                            Text(count.dateString)
+                                            Text(count.createdDateString)
                                         }
                                     }
                                 } header: {
@@ -164,6 +177,7 @@ struct HabitView: View {
                                         .font(.headline)
                                         .padding(.bottom, 4)
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .padding()
                             .background(
@@ -171,21 +185,24 @@ struct HabitView: View {
                                     .fill(.regularMaterial)
                                     .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                             )
-                            .padding()
+                            .padding(.horizontal)
                             .transition(.asymmetric(
                                 insertion: .move(edge: .trailing).combined(with: .opacity),
                                 removal: .scale.combined(with: .opacity)
                             ))
+                            .frame(maxWidth: 500, alignment: .leading)
+                            .opacity(showEntries ? 1 : 0)
+                            .animation(.spring(), value: showEntries)
+                        }
+                        if let startDate = habit.startDate {
+                            Text("Start date: \(startDate.formatted(date: .abbreviated, time: .omitted))")
+                                .foregroundColor(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, 24)
                         }
                     }
-                    .opacity(showEntries ? 1 : 0)
-                    .animation(.spring(), value: showEntries)
-                    if let startDate = habit.startDate {
-                        Text("Start date: \(startDate.formatted(date: .abbreviated, time: .omitted))")
-                            .foregroundColor(.secondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
-                    }
+                    .padding(.top)
+                    .frame(maxWidth: 500)
                 }
                 .toolbar {
                     ToolbarItem {
@@ -197,44 +214,12 @@ struct HabitView: View {
                                     Label("Edit", systemImage: "pencil")
                                 }
                                 Button {
-                                    withAnimation {
-                                        do {
-                                            try habitManager.archiveHabit()
-                                            toastManager.successTitle = "\(habit.wrappedName) has been archived"
-                                            toastManager.isSuccess = true
-                                            toastManager.showAlert = true
-                                            HapticManager.shared.simpleSuccess()
-                                            dismiss()
-                                        } catch let error {
-                                            print(error.localizedDescription)
-                                            toastManager.errorMessage = "Error while archiving"
-                                            toastManager.isSuccess = false
-                                            toastManager.showAlert = true
-                                            HapticManager.shared.simpleError()
-                                        }
-                                    }
+                                    self.alertTitle = "Archive \(habit.wrappedName)"
+                                    self.alertMessage = "Are you sure you want to archive this habit?"
+                                    self.alertAction = .archive
+                                    showActionAlert = true
                                 } label: {
                                     Label("Archive", systemImage: "archivebox")
-                                }
-                                Button(role: .destructive) {
-                                    withAnimation {
-                                        do {
-                                            toastManager.successTitle = "\(habit.wrappedName) has been deleted"
-                                            try habitManager.removeHabit()
-                                            toastManager.isSuccess = true
-                                            toastManager.showAlert = true
-                                            HapticManager.shared.simpleSuccess()
-                                        } catch let error {
-                                            print(error.localizedDescription)
-                                            toastManager.errorMessage = "Error while deleting"
-                                            toastManager.isSuccess = false
-                                            toastManager.showAlert = true
-                                            HapticManager.shared.simpleError()
-                                        }
-                                    }
-                                    dismiss()
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
                                 }
                             } else {
                                 Button {
@@ -258,6 +243,14 @@ struct HabitView: View {
                                     Label("Restore from archive", systemImage: "arrow.uturn.backward")
                                 }
                             }
+                            Button(role: .destructive) {
+                                self.alertTitle = "Delete \(habit.wrappedName)"
+                                self.alertMessage = "Are you sure you want to permanently delete \(habit.wrappedName)?\n\nAll data associated with this habit will be deleted. You cannot undo this action."
+                                self.alertAction = .delete
+                                showActionAlert = true
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
                         } label: {
                             Image(systemName: "ellipsis")
                         }
@@ -269,6 +262,50 @@ struct HabitView: View {
                             .navigationTitle("Edit habit")
                     }
                     .environment(\.managedObjectContext, update.childContext)
+                }
+                .alert(self.alertTitle, isPresented: $showActionAlert) {
+                    Button(actionButtonText, role: .destructive) {
+                        Task {
+                            switch alertAction {
+                            case .archive:
+                                withAnimation {
+                                    do {
+                                        try habitManager.archiveHabit()
+                                        toastManager.successTitle = "\(habit.wrappedName) has been archived"
+                                        toastManager.isSuccess = true
+                                        toastManager.showAlert = true
+                                        HapticManager.shared.simpleSuccess()
+                                    } catch let error {
+                                        print(error.localizedDescription)
+                                        toastManager.errorMessage = "Error while archiving"
+                                        toastManager.isSuccess = false
+                                        toastManager.showAlert = true
+                                        HapticManager.shared.simpleError()
+                                    }
+                                }
+                            case .delete:
+                                withAnimation {
+                                    do {
+                                        toastManager.successTitle = "\(habit.wrappedName) has been deleted"
+                                        try habitManager.removeHabit()
+                                        toastManager.isSuccess = true
+                                        toastManager.showAlert = true
+                                        HapticManager.shared.simpleSuccess()
+                                    } catch let error {
+                                        print(error.localizedDescription)
+                                        toastManager.errorMessage = "Error while deleting"
+                                        toastManager.isSuccess = false
+                                        toastManager.showAlert = true
+                                        HapticManager.shared.simpleError()
+                                    }
+                                }
+                                dismiss()
+                            }
+                        }
+                    }
+                    Button("Cancel", role: .cancel) { }
+                } message: {
+                    Text(self.alertMessage)
                 }
             }
         }
