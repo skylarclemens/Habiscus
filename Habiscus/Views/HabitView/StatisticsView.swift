@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct StatisticsView: View {
+    @Environment(\.horizontalSizeClass) var sizeClass
     @ObservedObject var habit: Habit
     
     private var currentStreak: Int {
@@ -27,7 +28,7 @@ struct StatisticsView: View {
     }
     
     var body: some View {
-        LazyVGrid(columns: columns, alignment: .leading) {
+        LazyVGrid(columns: columns, alignment: sizeClass == .compact ? .leading : .center) {
             VStack(alignment: .leading) {
                 Text("Longest streak")
                     .font(.system(size: 12, weight: .medium, design: .rounded))

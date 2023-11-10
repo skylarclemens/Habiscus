@@ -134,11 +134,11 @@ struct HabitView: View {
                         }
                     }
                     .padding(.horizontal)
+                    .frame(maxWidth: 500)
                     
-                    StatisticsView(habit: habit)
-                        .padding()
-                    
-                    VStack {
+                    VStack(alignment: .center, spacing: 16) {
+                        StatisticsView(habit: habit)
+                            .padding(.horizontal)
                         CalendarView(habit: habit, date: $date, size: 40, color: habit.habitColor)
                             .background(
                                 RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -146,9 +146,7 @@ struct HabitView: View {
                                     .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                             )
                             .padding(.horizontal)
-                    }
-                    
-                    VStack {
+                            
                         CountGridView(habit: habit, size: 14, spacing: 4)
                             .padding(.vertical, 20)
                             .background(
@@ -156,17 +154,14 @@ struct HabitView: View {
                                     .fill(.regularMaterial)
                                     .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                             )
-                            .padding()
-                    }
-                    .frame(maxWidth: .infinity)
-                    
-                    VStack {
+                            .padding(.horizontal)
+                            .frame(maxWidth: 500)
                         if showEntries {
                             VStack(alignment: .leading) {
                                 Section {
                                     ForEach(progress?.countsArray ?? []) { count in
                                         HStack(spacing: 12) {
-                                            Text("+1")
+                                            Text("+\(count.amount)")
                                                 .foregroundColor(.white)
                                                 .padding(8)
                                                 .background(
@@ -174,7 +169,7 @@ struct HabitView: View {
                                                         .fill(habit.habitColor.opacity(0.8))
                                                         .shadow(color: habit.habitColor.opacity(0.3), radius: 4, y: 2)
                                                 )
-                                            Text(count.dateString)
+                                            Text(count.createdDateString)
                                         }
                                     }
                                 } header: {
@@ -182,6 +177,7 @@ struct HabitView: View {
                                         .font(.headline)
                                         .padding(.bottom, 4)
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .padding()
                             .background(
@@ -189,21 +185,24 @@ struct HabitView: View {
                                     .fill(.regularMaterial)
                                     .shadow(color: Color.black.opacity(0.1), radius: 12, y: 8)
                             )
-                            .padding()
+                            .padding(.horizontal)
                             .transition(.asymmetric(
                                 insertion: .move(edge: .trailing).combined(with: .opacity),
                                 removal: .scale.combined(with: .opacity)
                             ))
+                            .frame(maxWidth: 500, alignment: .leading)
+                            .opacity(showEntries ? 1 : 0)
+                            .animation(.spring(), value: showEntries)
+                        }
+                        if let startDate = habit.startDate {
+                            Text("Start date: \(startDate.formatted(date: .abbreviated, time: .omitted))")
+                                .foregroundColor(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, 24)
                         }
                     }
-                    .opacity(showEntries ? 1 : 0)
-                    .animation(.spring(), value: showEntries)
-                    if let startDate = habit.startDate {
-                        Text("Start date: \(startDate.formatted(date: .abbreviated, time: .omitted))")
-                            .foregroundColor(.secondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
-                    }
+                    .padding(.top)
+                    .frame(maxWidth: 500)
                 }
                 .toolbar {
                     ToolbarItem {
