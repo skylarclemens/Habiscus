@@ -22,6 +22,7 @@ struct EditHabitView: View {
     @ObservedObject var habit: Habit
     
     @State private var openEmojiPicker: Bool = false
+    @State private var openActionPicker: Bool = false
     @FocusState private var focusedInput: FocusedField?
     enum FocusedField: Hashable {
         case goalCountField
@@ -45,6 +46,9 @@ struct EditHabitView: View {
             .weekends: [.saturday, .sunday],
         ]
     }
+    @State var actions: [Action] = []
+    
+    @State var progressMethod: String = "Actions"
     
     init(habit: Habit) {
         self.habit = habit
@@ -113,38 +117,59 @@ struct EditHabitView: View {
                 
             }
             Section {
-                HStack {
-                    TextField("count", value: $habit.goal, format: .number)
-                        .keyboardType(.numberPad)
-                        .focused($focusedInput, equals: .goalCountField)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color(UIColor.secondarySystemGroupedBackground))
-                        )
-                        .frame(maxWidth: 100)
-                    TextField("time(s)", text: $habit.unit ?? "")
-                        .textInputAutocapitalization(.never)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color(UIColor.secondarySystemGroupedBackground))
-                        )
-                        .submitLabel(.done)
-                    Text("per \(frequency == .daily ? "day" : "week")")
-                        .font(.callout)
-                        .foregroundColor(.secondary)
+                Picker("Progress method", selection: $progressMethod) {
+                    Text("Counts")
+                        .tag("Counts")
+                    Text("Actions")
+                        .tag("Actions")
                 }
-                .listRowBackground(Color(UIColor.systemGroupedBackground))
-                .listRowInsets(EdgeInsets())
-            } header: {
-                Text("Goal")
-            } footer: {
-                Text("Adjust the default count in 'Additional options'.")
             }
-            .listRowSeparator(.hidden)
+            if progressMethod == "Counts" {
+                Section {
+                    HStack {
+                        TextField("count", value: $habit.goal, format: .number)
+                            .keyboardType(.numberPad)
+                            .focused($focusedInput, equals: .goalCountField)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
+                            )
+                            .frame(maxWidth: 100)
+                        TextField("time(s)", text: $habit.unit ?? "")
+                            .textInputAutocapitalization(.never)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(UIColor.secondarySystemGroupedBackground))
+                            )
+                            .submitLabel(.done)
+                        Text("per \(frequency == .daily ? "day" : "week")")
+                            .font(.callout)
+                            .foregroundColor(.secondary)
+                    }
+                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                    .listRowInsets(EdgeInsets())
+                } header: {
+                    Text("Goal")
+                } footer: {
+                    Text("Adjust the default count in 'Additional options'.")
+                }
+                .listRowSeparator(.hidden)
+            } else {
+                Section {
+                    if !actions.isEmpty {
+                        ForEach(actions, id: \.self) { (action: Action) in
+                            SelectedActionRow(action: action)
+                        }
+                    }
+                    Button("Manage actions") {
+                        openActionPicker = true
+                    }
+                }
+            }
             DateOptions(frequency: $frequency, weekdays: $weekdays, interval: $habit.interval, startDate: $startDate, endDate: $habit.endDate)
             
             RemindersView(setReminders: $setReminders, selectedTime: $selectedTime, notifications: $notifications)
@@ -209,6 +234,9 @@ struct EditHabitView: View {
             IconPickerView(selectedIcon: $habit.icon)
                 .presentationDetents([.fraction(0.8), .large])
                 .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $openActionPicker) {
+            ActionSelectorView(actions: $actions)
         }
     }
 }
