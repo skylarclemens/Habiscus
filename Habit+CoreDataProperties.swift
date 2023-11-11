@@ -70,6 +70,13 @@ extension Habit {
         createdAt?.formatted(.dateTime.day().month().year()) ?? "Date not found"
     }
     
+    public var actionsArray: [Action] {
+        let set = actions as? Set<Action> ?? []
+        return set.sorted {
+            $0.order < $1.order
+        }
+    }
+    
     public var progressArray: [Progress] {
         let set = progress as? Set<Progress> ?? []
         return set.sorted {

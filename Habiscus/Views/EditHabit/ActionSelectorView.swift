@@ -7,36 +7,7 @@
 
 import SwiftUI
 
-final class ActionSelectorModel: ObservableObject {
-    @Published var actions: [Action] = []
-    
-    func removeAction(at offsets: IndexSet) {
-        actions.remove(atOffsets: offsets)
-    }
-    
-    func move(from source: IndexSet, to destination: Int) {
-        //var movingItems: [Action] = actions.map { $0 }
-        
-        //print(source)
-        print("Before")
-        print(actions)
-        actions.move(fromOffsets: source, toOffset: destination)
-        
-        /*if let oldIndex = source.first, oldIndex != destination {
-            let newIndex = oldIndex < destination ? destination - 1 : destination
-            
-        }*/
-        actions.enumerated().forEach { currentIndex, action in
-            action.order = Int16(currentIndex)
-        }
-        
-        print("After")
-        print(actions)
-    }
-}
-
 struct ActionSelectorView: View {
-    @ObservedObject var actionViewModel = ActionSelectorModel()
     @Environment(\.managedObjectContext) private var childContext
     @Environment(\.dismiss) private var dismiss
     @State private var editMode: EditMode = EditMode.active
@@ -52,7 +23,7 @@ struct ActionSelectorView: View {
                         ScrollView(.horizontal) {
                             HStack {
                                 ForEach(ActionType.allCases) { action in
-                                    ActionListRowLarge(actions: $actionViewModel.actions, action: action)
+                                    ActionListRowLarge(actions: $actions, action: action)
                                 }
                             }
                             .padding(.horizontal)
@@ -63,12 +34,12 @@ struct ActionSelectorView: View {
                             .padding(.leading, 24)
                             .zIndex(1)
                         List {
-                            if !actionViewModel.actions.isEmpty {
-                                ForEach(actionViewModel.actions, id: \.self) { action in
+                            if !actions.isEmpty {
+                                ForEach(actions, id: \.self) { action in
                                     SelectedActionRow(action: action, showTimerButton: true)
                                 }
-                                .onDelete(perform: actionViewModel.removeAction)
-                                .onMove(perform: actionViewModel.move)
+                                .onDelete(perform: removeAction)
+                                .onMove(perform: move)
                             } else {
                                 Text("No actions added")
                                     .foregroundStyle(.secondary)
@@ -82,7 +53,6 @@ struct ActionSelectorView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        self.actions = self.actionViewModel.actions
                         dismiss()
                     } label: {
                         Text("Done")
@@ -91,8 +61,25 @@ struct ActionSelectorView: View {
                 }
             }
         }
-        .onAppear {
-            self.actionViewModel.actions = self.actions
+    }
+    
+    func removeAction(at offsets: IndexSet) {
+        for index in offsets {
+            let action = actions[index]
+            childContext.delete(action)
+            actions.remove(atOffsets: offsets)
+        }
+        setActionOrder()
+    }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        actions.move(fromOffsets: source, toOffset: destination)
+        setActionOrder()
+    }
+    
+    func setActionOrder() {
+        actions.enumerated().forEach { currentIndex, action in
+            action.order = Int16(currentIndex)
         }
     }
 }
@@ -190,53 +177,10 @@ struct ActionListRowLarge: View {
     }
 }
 
-/*struct ActionListRow: View {
-    @Environment(\.managedObjectContext) private var childContext
-    @Binding var actions: [Action]
-    let action: ActionType
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Group {
-                    Image(systemName: action.symbol())
-                        .font(.system(size: 32))
-                        .foregroundStyle(.white.opacity(0.5))
-                    Text(action.label())
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
-                        .foregroundStyle(.white)
-                }
-                .offset(x: -8)
-                Spacer()
-                Button {
-                    withAnimation {
-                        addNewAction(type: action)
-                    }
-                } label: {
-                    Label("Add", systemImage: "plus.circle.fill")
-                        .font(.system(size: 20))
-                        .foregroundStyle(.thickMaterial)
-                }
-                .labelStyle(.iconOnly)
-            }
-            .padding(.trailing, 8)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(maxHeight: 42)
-            .background(action.color())
-            .clipShape(.rect(cornerRadius: 10))
-        }
-    }
-    
-    func addNewAction(type: ActionType) {
-        let newAction = Action(context: childContext)
-        newAction.type = type.rawValue
-        actions.append(newAction)
-        try? childContext.save()
-    }
-}*/
-
 #Preview {
-    NavigationStack {
-        ActionSelectorView(actions: .constant([]))
+    Previewing(\.newHabit) { habit in
+        NavigationStack {
+            ActionSelectorView(actions: .constant([]))
+        }
     }
 }

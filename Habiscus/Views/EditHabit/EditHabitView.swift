@@ -46,9 +46,11 @@ struct EditHabitView: View {
             .weekends: [.saturday, .sunday],
         ]
     }
-    @State var actions: [Action] = []
-    
-    @State var progressMethod: String = "Actions"
+    @State var actions: [Action]
+    @State private var progressMethod: HabitProgressMethod = .actions
+    private enum HabitProgressMethod {
+        case actions, counts
+    }
     
     init(habit: Habit) {
         self.habit = habit
@@ -56,6 +58,7 @@ struct EditHabitView: View {
         self._startDate = State(initialValue: habit.startDate ?? Calendar.current.startOfDay(for: Date()))
         self._weekdays = State(initialValue: (habit.weekdays != nil) ? Set(habit.weekdaysArray) : [Date().currentWeekday])
         self._notifications = State(initialValue: habit.notificationsArray)
+        self._actions = State(initialValue: habit.actionsArray)
         if let _ = habit.createdAt {
             if habit.notificationsArray.count > 0 {
                 if let firstNotification = habit.notificationsArray.first {
@@ -119,12 +122,12 @@ struct EditHabitView: View {
             Section {
                 Picker("Progress method", selection: $progressMethod) {
                     Text("Counts")
-                        .tag("Counts")
+                        .tag(HabitProgressMethod.counts)
                     Text("Actions")
-                        .tag("Actions")
+                        .tag(HabitProgressMethod.actions)
                 }
             }
-            if progressMethod == "Counts" {
+            if progressMethod == .counts {
                 Section {
                     HStack {
                         TextField("count", value: $habit.goal, format: .number)
@@ -173,10 +176,12 @@ struct EditHabitView: View {
             DateOptions(frequency: $frequency, weekdays: $weekdays, interval: $habit.interval, startDate: $startDate, endDate: $habit.endDate)
             
             RemindersView(setReminders: $setReminders, selectedTime: $selectedTime, notifications: $notifications)
-            NavigationLink {
-                AdditionalOptionsView(isCustomCount: $habit.customCount, defaultCount: $habit.defaultCount)
-            } label: {
-                Text("Additional options")
+            if progressMethod == .counts {
+                NavigationLink {
+                    AdditionalOptionsView(isCustomCount: $habit.customCount, defaultCount: $habit.defaultCount)
+                } label: {
+                    Text("Additional options")
+                }
             }
         }
         .toolbar {
@@ -195,6 +200,11 @@ struct EditHabitView: View {
                     habit.weekdays = daysSelected
                     habit.frequency = frequency.rawValue
                     habit.startDate = startDate
+                    if progressMethod == .actions {
+                        actions.forEach { action in
+                            action.habit = habit
+                        }
+                    }
                     
                     // Remove all current notifications
                     let habitManager = HabitManager(habit: habit)
