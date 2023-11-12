@@ -48,6 +48,13 @@ extension Progress {
         }
     }
     
+    public var actionsArray: [Action] {
+        let set = actions as? Set<Action> ?? []
+        return set.sorted {
+            $0.order < $1.order
+        }
+    }
+    
     public var totalCount: Int {
         countsArray.map({Int($0.amount)}).reduce(0, +)
     }

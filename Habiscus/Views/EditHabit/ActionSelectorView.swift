@@ -51,12 +51,9 @@ struct ActionSelectorView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
                         dismiss()
-                    } label: {
-                        Text("Done")
-                            .bold()
                     }
                 }
             }

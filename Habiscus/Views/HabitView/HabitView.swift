@@ -20,6 +20,10 @@ struct HabitView: View {
         return habit.findProgress(from: date)
     }
     
+    private var progressActions: [Action]? {
+        progress?.actionsArray
+    }
+    
     private var habitManager: HabitManager {
         HabitManager(habit: habit)
     }
@@ -92,7 +96,11 @@ struct HabitView: View {
                                 }
                                 Spacer()
                                 if !habit.isArchived {
-                                    AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                                    if habit.actionsArray.isEmpty {
+                                        AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                                    } else {
+                                        StartActionsView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                                    }
                                 }
                             }
                         }
@@ -135,6 +143,37 @@ struct HabitView: View {
                     }
                     .padding(.horizontal)
                     .frame(maxWidth: 500)
+                    if !habit.actionsArray.isEmpty {
+                        VStack(spacing: 16) {
+                            ForEach(habit.actionsArray) { action in
+                                HStack {
+                                    Image(systemName: action.actionType.symbol())
+                                        .font(.system(size: 20))
+                                        .foregroundStyle(.secondary)
+                                    Text(action.actionType.label())
+                                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                    if action.actionType == .timer {
+                                        Text("\(action.timerHoursAndMintutes.hours) hr, \(action.timerHoursAndMintutes.minutes) min")
+                                    }
+                                    Spacer()
+                                    if let progressAction = progressActions?.first(where: { $0.order == action.order }) {
+                                        Image(systemName: "\(progressAction.completed ? "checkmark.circle.fill" : "circle")")
+                                            .foregroundStyle(progressAction.completed ? Color.green : Color.secondary)
+                                            
+                                    } else {
+                                        Image(systemName: "circle")
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(10)
+                        .frame(maxWidth: 500, alignment: .leading)
+                        .background(Color(UIColor.tertiarySystemGroupedBackground))
+                        .clipShape(.rect(cornerRadius: 10))
+                        .padding(.horizontal)
+                        .padding(.top)
+                    }
                     
                     VStack(alignment: .center, spacing: 16) {
                         StatisticsView(habit: habit)
@@ -314,7 +353,7 @@ struct HabitView: View {
 
 struct HabitView_Previews: PreviewProvider {
     static var previews: some View {
-        Previewing(\.habit) { habit in
+        Previewing(\.habitWithActions) { habit in
             NavigationStack {
                 HabitView(habit: habit, date: .constant(Date()))
                     .navigationTitle(habit.wrappedName)

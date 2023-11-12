@@ -8,16 +8,59 @@
 import Foundation
 import SwiftUI
 
-struct ActionManager {
+class ActionManager: ObservableObject {
     private let moc = DataController.shared.container.viewContext
-    private let managedAction: Action?
     
-    init() {
-        self.managedAction = nil
+    @Published var actions: [Action] = []
+    @Published var currentAction: Action?
+    
+    var incompleteActions: [Action] {
+        actions.filter { $0.completed == false }
+    }
+    var incompleteOrderedActions: [Action] {
+        incompleteActions.sorted { $0.order < $1.order }
     }
     
-    init(action: Action) {
-        self.managedAction = action
+    func startProgressActions(progress: Progress?) {
+        guard let progress = progress else { return }
+        guard !progress.actionsArray.isEmpty else { return }
+        
+        actions = progress.actionsArray
+        currentAction = incompleteOrderedActions.first
+    }
+    
+    func createProgressActions(habit: Habit, progress: Progress?, date: Date) {
+        var currentProgress: Progress? = nil
+        
+        if let progress {
+            guard progress.actionsArray.isEmpty else {
+                self.actions = progress.actionsArray
+                return
+            }
+            currentProgress = progress
+        } else {
+            let newProgress = Progress(context: moc)
+            newProgress.id = UUID()
+            newProgress.date = date
+            newProgress.lastUpdated = Date()
+            newProgress.isCompleted = false
+            newProgress.habit = habit
+            habit.addToProgress(newProgress)
+            currentProgress = newProgress
+        }
+        
+        habit.actionsArray.forEach { action in
+            let newAction = Action(context: moc)
+            newAction.type = action.type
+            newAction.progress = currentProgress
+            newAction.order = action.order
+        }
+        
+        try? moc.save()
+    }
+    
+    func moveToNext() {
+        currentAction = incompleteOrderedActions.first
     }
 }
 
