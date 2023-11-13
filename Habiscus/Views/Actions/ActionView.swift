@@ -18,7 +18,7 @@ struct ActionView: View {
                 .presentationDetents([.fraction(0.5)])
         case .emotion:
             EmotionRatingActionView(action: action, moveToNext: actionManager.moveToNext)
-                .presentationDetents([.height(200)])
+                .presentationDetents([.height(225)])
         case .note:
             NotesActionView(action: action, moveToNext: actionManager.moveToNext)
                 .presentationDetents([.height(350)])

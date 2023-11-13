@@ -81,16 +81,13 @@ struct HabitRowView: View {
                         .font(.system(.title2, design: .rounded))
                         .fontWeight(.medium)
                         .foregroundColor(.white)
-                    if habit.icon != nil {
-                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
-                            .font(.system(.callout, design: .rounded))
-                            .bold()
-                            .foregroundColor(.white.opacity(0.75))
-                    }
+                    Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.progressMethod == .counts ? habit.wrappedUnit : "completed")")
+                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                        .foregroundColor(.white.opacity(0.75))
                 }
                 Spacer()
                 if !habit.isArchived {
-                    if habit.actionsArray.isEmpty {
+                    if habit.progressMethod == .counts {
                         AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
                     } else {
                         StartActionsView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
@@ -106,12 +103,14 @@ struct HabitRowView: View {
         .contextMenu {
             Group {
                 if !habit.isArchived {
-                    if let progress = progress,
-                       !progress.isEmpty {
-                        Button {
-                            habitManager.undoLastCount(from: date)
-                        } label: {
-                            Label("Undo last count", systemImage: "arrow.uturn.backward")
+                    if habit.progressMethod == .counts {
+                        if let progress = progress,
+                           !progress.isEmpty {
+                            Button {
+                                habitManager.undoLastCount(from: date)
+                            } label: {
+                                Label("Undo last count", systemImage: "arrow.uturn.backward")
+                            }
                         }
                     }
                     if !isSkipped {
@@ -133,14 +132,6 @@ struct HabitRowView: View {
                             Label("Undo skip", systemImage: "backward.end")
                         }
                     }
-                    Button {
-                        self.alertTitle = "Archive \(habit.wrappedName)"
-                        self.alertMessage = "Are you sure you want to archive this habit?"
-                        self.alertAction = .archive
-                        showActionAlert = true
-                    } label: {
-                        Label("Archive", systemImage: "archivebox")
-                    }
                 } else {
                     Button {
                         withAnimation {
@@ -161,14 +152,6 @@ struct HabitRowView: View {
                     } label: {
                         Label("Restore from archive", systemImage: "arrow.uturn.backward")
                     }
-                }
-                Button(role: .destructive) {
-                    self.alertTitle = "Delete \(habit.wrappedName)"
-                    self.alertMessage = "Are you sure you want to permanently delete \(habit.wrappedName)?\n\nAll data associated with this habit will be deleted. You cannot undo this action."
-                    self.alertAction = .delete
-                    showActionAlert = true
-                } label: {
-                    Label("Delete", systemImage: "trash")
                 }
             }
         }

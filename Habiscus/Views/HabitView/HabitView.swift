@@ -86,16 +86,13 @@ struct HabitView: View {
                                         .minimumScaleFactor(0.5)
                                         .padding(.trailing, 8)
                                         .lineLimit(1)
-                                    if habit.icon != nil {
-                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
-                                            .font(.system(.callout, design: .rounded))
-                                            .bold()
-                                            .foregroundColor(.white.opacity(0.75))
-                                    }
+                                    Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.progressMethod == .counts ? habit.wrappedUnit : "completed")")
+                                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                                        .foregroundColor(.white.opacity(0.75))
                                 }
                                 Spacer()
                                 if !habit.isArchived {
-                                    if habit.actionsArray.isEmpty {
+                                    if habit.progressMethod == .counts {
                                         AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
                                     } else {
                                         StartActionsView(habit: habit, progress: progress, date: $date, habitManager: habitManager)

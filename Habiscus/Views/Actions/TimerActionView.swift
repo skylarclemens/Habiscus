@@ -54,6 +54,8 @@ struct TimerActionView: View {
                     .tint(.secondary)
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(UIColor.systemGroupedBackground))
             .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
                 if action.isTimerRunning {
                     action.elapsedTime += 1
@@ -64,8 +66,6 @@ struct TimerActionView: View {
             }
             .onChange(of: showToast) { _ in
                 if showToast {
-                    print(action.elapsedTime)
-                    print(action.number)
                     toastManager.successTitle = "Timer has been completed"
                     toastManager.isSuccess = true
                     toastManager.showAlert = true

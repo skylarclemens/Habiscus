@@ -77,6 +77,10 @@ extension Habit {
         }
     }
     
+    public var progressMethod: HabitProgressMethod {
+        actionsArray.isEmpty ? HabitProgressMethod.counts : HabitProgressMethod.actions
+    }
+    
     public var progressArray: [Progress] {
         let set = progress as? Set<Progress> ?? []
         return set.sorted {
@@ -114,7 +118,11 @@ extension Habit {
     }
     
     public var goalNumber: Int {
-        Int(goal)
+        if progressMethod == .counts {
+            Int(goal)
+        } else {
+            actionsArray.count
+        }
     }
     
     // TODO: Switch to Goal

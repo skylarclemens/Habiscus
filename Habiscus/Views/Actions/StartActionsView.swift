@@ -23,10 +23,8 @@ struct StartActionsView: View {
     var body: some View {
         Button {
             actionManager.createProgressActions(habit: habit, progress: progress, date: date)
-            actionManager.startProgressActions(progress: progress)
-            if actionManager.currentAction != nil {
-                showActionsSheet = true
-            }
+            actionManager.startProgressActions()
+            HapticManager.shared.simpleSuccess()
         } label: {
             Image(systemName: "play.fill")
                 .bold()
@@ -63,6 +61,10 @@ struct StartActionsView_Previews: PreviewProvider {
         progress.addToCounts(count)
         habit.addToProgress(progress)
         
-        return StartActionsView(habit: habit, date: .constant(Date.now), habitManager: HabitManager())
+        return VStack {
+            StartActionsView(habit: habit, date: .constant(Date.now), habitManager: HabitManager())
+        }.padding()
+        .background(.pink)
+        .clipShape(.rect(cornerRadius: 10))
     }
 }

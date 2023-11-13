@@ -13,6 +13,7 @@ class ActionManager: ObservableObject {
     
     @Published var actions: [Action] = []
     @Published var currentAction: Action?
+    @Published var currentProgress: Progress?
     
     var incompleteActions: [Action] {
         actions.filter { $0.completed == false }
@@ -21,23 +22,18 @@ class ActionManager: ObservableObject {
         incompleteActions.sorted { $0.order < $1.order }
     }
     
-    func startProgressActions(progress: Progress?) {
-        guard let progress = progress else { return }
+    func startProgressActions() {
+        guard let progress = currentProgress else { return }
         guard !progress.actionsArray.isEmpty else { return }
         
-        actions = progress.actionsArray
-        currentAction = incompleteOrderedActions.first
+        self.actions = progress.actionsArray
+        self.currentAction = incompleteOrderedActions.first
     }
     
     func createProgressActions(habit: Habit, progress: Progress?, date: Date) {
-        var currentProgress: Progress? = nil
-        
         if let progress {
-            guard progress.actionsArray.isEmpty else {
-                self.actions = progress.actionsArray
-                return
-            }
             currentProgress = progress
+            guard progress.actionsArray.isEmpty else { return }
         } else {
             let newProgress = Progress(context: moc)
             newProgress.id = UUID()

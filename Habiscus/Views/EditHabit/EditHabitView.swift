@@ -48,9 +48,6 @@ struct EditHabitView: View {
     }
     @State var actions: [Action]
     @State private var progressMethod: HabitProgressMethod = .counts
-    private enum HabitProgressMethod {
-        case actions, counts
-    }
     
     init(habit: Habit) {
         self.habit = habit
