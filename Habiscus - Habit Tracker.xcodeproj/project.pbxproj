@@ -34,6 +34,8 @@
 		7E5074CE2AF718E500872D4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E67A7A32A6B52BA001E0C23 /* Assets.xcassets */; };
 		7E55A2EC2B028C560060CE66 /* HabitProgressMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E55A2EB2B028C560060CE66 /* HabitProgressMethod.swift */; };
 		7E55A2ED2B028C880060CE66 /* HabitProgressMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E55A2EB2B028C560060CE66 /* HabitProgressMethod.swift */; };
+		7E55A2F12B02B51D0060CE66 /* ActionListRowLarge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E55A2F02B02B51D0060CE66 /* ActionListRowLarge.swift */; };
+		7E55A2F32B02BD610060CE66 /* ActionInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E55A2F22B02BD610060CE66 /* ActionInfoView.swift */; };
 		7E56091D2A9428CC0003568D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56091C2A9428CC0003568D /* HomeView.swift */; };
 		7E5609202A951C880003568D /* ColorSchemeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E56091F2A951C880003568D /* ColorSchemeViewModifier.swift */; };
 		7E5609222A9522410003568D /* AppearanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5609212A9522410003568D /* AppearanceView.swift */; };
@@ -184,6 +186,8 @@
 		7E4EAC7D2A94030400EC16A5 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		7E4EF3E42A96C9E60006E33C /* HabitsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsManager.swift; sourceTree = "<group>"; };
 		7E55A2EB2B028C560060CE66 /* HabitProgressMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitProgressMethod.swift; sourceTree = "<group>"; };
+		7E55A2F02B02B51D0060CE66 /* ActionListRowLarge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionListRowLarge.swift; sourceTree = "<group>"; };
+		7E55A2F22B02BD610060CE66 /* ActionInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionInfoView.swift; sourceTree = "<group>"; };
 		7E56091C2A9428CC0003568D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7E56091F2A951C880003568D /* ColorSchemeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeViewModifier.swift; sourceTree = "<group>"; };
 		7E5609212A9522410003568D /* AppearanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceView.swift; sourceTree = "<group>"; };
@@ -510,6 +514,8 @@
 				7E5FFE6E2AFEE84000C644A3 /* ActionSelectorView.swift */,
 				7E29FDA82AFFEE0A006C98F0 /* TimePickerWheel.swift */,
 				7E55A2EB2B028C560060CE66 /* HabitProgressMethod.swift */,
+				7E55A2F02B02B51D0060CE66 /* ActionListRowLarge.swift */,
+				7E55A2F22B02BD610060CE66 /* ActionInfoView.swift */,
 			);
 			path = EditHabit;
 			sourceTree = "<group>";
@@ -717,6 +723,7 @@
 				7ED649732B017D9B0083E80D /* NotesActionView.swift in Sources */,
 				7E3AE21A2A96D37B00BFAC65 /* HabitEntity.swift in Sources */,
 				7E93174F2A7D84160074E210 /* HapticManager.swift in Sources */,
+				7E55A2F32B02BD610060CE66 /* ActionInfoView.swift in Sources */,
 				7E55A2EC2B028C560060CE66 /* HabitProgressMethod.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,
 				7E56091D2A9428CC0003568D /* HomeView.swift in Sources */,
@@ -728,6 +735,7 @@
 				7EE5ED372A8E9656007424CD /* MultiSelect.swift in Sources */,
 				7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */,
 				7E86D00D2AFC22FF008E41B8 /* RedactedHabitView.swift in Sources */,
+				7E55A2F12B02B51D0060CE66 /* ActionListRowLarge.swift in Sources */,
 				7E5FFE6F2AFEE84000C644A3 /* ActionSelectorView.swift in Sources */,
 				7EE16BD02A9015D1002720DC /* EditHabitView.swift in Sources */,
 				7E5609202A951C880003568D /* ColorSchemeViewModifier.swift in Sources */,
