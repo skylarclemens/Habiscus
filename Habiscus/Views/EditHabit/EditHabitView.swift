@@ -56,6 +56,7 @@ struct EditHabitView: View {
         self._weekdays = State(initialValue: (habit.weekdays != nil) ? Set(habit.weekdaysArray) : [Date().currentWeekday])
         self._notifications = State(initialValue: habit.notificationsArray)
         self._actions = State(initialValue: habit.actionsArray)
+        self._progressMethod = State(initialValue: habit.wrappedProgressMethod)
         if let _ = habit.createdAt {
             if habit.notificationsArray.count > 0 {
                 if let firstNotification = habit.notificationsArray.first {
@@ -197,6 +198,7 @@ struct EditHabitView: View {
                     habit.weekdays = daysSelected
                     habit.frequency = frequency.rawValue
                     habit.startDate = startDate
+                    habit.progressMethod = progressMethod.rawValue
                     if progressMethod == .actions {
                         actions.forEach { action in
                             action.habit = habit

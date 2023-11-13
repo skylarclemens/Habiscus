@@ -56,7 +56,7 @@ extension Progress {
     }
     
     public var totalCount: Int {
-        if habit?.progressMethod == .counts {
+        if habit?.wrappedProgressMethod == .counts {
             countsArray.map({Int($0.amount)}).reduce(0, +)
         } else {
             actionsArray.filter { $0.completed }.count

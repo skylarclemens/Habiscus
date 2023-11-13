@@ -97,7 +97,13 @@ struct SelectedActionRow: View {
                     if showTimerButton {
                         TimePickerWheel(time: action.timerHoursAndMintutes, timerNumber: $action.number)
                     } else {
-                        Text("\(action.timerHoursAndMintutes.hours) hr, \(action.timerHoursAndMintutes.minutes) min")
+                        Text(action.number.formattedTimeText())
+                            .font(.subheadline)
+                            .foregroundStyle(.primary.opacity(0.75))
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 2)
+                            .background(.ultraThinMaterial)
+                            .clipShape(.rect(cornerRadius: 6))
                     }
                 }
             }

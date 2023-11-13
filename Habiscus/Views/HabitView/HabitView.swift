@@ -86,13 +86,13 @@ struct HabitView: View {
                                         .minimumScaleFactor(0.5)
                                         .padding(.trailing, 8)
                                         .lineLimit(1)
-                                    Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.progressMethod == .counts ? habit.wrappedUnit : "completed")")
+                                    Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedProgressMethod == .counts ? habit.wrappedUnit : "completed")")
                                         .font(.system(size: 16, weight: .semibold, design: .rounded))
                                         .foregroundColor(.white.opacity(0.75))
                                 }
                                 Spacer()
                                 if !habit.isArchived {
-                                    if habit.progressMethod == .counts {
+                                    if habit.wrappedProgressMethod == .counts {
                                         AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
                                     } else {
                                         StartActionsView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
@@ -149,7 +149,13 @@ struct HabitView: View {
                                     Text(action.actionType.label())
                                         .font(.system(size: 15, weight: .semibold, design: .rounded))
                                     if action.actionType == .timer {
-                                        Text("\(action.timerHoursAndMintutes.hours) hr, \(action.timerHoursAndMintutes.minutes) min")
+                                        Text(action.number.formattedTimeText())
+                                            .font(.subheadline)
+                                            .foregroundStyle(.primary.opacity(0.75))
+                                            .padding(.horizontal, 4)
+                                            .padding(.vertical, 2)
+                                            .background(.ultraThinMaterial)
+                                            .clipShape(.rect(cornerRadius: 6))
                                     }
                                     Spacer()
                                     if let progressAction = progressActions?.first(where: { $0.order == action.order }) {

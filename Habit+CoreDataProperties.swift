@@ -2,7 +2,7 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus - Habit Tracker
 //
-//  Created by Skylar Clemens on 11/10/23.
+//  Created by Skylar Clemens on 11/13/23.
 //
 //
 
@@ -10,12 +10,13 @@ import Foundation
 import CoreData
 import SwiftUI
 
+
 extension Habit {
-    
+
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Habit> {
         return NSFetchRequest<Habit>(entityName: "Habit")
     }
-    
+
     @NSManaged public var color: String?
     @NSManaged public var createdAt: Date?
     @NSManaged public var customCount: Bool
@@ -32,9 +33,11 @@ extension Habit {
     @NSManaged public var startDate: Date?
     @NSManaged public var unit: String?
     @NSManaged public var weekdays: String?
+    @NSManaged public var progressMethod: String?
+    @NSManaged public var actions: NSSet?
     @NSManaged public var notifications: NSSet?
     @NSManaged public var progress: NSSet?
-    @NSManaged public var actions: NSSet?
+    
     
     public var wrappedName: String {
         name ?? "Unkown name"
@@ -77,8 +80,11 @@ extension Habit {
         }
     }
     
-    public var progressMethod: HabitProgressMethod {
-        actionsArray.isEmpty ? HabitProgressMethod.counts : HabitProgressMethod.actions
+    public var wrappedProgressMethod: HabitProgressMethod {
+        if let progressMethod {
+            return HabitProgressMethod(rawValue: progressMethod) ?? .counts
+        }
+        return .counts
     }
     
     public var progressArray: [Progress] {
@@ -118,7 +124,7 @@ extension Habit {
     }
     
     public var goalNumber: Int {
-        if progressMethod == .counts {
+        if wrappedProgressMethod == .counts {
             Int(goal)
         } else {
             actionsArray.count
@@ -264,59 +270,60 @@ extension Habit {
         calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray).max() ?? 0
     }
     
-}
 
-// MARK: Generated accessors for notifications
-extension Habit {
-    
-    @objc(addNotificationsObject:)
-    @NSManaged public func addToNotifications(_ value: Notification)
-    
-    @objc(removeNotificationsObject:)
-    @NSManaged public func removeFromNotifications(_ value: Notification)
-    
-    @objc(addNotifications:)
-    @NSManaged public func addToNotifications(_ values: NSSet)
-    
-    @objc(removeNotifications:)
-    @NSManaged public func removeFromNotifications(_ values: NSSet)
-    
-}
-
-// MARK: Generated accessors for progress
-extension Habit {
-    
-    @objc(addProgressObject:)
-    @NSManaged public func addToProgress(_ value: Progress)
-    
-    @objc(removeProgressObject:)
-    @NSManaged public func removeFromProgress(_ value: Progress)
-    
-    @objc(addProgress:)
-    @NSManaged public func addToProgress(_ values: NSSet)
-    
-    @objc(removeProgress:)
-    @NSManaged public func removeFromProgress(_ values: NSSet)
-    
 }
 
 // MARK: Generated accessors for actions
 extension Habit {
-    
+
     @objc(addActionsObject:)
     @NSManaged public func addToActions(_ value: Action)
-    
+
     @objc(removeActionsObject:)
     @NSManaged public func removeFromActions(_ value: Action)
-    
+
     @objc(addActions:)
     @NSManaged public func addToActions(_ values: NSSet)
-    
+
     @objc(removeActions:)
     @NSManaged public func removeFromActions(_ values: NSSet)
-    
+
+}
+
+// MARK: Generated accessors for notifications
+extension Habit {
+
+    @objc(addNotificationsObject:)
+    @NSManaged public func addToNotifications(_ value: Notification)
+
+    @objc(removeNotificationsObject:)
+    @NSManaged public func removeFromNotifications(_ value: Notification)
+
+    @objc(addNotifications:)
+    @NSManaged public func addToNotifications(_ values: NSSet)
+
+    @objc(removeNotifications:)
+    @NSManaged public func removeFromNotifications(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for progress
+extension Habit {
+
+    @objc(addProgressObject:)
+    @NSManaged public func addToProgress(_ value: Progress)
+
+    @objc(removeProgressObject:)
+    @NSManaged public func removeFromProgress(_ value: Progress)
+
+    @objc(addProgress:)
+    @NSManaged public func addToProgress(_ values: NSSet)
+
+    @objc(removeProgress:)
+    @NSManaged public func removeFromProgress(_ values: NSSet)
+
 }
 
 extension Habit : Identifiable {
-    
+
 }

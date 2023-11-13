@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum HabitProgressMethod {
+public enum HabitProgressMethod: String {
     case actions, counts
 }

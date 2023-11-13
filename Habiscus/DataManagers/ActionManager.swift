@@ -58,6 +58,13 @@ class ActionManager: ObservableObject {
     }
     
     func moveToNext() {
+        guard let currentProgress else { return }
+        if !currentProgress.isCompleted && currentProgress.checkCompleted() {
+            currentProgress.isCompleted = true
+        }
+        if moc.hasChanges {
+            try? moc.save()
+        }
         currentAction = incompleteOrderedActions.first
     }
 }

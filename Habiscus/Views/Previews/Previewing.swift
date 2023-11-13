@@ -89,11 +89,16 @@ struct PreviewData {
             habit.frequency = "daily"
             habit.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
             
-            let action = Action(context: context)
-            action.type = "emotion"
-            action.order = 0
+            let timerAction = Action(context: context)
+            timerAction.type = "timer"
+            timerAction.order = 0
+            timerAction.number = 60
+            habit.addToActions(timerAction)
             
-            habit.addToActions(action)
+            let emotionAction = Action(context: context)
+            emotionAction.type = "emotion"
+            emotionAction.order = 1
+            habit.addToActions(emotionAction)
             
             return habit
         }

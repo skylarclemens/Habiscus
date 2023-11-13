@@ -126,4 +126,18 @@ extension Double {
             return String(format: "%02d:%02d", minutes, seconds)
         }
     }
+    
+    func formattedTimeText() -> String {
+        let interval = Int(self)
+        
+        let hours = (interval / 3600)
+        let minutes = (interval / 60) % 60
+        let seconds = interval % 60
+        
+        if hours > 0 {
+            return String(format: "%d hr, %d min", hours, minutes)
+        } else {
+            return String(format: "%d min", minutes)
+        }
+    }
 }

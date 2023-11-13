@@ -81,13 +81,13 @@ struct HabitRowView: View {
                         .font(.system(.title2, design: .rounded))
                         .fontWeight(.medium)
                         .foregroundColor(.white)
-                    Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.progressMethod == .counts ? habit.wrappedUnit : "completed")")
+                    Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedProgressMethod == .counts ? habit.wrappedUnit : "completed")")
                         .font(.system(size: 16, weight: .semibold, design: .rounded))
                         .foregroundColor(.white.opacity(0.75))
                 }
                 Spacer()
                 if !habit.isArchived {
-                    if habit.progressMethod == .counts {
+                    if habit.wrappedProgressMethod == .counts {
                         AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
                     } else {
                         StartActionsView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
@@ -103,7 +103,7 @@ struct HabitRowView: View {
         .contextMenu {
             Group {
                 if !habit.isArchived {
-                    if habit.progressMethod == .counts {
+                    if habit.wrappedProgressMethod == .counts {
                         if let progress = progress,
                            !progress.isEmpty {
                             Button {
