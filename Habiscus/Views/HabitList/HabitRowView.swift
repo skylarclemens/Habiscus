@@ -90,7 +90,11 @@ struct HabitRowView: View {
                 }
                 Spacer()
                 if !habit.isArchived {
-                    AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                    if habit.actionsArray.isEmpty {
+                        AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                    } else {
+                        StartActionsView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                    }
                 }
             }
             .padding()

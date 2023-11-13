@@ -81,12 +81,11 @@ struct HabitView: View {
                                 GoalCounterView(habit: habit, size: 60, date: $date, showIcon: true)
                                 VStack(alignment: .leading) {
                                     Text(habit.wrappedName)
-                                        .font(.system(size: 38, design: .rounded))
-                                        .bold()
+                                        .font(.system(size: 38, weight: .semibold, design: .rounded))
                                         .foregroundColor(.white)
                                         .minimumScaleFactor(0.5)
-                                        .padding(.trailing)
-                                        .lineLimit(2)
+                                        .padding(.trailing, 8)
+                                        .lineLimit(1)
                                     if habit.icon != nil {
                                         Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
                                             .font(.system(.callout, design: .rounded))
@@ -169,8 +168,12 @@ struct HabitView: View {
                         }
                         .padding(10)
                         .frame(maxWidth: 500, alignment: .leading)
-                        .background(Color(UIColor.tertiarySystemGroupedBackground))
+                        .background(.regularMaterial)
                         .clipShape(.rect(cornerRadius: 10))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.secondary.opacity(0.15), lineWidth: 1)
+                        )
                         .padding(.horizontal)
                         .padding(.top)
                     }

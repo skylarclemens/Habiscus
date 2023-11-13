@@ -12,32 +12,55 @@ struct NotesActionView: View {
     @ObservedObject var action: Action
     var moveToNext: () -> Void
     
+    @FocusState private var focusedInput: FocusedField?
+    enum FocusedField: Hashable {
+        case note
+    }
+    
     @State var noteText: String = ""
     var body: some View {
         NavigationStack {
             VStack {
                 TextField("Note", text: $noteText, axis: .vertical)
                     .lineLimit(10, reservesSpace: true)
+                    .textInputAutocapitalization(.never)
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.tertiary, lineWidth: 1)
+                            .fill(Color(UIColor.secondarySystemGroupedBackground))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.quaternary, lineWidth: 1)
+                            )
                     )
-            }
-            .padding()
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    .focused($focusedInput, equals: .note)
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+                    Button {
                         setNote(with: noteText)
                         dismiss()
                         moveToNext()
+                    } label: {
+                        Text("Done")
+                            .frame(maxWidth: .infinity)
                     }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
                 }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
+                .padding(.vertical, 8)
+            }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(UIColor.systemGroupedBackground))
+            .onAppear {
+                focusedInput = .note
             }
         }
     }

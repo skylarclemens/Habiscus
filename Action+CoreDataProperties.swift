@@ -2,7 +2,7 @@
 //  Action+CoreDataProperties.swift
 //  Habiscus - Habit Tracker
 //
-//  Created by Skylar Clemens on 11/10/23.
+//  Created by Skylar Clemens on 11/12/23.
 //
 //
 
@@ -16,12 +16,14 @@ extension Action {
         return NSFetchRequest<Action>(entityName: "Action")
     }
 
-    @NSManaged public var type: String?
-    @NSManaged public var order: Int16
-    @NSManaged public var date: Date?
     @NSManaged public var completed: Bool
-    @NSManaged public var text: String?
+    @NSManaged public var date: Date?
     @NSManaged public var number: Double
+    @NSManaged public var order: Int16
+    @NSManaged public var text: String?
+    @NSManaged public var type: String?
+    @NSManaged public var elapsedTime: Double
+    @NSManaged public var isTimerRunning: Bool
     @NSManaged public var habit: Habit?
     @NSManaged public var progress: Progress?
     
@@ -30,11 +32,20 @@ extension Action {
     }
     
     public var timerHoursAndMintutes: (hours: Int , minutes: Int) {
-        minutesToHoursAndMinutes(Int(number))
+        intervalToHoursAndMinutes(Int(number))
     }
     
-    public func minutesToHoursAndMinutes(_ minutes: Int) -> (hours: Int , minutes: Int) {
-        return (minutes / 60, (minutes % 60))
+    public func intervalToHoursAndMinutes(_ interval: Int) -> (hours: Int , minutes: Int) {
+        return ((interval / 3600), (interval / 60) % 60)
+    }
+    
+    public func toggleTimer() {
+        self.isTimerRunning.toggle()
+    }
+    
+    public func resetTimer() {
+        self.elapsedTime = 0
+        self.isTimerRunning = false
     }
 }
 

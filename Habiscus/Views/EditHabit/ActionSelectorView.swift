@@ -166,7 +166,7 @@ struct ActionListRowLarge: View {
         let newAction = Action(context: childContext)
         newAction.type = type.rawValue
         if type == .timer {
-            newAction.number = 1.0
+            newAction.number = 60.0
         }
         newAction.order = Int16(actions.count)
         actions.append(newAction)

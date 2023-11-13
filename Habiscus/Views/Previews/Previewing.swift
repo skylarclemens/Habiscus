@@ -143,4 +143,15 @@ struct PreviewData {
             return Habit(context: context)
         }
     }
+    
+    var timerAction: (NSManagedObjectContext) -> Action {
+        { context in
+            let action = Action(context: context)
+            action.type = "Timer"
+            action.number = 30
+            action.order = 0
+            
+            return action
+        }
+    }
 }

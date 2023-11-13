@@ -14,15 +14,26 @@ struct ActionView: View {
     var body: some View {
         switch action.actionType {
         case .timer:
-            TimerActionView(action: action, moveToNext: actionManager.moveToNext)
+            TimerActionView(action: action, actionManager: actionManager)
+                .presentationDetents([.fraction(0.5)])
         case .emotion:
             EmotionRatingActionView(action: action, moveToNext: actionManager.moveToNext)
+                .presentationDetents([.height(200)])
         case .note:
             NotesActionView(action: action, moveToNext: actionManager.moveToNext)
+                .presentationDetents([.height(350)])
         }
     }
 }
 
 #Preview {
-    ActionView(action: Action(), actionManager: ActionManager())
+    Previewing(\.timerAction) { action in
+        VStack {
+            
+        }
+        .sheet(isPresented: .constant(true)) {
+            ActionView(action: action, actionManager: ActionManager())
+        }
+        
+    }
 }

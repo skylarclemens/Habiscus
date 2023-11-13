@@ -11,8 +11,8 @@ struct TimePickerWheel: View {
     @Environment(\.managedObjectContext) private var childContext
     
     @State var time: (hours: Int, minutes: Int) = (hours: 0, minutes: 1)
-    var totalInMinutes: Double {
-        Double((time.hours * 60) + time.minutes)
+    var totalInSeconds: Double {
+        Double((time.hours * 3600) + time.minutes * 60)
     }
     
     @Binding var timerNumber: Double
@@ -49,8 +49,8 @@ struct TimePickerWheel: View {
             }
             .presentationCompactAdaptation(.popover)
         }
-        .onChange(of: totalInMinutes) { newValue in
-            self.timerNumber = totalInMinutes
+        .onChange(of: totalInSeconds) { newValue in
+            self.timerNumber = totalInSeconds
         }
     }
 }

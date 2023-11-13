@@ -41,24 +41,31 @@ struct EmotionRatingActionView: View {
                         .clipShape(.rect(cornerRadius: 10))
                     }
                 }
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+                    Button {
+                        setEmotionActionRating(with: selectedEmotion)
+                        dismiss()
+                        moveToNext()
+                    } label: {
+                        Text("Done")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                }
+                .padding(.vertical, 8)
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(UIColor.systemGroupedBackground))
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        setEmotionActionRating(with: selectedEmotion)
-                        dismiss()
-                        moveToNext()
-                    }
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
         }
     }
     

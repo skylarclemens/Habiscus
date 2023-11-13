@@ -54,6 +54,8 @@ class ActionManager: ObservableObject {
             newAction.type = action.type
             newAction.progress = currentProgress
             newAction.order = action.order
+            newAction.number = action.number
+            newAction.text = action.text
         }
         
         try? moc.save()
