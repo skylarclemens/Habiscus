@@ -72,6 +72,38 @@ struct PreviewData {
         }
     }
     
+    var habitWithActions: (NSManagedObjectContext) -> Habit {
+        { context in
+            let habit = Habit(context: context)
+            habit.id = UUID()
+            habit.name = "Test"
+            habit.icon = "🤩"
+            habit.color = "blue"
+            habit.createdAt = Date.now
+            habit.startDate = Date()
+            habit.endDate = nil
+            habit.isArchived = false
+            habit.goal = 1
+            habit.unit = "count"
+            habit.interval = 1
+            habit.frequency = "daily"
+            habit.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+            
+            let timerAction = Action(context: context)
+            timerAction.type = "timer"
+            timerAction.order = 0
+            timerAction.number = 60
+            habit.addToActions(timerAction)
+            
+            let emotionAction = Action(context: context)
+            emotionAction.type = "emotion"
+            emotionAction.order = 1
+            habit.addToActions(emotionAction)
+            
+            return habit
+        }
+    }
+    
     var habits: (NSManagedObjectContext) -> [Habit] {
         { context in
             var previewHabits: [Habit] = []
@@ -114,6 +146,17 @@ struct PreviewData {
     var newHabit: (NSManagedObjectContext) -> Habit {
         { context in
             return Habit(context: context)
+        }
+    }
+    
+    var timerAction: (NSManagedObjectContext) -> Action {
+        { context in
+            let action = Action(context: context)
+            action.type = "Timer"
+            action.number = 30
+            action.order = 0
+            
+            return action
         }
     }
 }

@@ -9,37 +9,37 @@ import SwiftUI
 
 struct SettingsView: View {
     var body: some View {
-        NavigationStack {
-            List {
-                Section {
-                    NavigationLink {
-                        AppearanceView()
-                    } label: {
-                        Label("Appearance", systemImage: "paintpalette")
-                    }
-                    NavigationLink {
-                        ArchiveView()
-                    } label: {
-                        Label("Archive", systemImage: "archivebox")
-                    }
-                    NavigationLink {
-                        RemindersSettingsView()
-                    } label: {
-                        Label("Reminders", systemImage: "bell")
-                    }
-                    
+        List {
+            Section {
+                NavigationLink {
+                    AppearanceView()
+                } label: {
+                    Label("Appearance", systemImage: "paintpalette")
                 }
+                NavigationLink {
+                    ArchiveView()
+                } label: {
+                    Label("Archive", systemImage: "archivebox")
+                }
+                NavigationLink {
+                    RemindersSettingsView()
+                } label: {
+                    Label("Reminders", systemImage: "bell")
+                }
+                
             }
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.large)
         }
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.large)
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         Previewing(\.newHabit) { habit in
-            SettingsView()
+            NavigationStack {
+                SettingsView()
+            }
         }
     }
 }

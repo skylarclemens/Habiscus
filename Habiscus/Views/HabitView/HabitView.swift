@@ -20,6 +20,10 @@ struct HabitView: View {
         return habit.findProgress(from: date)
     }
     
+    private var progressActions: [Action]? {
+        progress?.actionsArray
+    }
+    
     private var habitManager: HabitManager {
         HabitManager(habit: habit)
     }
@@ -77,22 +81,22 @@ struct HabitView: View {
                                 GoalCounterView(habit: habit, size: 60, date: $date, showIcon: true)
                                 VStack(alignment: .leading) {
                                     Text(habit.wrappedName)
-                                        .font(.system(size: 38, design: .rounded))
-                                        .bold()
+                                        .font(.system(size: 38, weight: .semibold, design: .rounded))
                                         .foregroundColor(.white)
                                         .minimumScaleFactor(0.5)
-                                        .padding(.trailing)
-                                        .lineLimit(2)
-                                    if habit.icon != nil {
-                                        Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedUnit)")
-                                            .font(.system(.callout, design: .rounded))
-                                            .bold()
-                                            .foregroundColor(.white.opacity(0.75))
-                                    }
+                                        .padding(.trailing, 8)
+                                        .lineLimit(1)
+                                    Text("\(progress?.totalCount ?? 0) / \(habit.goalNumber) \(habit.wrappedProgressMethod == .counts ? habit.wrappedUnit : "completed")")
+                                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                                        .foregroundColor(.white.opacity(0.75))
                                 }
                                 Spacer()
                                 if !habit.isArchived {
-                                    AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                                    if habit.wrappedProgressMethod == .counts {
+                                        AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                                    } else {
+                                        StartActionsView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                                    }
                                 }
                             }
                         }
@@ -135,6 +139,47 @@ struct HabitView: View {
                     }
                     .padding(.horizontal)
                     .frame(maxWidth: 500)
+                    if !habit.actionsArray.isEmpty {
+                        VStack(spacing: 16) {
+                            ForEach(habit.actionsArray) { action in
+                                HStack {
+                                    Image(systemName: action.actionType.symbol())
+                                        .font(.system(size: 20))
+                                        .foregroundStyle(.secondary)
+                                    Text(action.actionType.label())
+                                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                    if action.actionType == .timer {
+                                        Text(action.number.formattedTimeText())
+                                            .font(.subheadline)
+                                            .foregroundStyle(.primary.opacity(0.75))
+                                            .padding(.horizontal, 4)
+                                            .padding(.vertical, 2)
+                                            .background(.ultraThinMaterial)
+                                            .clipShape(.rect(cornerRadius: 6))
+                                    }
+                                    Spacer()
+                                    if let progressAction = progressActions?.first(where: { $0.order == action.order }) {
+                                        Image(systemName: "\(progressAction.completed ? "checkmark.circle.fill" : "circle")")
+                                            .foregroundStyle(progressAction.completed ? Color.green : Color.secondary)
+                                            
+                                    } else {
+                                        Image(systemName: "circle")
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(10)
+                        .frame(maxWidth: 500, alignment: .leading)
+                        .background(.regularMaterial)
+                        .clipShape(.rect(cornerRadius: 10))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.secondary.opacity(0.15), lineWidth: 1)
+                        )
+                        .padding(.horizontal)
+                        .padding(.top)
+                    }
                     
                     VStack(alignment: .center, spacing: 16) {
                         StatisticsView(habit: habit)
@@ -314,7 +359,7 @@ struct HabitView: View {
 
 struct HabitView_Previews: PreviewProvider {
     static var previews: some View {
-        Previewing(\.habit) { habit in
+        Previewing(\.habitWithActions) { habit in
             NavigationStack {
                 HabitView(habit: habit, date: .constant(Date()))
                     .navigationTitle(habit.wrappedName)

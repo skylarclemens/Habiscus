@@ -2,7 +2,7 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus - Habit Tracker
 //
-//  Created by Skylar Clemens on 11/7/23.
+//  Created by Skylar Clemens on 11/13/23.
 //
 //
 
@@ -19,6 +19,8 @@ extension Habit {
 
     @NSManaged public var color: String?
     @NSManaged public var createdAt: Date?
+    @NSManaged public var customCount: Bool
+    @NSManaged public var defaultCount: Int16
     @NSManaged public var endDate: Date?
     @NSManaged public var frequency: String?
     @NSManaged public var goal: Int16
@@ -31,10 +33,11 @@ extension Habit {
     @NSManaged public var startDate: Date?
     @NSManaged public var unit: String?
     @NSManaged public var weekdays: String?
-    @NSManaged public var defaultCount: Int16
-    @NSManaged public var customCount: Bool
+    @NSManaged public var progressMethod: String?
+    @NSManaged public var actions: NSSet?
     @NSManaged public var notifications: NSSet?
     @NSManaged public var progress: NSSet?
+    
     
     public var wrappedName: String {
         name ?? "Unkown name"
@@ -68,6 +71,20 @@ extension Habit {
     
     public var formattedCreatedDate: String {
         createdAt?.formatted(.dateTime.day().month().year()) ?? "Date not found"
+    }
+    
+    public var actionsArray: [Action] {
+        let set = actions as? Set<Action> ?? []
+        return set.sorted {
+            $0.order < $1.order
+        }
+    }
+    
+    public var wrappedProgressMethod: HabitProgressMethod {
+        if let progressMethod {
+            return HabitProgressMethod(rawValue: progressMethod) ?? .counts
+        }
+        return .counts
     }
     
     public var progressArray: [Progress] {
@@ -107,7 +124,11 @@ extension Habit {
     }
     
     public var goalNumber: Int {
-        Int(goal)
+        if wrappedProgressMethod == .counts {
+            Int(goal)
+        } else {
+            actionsArray.count
+        }
     }
     
     // TODO: Switch to Goal
@@ -248,6 +269,25 @@ extension Habit {
     public func getLongestStreak() -> Int {
         calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray).max() ?? 0
     }
+    
+
+}
+
+// MARK: Generated accessors for actions
+extension Habit {
+
+    @objc(addActionsObject:)
+    @NSManaged public func addToActions(_ value: Action)
+
+    @objc(removeActionsObject:)
+    @NSManaged public func removeFromActions(_ value: Action)
+
+    @objc(addActions:)
+    @NSManaged public func addToActions(_ values: NSSet)
+
+    @objc(removeActions:)
+    @NSManaged public func removeFromActions(_ values: NSSet)
+
 }
 
 // MARK: Generated accessors for notifications
