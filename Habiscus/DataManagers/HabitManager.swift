@@ -11,14 +11,21 @@ import UserNotifications
 import WidgetKit
 
 struct HabitManager {
-    private let moc = DataController.shared.container.viewContext
+    private let moc: NSManagedObjectContext
     private let managedHabit: Habit?
     
     init() {
+        self.moc = DataController.shared.container.viewContext
         self.managedHabit = nil
     }
     
     init(habit: Habit) {
+        self.moc = DataController.shared.container.viewContext
+        self.managedHabit = habit
+    }
+    
+    init(habit: Habit, context: NSManagedObjectContext) {
+        self.moc = context
         self.managedHabit = habit
     }
     
@@ -135,6 +142,7 @@ struct HabitManager {
         } catch let error {
             print(error.localizedDescription)
         }
+        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
     func unarchiveHabit(_ habit: Habit? = nil) throws {
@@ -143,6 +151,7 @@ struct HabitManager {
         }
         habit.isArchived = false
         try? moc.save()
+        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
     func removeHabit(_ habit: Habit? = nil) throws {
@@ -152,6 +161,7 @@ struct HabitManager {
         removeAllNotifications(habit)
         moc.delete(habit)
         try? moc.save()
+        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
     func removeHabit(_ habit: Habit? = nil, toastManager: ToastManager) throws {
@@ -173,6 +183,7 @@ struct HabitManager {
             toastManager.showAlert = true
             HapticManager.shared.simpleError()
         }
+        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
     func removeAllNotifications(_ habit: Habit? = nil) {

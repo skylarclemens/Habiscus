@@ -31,7 +31,6 @@ class DataController: ObservableObject {
         guard let path = container.persistentStoreDescriptions.first?.url?.path else {
             fatalError("error getting path")
         }
-        print("Core Data", path)
         
         container.loadPersistentStores { description, error in
             if let error = error {

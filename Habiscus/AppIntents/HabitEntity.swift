@@ -72,7 +72,7 @@ struct HabitEntity: AppEntity, Identifiable {
     }
     
     init(habit: Habit) {
-        self.id = habit.id!
+        self.id = habit.id ?? UUID()
         self.name = habit.wrappedName
         self.createdAt = habit.createdDate
         self.startDate = habit.startDate ?? Date()
@@ -114,7 +114,13 @@ struct HabitQuery: EntityPropertyQuery {
     }
     
     func defaultResult() async -> HabitEntity? {
-        try? await suggestedEntities().first
+        do {
+            let entity = try await suggestedEntities().first
+            return entity
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
     }
     
     static var sortingOptions = SortingOptions {

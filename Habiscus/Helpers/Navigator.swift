@@ -21,7 +21,6 @@ class Navigator: ObservableObject {
     }
     
     func handleIncomingURL(_ url: URL) {
-        print(url)
         guard url.scheme == "habiscus" else {
             return
         }

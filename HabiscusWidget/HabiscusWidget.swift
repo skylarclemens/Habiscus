@@ -24,18 +24,23 @@ struct HabitIntentProvider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: WidgetHabitSelection, in context: Context) async -> SimpleEntry {
-        SimpleEntry.placeholder
+        let habit = try? HabitsManager.shared.findHabit(id: configuration.habit.id, refresh: true)
+        if let habit {
+            let habitEntity = HabitEntity(habit: habit)
+            return SimpleEntry(habit: habitEntity, date: .now)
+        }
+        return SimpleEntry.placeholder
     }
     
     func timeline(for configuration: WidgetHabitSelection, in context: Context) async -> Timeline<SimpleEntry> {
-        let habit = try? HabitsManager.shared.findHabit(id: configuration.habit.id)
+        let habit = try? HabitsManager.shared.findHabit(id: configuration.habit.id, refresh: true)
         var entries: [SimpleEntry] = []
         if let habit {
             let habitEntity = HabitEntity(habit: habit)
-            let entry = SimpleEntry(habit: habitEntity, date: Date())
+            let entry = SimpleEntry(habit: habitEntity, date: .now)
             entries.append(entry)
         }
-        return Timeline(entries: entries, policy: .never)
+        return Timeline(entries: entries, policy: .atEnd)
     }
 }
 
@@ -49,7 +54,7 @@ struct Provider: TimelineProvider {
             let habits = try HabitsManager.shared.getAllActiveHabits()
             if let habit = habits.first {
                 let habitEntity = HabitEntity(habit: habit)
-                let entry = SimpleEntry(habit: habitEntity, date: Date())
+                let entry = SimpleEntry(habit: habitEntity, date: .now)
                 completion(entry)
             } else {
                 throw Errors.notFound
@@ -64,7 +69,7 @@ struct Provider: TimelineProvider {
             let habits = try HabitsManager.shared.getAllActiveHabits()
             var entries: [SimpleEntry] = []
 
-            let entryDate = Date()
+            let entryDate: Date = .now
             if let habit = habits.first {
                 let habitEntity = HabitEntity(habit: habit)
                 let entry = SimpleEntry(habit: habitEntity, date: entryDate)

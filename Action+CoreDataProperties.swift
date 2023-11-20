@@ -31,6 +31,18 @@ extension Action {
         ActionType(rawValue: type ?? "timer")!
     }
     
+    public var actionTypeString: String {
+        ActionType(rawValue: wrappedType)?.label() ?? ""
+    }
+    
+    public var wrappedType: String {
+        type ?? ""
+    }
+    
+    public var wrappedDate: Date {
+        date ?? Date()
+    }
+    
     public var timerHoursAndMintutes: (hours: Int , minutes: Int) {
         intervalToHoursAndMinutes(Int(number))
     }
