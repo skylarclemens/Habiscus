@@ -39,7 +39,12 @@ class HabitsManager: ObservableObject {
         return []
     }
     
-    func findHabit(id: UUID) throws -> Habit {
+    func findHabit(id: UUID, refresh: Bool = false) throws -> Habit {
+        if refresh {
+            try? self.context.setQueryGenerationFrom(.current)
+            self.context.refreshAllObjects()
+        }
+        
         let request: NSFetchRequest<Habit> = Habit.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", id as CVarArg)
         request.fetchLimit = 1

@@ -45,8 +45,9 @@ struct AddCountToHabit: AppIntent {
     
     init() {}
     
+    @MainActor
     func perform() async throws -> some IntentResult {
-        let selectedHabit = try? HabitsManager.shared.findHabitByName(name: habit.name)
+        let selectedHabit = try? HabitsManager.shared.findHabit(id: habit.id)
         
         guard let selectedHabit = selectedHabit else {
             throw Error.notFound

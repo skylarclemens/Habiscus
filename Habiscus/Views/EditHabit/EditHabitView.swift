@@ -206,7 +206,7 @@ struct EditHabitView: View {
                     }
                     
                     // Remove all current notifications
-                    let habitManager = HabitManager(habit: habit)
+                    let habitManager = HabitManager(habit: habit, context: childContext)
                     habitManager.removeAllNotifications()
                     // Create new notifications if toggle is set
                     if setReminders {

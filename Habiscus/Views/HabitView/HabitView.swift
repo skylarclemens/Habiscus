@@ -30,7 +30,11 @@ struct HabitView: View {
     
     private var showEntries: Bool {
         if let progress = progress {
-            return progress.countsArray.count > 0
+            if habit.wrappedProgressMethod == .counts {
+                return progress.countsArray.count > 0
+            } else {
+                return progress.completedActionsArray.count > 0
+            }
         }
         return false
     }
@@ -139,7 +143,7 @@ struct HabitView: View {
                     }
                     .padding(.horizontal)
                     .frame(maxWidth: 500)
-                    if !habit.actionsArray.isEmpty {
+                    if habit.wrappedProgressMethod == .actions && !habit.actionsArray.isEmpty {
                         VStack(spacing: 16) {
                             ForEach(habit.actionsArray) { action in
                                 HStack {
@@ -204,21 +208,55 @@ struct HabitView: View {
                         if showEntries {
                             VStack(alignment: .leading) {
                                 Section {
-                                    ForEach(progress?.countsArray ?? []) { count in
-                                        HStack(spacing: 12) {
-                                            Text("+\(count.amount)")
-                                                .foregroundColor(.white)
-                                                .padding(8)
-                                                .background(
-                                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                        .fill(habit.habitColor.opacity(0.8))
-                                                        .shadow(color: habit.habitColor.opacity(0.3), radius: 4, y: 2)
-                                                )
-                                            Text(count.createdDateString)
+                                    if habit.wrappedProgressMethod == .counts {
+                                        ForEach(progress?.countsArray ?? []) { count in
+                                            HStack(spacing: 8) {
+                                                Image(systemName: "plus.circle.fill")
+                                                    .font(.system(size: 20))
+                                                    .foregroundStyle(.white, habit.habitColor)
+                                                Group {
+                                                    Text("^[\(count.amount) \(habit.wrappedUnit)](inflect: true)")
+                                                        .fontWeight(.medium) +
+                                                    Text(" added")
+                                                }.font(.system(size: 14))
+                                            }
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 8))
+                                            .background(
+                                                Capsule()
+                                                    .fill(.secondary.opacity(0.1))
+                                            )
+                                            Text(count.wrappedCreatedDate.formatted(date: .abbreviated, time: .shortened))
+                                                .font(.caption)
+                                                .foregroundStyle(.secondary)
+                                                .padding(.leading, 36)
+                                        }
+                                    } else if let completedActions = progress?.completedActionsArray {
+                                        ForEach(completedActions) { action in
+                                            HStack(spacing: 8) {
+                                                Image(systemName: "checkmark.circle.fill")
+                                                    .font(.system(size: 20))
+                                                    .foregroundStyle(.white, habit.habitColor)
+                                                Group {
+                                                    Text("\(action.actionTypeString)")
+                                                        .fontWeight(.medium) +
+                                                    Text(" completed")
+                                                }.font(.system(size: 14))
+                                            }
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .padding(EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 8))
+                                            .background(
+                                                Capsule()
+                                                    .fill(.secondary.opacity(0.1))
+                                            )
+                                            Text(action.wrappedDate.formatted(date: .abbreviated, time: .shortened))
+                                                .font(.caption)
+                                                .foregroundStyle(.secondary)
+                                                .padding(.leading, 36)
                                         }
                                     }
                                 } header: {
-                                    Text("Entries")
+                                    Text("History")
                                         .font(.headline)
                                         .padding(.bottom, 4)
                                 }

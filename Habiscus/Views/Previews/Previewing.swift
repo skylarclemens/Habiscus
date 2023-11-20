@@ -88,6 +88,7 @@ struct PreviewData {
             habit.interval = 1
             habit.frequency = "daily"
             habit.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+            habit.progressMethod = "actions"
             
             let timerAction = Action(context: context)
             timerAction.type = "timer"
@@ -99,6 +100,27 @@ struct PreviewData {
             emotionAction.type = "emotion"
             emotionAction.order = 1
             habit.addToActions(emotionAction)
+            
+            let progressTimerAction = Action(context: context)
+            progressTimerAction.type = "timer"
+            progressTimerAction.order = 0
+            progressTimerAction.number = 60
+            progressTimerAction.completed = true
+            progressTimerAction.date = Date()
+            progressTimerAction.progress
+            
+            let progressEmotionAction = Action(context: context)
+            progressEmotionAction.type = "emotion"
+            progressEmotionAction.order = 1
+            
+            let progress = Progress(context: context)
+            progress.id = UUID()
+            progress.date = Date()
+            progress.isCompleted = true
+            progress.isSkipped = false
+            progress.habit = habit
+            progress.addToActions(progressTimerAction)
+            progress.addToActions(progressEmotionAction)
             
             return habit
         }
