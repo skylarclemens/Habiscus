@@ -54,7 +54,7 @@ struct PreviewData {
             habit.frequency = "daily"
             habit.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
             habit.customCount = true
-            habit.defaultCount = 2
+            habit.defaultCount = 1
             
             let count = Count(context: context)
             count.id = UUID()
@@ -109,7 +109,6 @@ struct PreviewData {
             progressTimerAction.number = 60
             progressTimerAction.completed = true
             progressTimerAction.date = Date()
-            progressTimerAction.progress
             
             let progressEmotionAction = Action(context: context)
             progressEmotionAction.type = "emotion"

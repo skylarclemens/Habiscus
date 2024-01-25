@@ -403,7 +403,7 @@ struct HabitView: View {
 
 struct HabitView_Previews: PreviewProvider {
     static var previews: some View {
-        Previewing(\.habitWithActions) { habit in
+        Previewing(\.habit) { habit in
             NavigationStack {
                 HabitView(habit: habit, date: .constant(Date()))
                     .navigationTitle(habit.wrappedName)
