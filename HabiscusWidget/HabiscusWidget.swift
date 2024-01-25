@@ -40,7 +40,9 @@ struct HabitIntentProvider: AppIntentTimelineProvider {
             let entry = SimpleEntry(habit: habitEntity, date: .now)
             entries.append(entry)
         }
-        return Timeline(entries: entries, policy: .atEnd)
+        let startOfToday = Calendar.current.startOfDay(for: Date())
+        let startOfTomorrow = Calendar.current.date(byAdding: .day, value: 1, to: startOfToday)
+        return Timeline(entries: entries, policy: .after(startOfTomorrow ?? Date()))
     }
 }
 
@@ -75,8 +77,9 @@ struct Provider: TimelineProvider {
                 let entry = SimpleEntry(habit: habitEntity, date: entryDate)
                 entries.append(entry)
             }
-
-            let timeline = Timeline(entries: entries, policy: .atEnd)
+            let startOfToday = Calendar.current.startOfDay(for: Date())
+            let startOfTomorrow = Calendar.current.date(byAdding: .day, value: 1, to: startOfToday)
+            let timeline = Timeline(entries: entries, policy: .after(startOfTomorrow ?? Date()))
             completion(timeline)
         } catch {
             print(error)

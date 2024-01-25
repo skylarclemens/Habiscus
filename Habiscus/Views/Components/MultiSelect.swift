@@ -19,29 +19,11 @@ struct SelectOption<T: Hashable & Identifiable>: Hashable, Identifiable {
     var id: T.ID { value.id }
 }
 
-struct MultiSelect<Label: View, T: Hashable & Identifiable>: View {
-    let label: Label
+struct MultiSelect<T: Hashable & Identifiable>: View {
     @Binding var selected: Set<T>
     var options: [SelectOption<T>]
-    let selectedOptionString: String
     
     var body: some View {
-        NavigationLink {
-            multiSelectView()
-        } label: {
-            HStack {
-                label
-                Spacer()
-                Text(selectedOptionString)
-                    .padding(.leading)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .foregroundColor(.secondary)
-            }
-        }
-    }
-    
-    private func multiSelectView() -> some View {
         List {
             ForEach(options) { option in
                 let optionSelected = selected.contains(option.value)
@@ -74,10 +56,8 @@ struct MultiSelect_Previews: PreviewProvider {
         NavigationStack {
             Form {
                 MultiSelect(
-                    label: Label("Days", systemImage: "calendar"),
                     selected: $selected,
-                    options: options,
-                    selectedOptionString: selected.map { $0.rawValue.localizedCapitalized }.joined(separator: ", "))
+                    options: options)
             }
         }
     }
