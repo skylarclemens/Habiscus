@@ -141,7 +141,7 @@ struct PreviewData {
                 habit.startDate = Date()
                 habit.endDate = nil
                 habit.isArchived = false
-                habit.goal = 1
+                habit.goal = 2
                 habit.unit = "count"
                 habit.interval = 1
                 habit.frequency = "daily"
@@ -155,7 +155,7 @@ struct PreviewData {
                 let progress = Progress(context: context)
                 progress.id = UUID()
                 progress.date = Date()
-                progress.isCompleted = true
+                progress.isCompleted = false
                 progress.isSkipped = false
                 
                 progress.addToCounts(count)
@@ -163,6 +163,69 @@ struct PreviewData {
                 
                 previewHabits.append(habit)
             }
+            
+            let habit = Habit(context: context)
+            habit.id = UUID()
+            habit.name = "Complete Test"
+            habit.icon = "🤩"
+            habit.color = "purple"
+            habit.createdAt = Date.now
+            habit.startDate = Date()
+            habit.endDate = nil
+            habit.isArchived = false
+            habit.goal = 1
+            habit.unit = "count"
+            habit.interval = 1
+            habit.frequency = "daily"
+            habit.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+            
+            let count = Count(context: context)
+            count.id = UUID()
+            count.createdAt = Date()
+            count.date = Date()
+            
+            let progress = Progress(context: context)
+            progress.id = UUID()
+            progress.date = Date()
+            progress.isCompleted = true
+            progress.isSkipped = false
+            
+            progress.addToCounts(count)
+            habit.addToProgress(progress)
+            
+            previewHabits.append(habit)
+            
+            let habit2 = Habit(context: context)
+            habit2.id = UUID()
+            habit2.name = "Skipped Test"
+            habit2.icon = "🤩"
+            habit2.color = "red"
+            habit2.createdAt = Date.now
+            habit2.startDate = Date()
+            habit2.endDate = nil
+            habit2.isArchived = false
+            habit2.goal = 1
+            habit2.unit = "count"
+            habit2.interval = 1
+            habit2.frequency = "daily"
+            habit2.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+            
+            let count2 = Count(context: context)
+            count2.id = UUID()
+            count2.createdAt = Date()
+            count2.date = Date()
+            
+            let progress2 = Progress(context: context)
+            progress2.id = UUID()
+            progress2.date = Date()
+            progress2.isCompleted = false
+            progress2.isSkipped = true
+            
+            progress2.addToCounts(count2)
+            habit2.addToProgress(progress2)
+            
+            previewHabits.append(habit2)
+            
             return previewHabits
         }
     }
