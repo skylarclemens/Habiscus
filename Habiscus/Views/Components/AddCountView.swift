@@ -10,11 +10,11 @@ import SwiftUI
 struct AddCountView: View {
     @Environment(\.managedObjectContext) var moc
     @State private var countAmount: Int = 1
-    @State private var showAddCountAlert: Bool = false
     @ObservedObject var habit: Habit
     var progress: Progress?
     @Binding var date: Date
     var habitManager: HabitManager
+    @Binding var showAddCountAlert: Bool
     
     var isDateAfterToday: Bool {
         date.isAfter(Date())
@@ -78,6 +78,6 @@ struct AddCountView_Previews: PreviewProvider {
         progress.addToCounts(count)
         habit.addToProgress(progress)
         
-        return AddCountView(habit: habit, date: .constant(Date.now), habitManager: HabitManager())
+        return AddCountView(habit: habit, date: .constant(Date.now), habitManager: HabitManager(), showAddCountAlert: .constant(false))
     }
 }

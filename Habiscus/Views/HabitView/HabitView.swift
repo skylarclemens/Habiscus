@@ -15,6 +15,7 @@ struct HabitView: View {
     @ObservedObject var habit: Habit
     @Binding var date: Date
     @State private var updateHabit: DataOperation<Habit>?
+    @State private var showAddCountAlert: Bool = false
     
     private var progress: Progress? {
         return habit.findProgress(from: date)
@@ -97,7 +98,7 @@ struct HabitView: View {
                                 Spacer()
                                 if !habit.isArchived {
                                     if habit.wrappedProgressMethod == .counts {
-                                        AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
+                                        AddCountView(habit: habit, progress: progress, date: $date, habitManager: habitManager, showAddCountAlert: $showAddCountAlert)
                                     } else {
                                         StartActionsView(habit: habit, progress: progress, date: $date, habitManager: habitManager)
                                     }
@@ -118,6 +119,11 @@ struct HabitView: View {
                                     } label: {
                                         Label("Undo last count", systemImage: "arrow.uturn.backward")
                                     }
+                                }
+                                Button {
+                                    showAddCountAlert = true
+                                } label: {
+                                    Label("Add custom count", systemImage: "plus")
                                 }
                                 if !isSkipped {
                                     Button {
