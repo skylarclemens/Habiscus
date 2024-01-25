@@ -9,7 +9,7 @@ import SwiftUI
 
 // TODO: Add monthly, yearly options
 enum RepeatOptions: String, CaseIterable, Identifiable {
-    case daily, weekly, weekdays, weekends
+    case daily, weekly
     
     var id: Self { self }
 }
@@ -41,9 +41,7 @@ struct EditHabitView: View {
     private var weekdaysSelected: [RepeatOptions : Set<Weekday>] {
         return [
             .daily: [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
-            .weekly: weekdays,
-            .weekdays: [.monday, .tuesday, .wednesday, .thursday, .friday],
-            .weekends: [.saturday, .sunday],
+            .weekly: weekdays
         ]
     }
     @State var actions: [Action]
@@ -53,7 +51,7 @@ struct EditHabitView: View {
         self.habit = habit
         self._frequency = State(initialValue: RepeatOptions(rawValue: habit.frequency ?? "") ?? .daily)
         self._startDate = State(initialValue: habit.startDate ?? Calendar.current.startOfDay(for: Date()))
-        self._weekdays = State(initialValue: (habit.weekdays != nil) ? Set(habit.weekdaysArray) : [Date().currentWeekday])
+        self._weekdays = State(initialValue: (habit.weekdays != nil) ? Set(habit.weekdaysArray) : [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday])
         self._notifications = State(initialValue: habit.notificationsArray)
         self._actions = State(initialValue: habit.actionsArray)
         self._progressMethod = State(initialValue: habit.wrappedProgressMethod)

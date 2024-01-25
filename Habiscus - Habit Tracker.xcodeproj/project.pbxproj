@@ -119,6 +119,7 @@
 		7EE77DEC2A6DDC2E0058CDF8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */; };
 		7EE77DF92A6DE0310058CDF8 /* Count+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */; };
 		7EE77DFA2A6DE0310058CDF8 /* Count+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */; };
+		7EF1668B2B1263FA004D9973 /* DateRepeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1668A2B1263FA004D9973 /* DateRepeatView.swift */; };
 		7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */; };
 		7EF7DCC72A8D15C7007AF16C /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF7DCC62A8D15C7007AF16C /* Weekday.swift */; };
 		7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */; };
@@ -249,6 +250,7 @@
 		7EE77DEB2A6DDC2E0058CDF8 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		7EE77DF52A6DE0310058CDF8 /* Count+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Count+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7EE77DF62A6DE0310058CDF8 /* Count+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Count+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7EF1668A2B1263FA004D9973 /* DateRepeatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRepeatView.swift; sourceTree = "<group>"; };
 		7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRowView.swift; sourceTree = "<group>"; };
 		7EF7DCC62A8D15C7007AF16C /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 				7E3BE9132A8C27EA008C1503 /* AddCountView.swift */,
 				7EE5ED362A8E9656007424CD /* MultiSelect.swift */,
 				7EE5ED322A8E7B4C007424CD /* DateOptions.swift */,
+				7EF1668A2B1263FA004D9973 /* DateRepeatView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -711,6 +714,7 @@
 				7E911C492A97D1DA00CB7B7B /* Navigator.swift in Sources */,
 				7EA6C3ED2A72950C00DA4C41 /* MultiWeekView.swift in Sources */,
 				7E4EAC792A93D91700EC16A5 /* Habit+CoreDataProperties.swift in Sources */,
+				7EF1668B2B1263FA004D9973 /* DateRepeatView.swift in Sources */,
 				7E86D0102AFC2599008E41B8 /* WelcomeView.swift in Sources */,
 				7EE5ED352A8E7E42007424CD /* NotificationManager.swift in Sources */,
 				7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */,

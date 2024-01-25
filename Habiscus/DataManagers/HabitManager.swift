@@ -52,9 +52,19 @@ struct HabitManager {
     func addNewProgress(habit: Habit? = nil, date: Date, skip: Bool = false, amount: Int? = 1) {
         guard !date.isAfter(Date()) else { return }
         guard let habit = getHabit(habit) else { return }
+        
+        var progressDate = date
+        if habit.goalFrequency == "weekly" {
+            if let existingProgress = habit.findProgress(from: date) {
+                addNewCount(progress: existingProgress, date: date, habit: habit, amount: amount)
+                return
+            }
+            progressDate = date.startOfWeek()
+        }
+        
         let newProgress = Progress(context: moc)
         newProgress.id = UUID()
-        newProgress.date = date
+        newProgress.date = progressDate
         newProgress.lastUpdated = Date()
         newProgress.isCompleted = amount! >= habit.goalNumber
         newProgress.isSkipped = skip
@@ -68,9 +78,19 @@ struct HabitManager {
     
     func addNewSkippedProgress(habit: Habit? = nil, date: Date) {
         guard let habit = getHabit(habit) else { return }
+        
+        var progressDate = date
+        if habit.goalFrequency == "weekly" {
+            if let existingProgress = habit.findProgress(from: date) {
+                setProgressSkip(progress: existingProgress, skip: true)
+                return
+            }
+            progressDate = date.startOfWeek()
+        }
+        
         let newProgress = Progress(context: moc)
         newProgress.id = UUID()
-        newProgress.date = date
+        newProgress.date = progressDate
         newProgress.lastUpdated = Date()
         newProgress.isCompleted = false
         newProgress.isSkipped = true
@@ -114,11 +134,13 @@ struct HabitManager {
         WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
+    // TODO: Rewrite weekly code
     func markHabitComplete(_ habit: Habit? = nil, date: Date?) {
         guard let habit = getHabit(habit) else {
             return
         }
         let selectedDate = date ?? Date()
+        var progressDate = selectedDate
 
         if let progress = habit.findProgress(from: selectedDate) {
             let currentCount = progress.totalCount

@@ -14,7 +14,6 @@ struct DateOptions: View {
     @Binding var startDate: Date
     @Binding var endDate: Date?
     @State var setEndDate: Bool = false
-    @State private var setInterval: Bool = false
     @State private var yearDate: Date = Date()
     
     let endDateRange: ClosedRange<Date> = {
@@ -24,25 +23,22 @@ struct DateOptions: View {
     }()
     
     private var sortedWeekdaysString: String {
+        if interval > 1 {
+            return "every \(interval) days"
+        }
+        if weekdays.count == 7 {
+            return "every day"
+        }
         let sortedDaysSelected = weekdays.sorted { Weekday.allValues.firstIndex(of: $0)! < Weekday.allValues.firstIndex(of: $1)! }
         let daysSelectedArray = sortedDaysSelected.map { $0.rawValue.localizedCapitalized }
         return daysSelectedArray.joined(separator: ", ")
     }
     private let weekdayOptions: [SelectOption<Weekday>] = Weekday.allValues.map { SelectOption($0.rawValue.localizedCapitalized, $0) }
     
-    private var repeatFooter: [RepeatOptions : String] {
-        return [
-            .weekdays: " on weekdays",
-            .weekends: " on weekends (Saturday, Sunday)"
-        ]
-    }
-    
     private var repeatStrings: [RepeatOptions : String] {
         return [
             .daily: "day",
             .weekly: "week",
-            .weekdays: "week",
-            .weekends: "week"
         ]
     }
     
@@ -55,38 +51,23 @@ struct DateOptions: View {
             } label: {
                 Label("Repeat", systemImage: "repeat")
             }
-            Button {
-                withAnimation {
-                    setInterval.toggle()
-                }
+            .onChange(of: frequency) { newValue in
+                weekdays = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
+                interval = 1
+            }
+            
+            NavigationLink {
+                DateRepeatView(frequency: $frequency, weekdays: $weekdays, interval: $interval, weekdayOptions: weekdayOptions)
             } label: {
                 HStack {
-                    Label {
-                        Text("Every")
-                            .foregroundColor(.primary)
-                    } icon: {
-                        Image(systemName: "clock.arrow.circlepath")
-                    }
-                        
+                    Label("On", systemImage: "calendar")
                     Spacer()
-                    Text("\(interval > 1 ? String(describing: interval) : "") \(repeatStrings[frequency]!)\(interval > 1 ? "s" : "")")
+                    Text(sortedWeekdaysString)
+                        .padding(.leading)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
                         .foregroundColor(.secondary)
                 }
-            }
-            if setInterval {
-                Picker("", selection: $interval) {
-                    ForEach(1...365, id: \.self) { index in
-                        Text("\(index)").tag(Int16(index))
-                    }
-                }
-                .pickerStyle(.wheel)
-            }
-            if frequency == .weekly {
-                MultiSelect(label: Label("On", systemImage: "calendar"),
-                            selected: $weekdays,
-                            options: weekdayOptions,
-                            selectedOptionString: sortedWeekdaysString)
-                
             }
         } footer: {
             Text(getRepeatFooterText())
@@ -112,24 +93,14 @@ struct DateOptions: View {
     }
     
     func getRepeatFooterText() -> String {
-        var footerText = "Habit will repeat every "
-        if interval > 1 {
-            footerText += String(interval) + " "
-        }
-        if let repeatString = repeatStrings[frequency] {
-            footerText += repeatString
-        }
-        if interval > 1 {
-            footerText += "s"
-        }
-        
-        if let repeatText = repeatFooter[frequency] {
-            footerText += repeatText
-        }
+        var footerText = "Habit will repeat "
         
         if frequency == .weekly {
-            footerText += " on \(sortedWeekdaysString)"
+            footerText += "weekly and will be displayed "
         }
+        
+        footerText = footerText + "\(weekdays.count < 7 ? "every " : "")" + sortedWeekdaysString
+        
         return footerText
     }
     

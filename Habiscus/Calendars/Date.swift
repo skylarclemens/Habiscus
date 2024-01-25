@@ -63,6 +63,12 @@ extension Date {
         return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: self.startOfMonth())!
     }
     
+    func startOfWeek() -> Date {
+        let calendar = Calendar(identifier: .gregorian)
+        let date = calendar.dateComponents([.calendar, .yearForWeekOfYear, .weekOfYear], from: self).date!
+        return calendar.startOfDay(for: date)
+    }
+    
     public var localDate: Date {
         let dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: Date())
         return Calendar.autoupdatingCurrent.date(from: dateComponents)!
