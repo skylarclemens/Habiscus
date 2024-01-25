@@ -24,6 +24,7 @@ struct NoHabitsView: View {
 struct HabitListView: View {
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject private var navigator: Navigator
+    @State private var editMode: EditMode = EditMode.active
     @Binding var dateSelected: Date
     
     @State private var showActive: Bool = true
@@ -39,8 +40,13 @@ struct HabitListView: View {
         let containsWeekdaysPredicate = NSPredicate(format: "weekdays CONTAINS[c] %@", weekdayFilter)
         let afterStartDatePredicate = NSPredicate(format: "startDate <= %@", dateSelected.wrappedValue as NSDate)
         self._habits = FetchRequest<Habit>(sortDescriptors: [
-            SortDescriptor(\.createdAt, order: .reverse),
+            SortDescriptor(\.order, order: .forward),
+            SortDescriptor(\.name, order: .forward),
         ], predicate: NSCompoundPredicate(type: .and, subpredicates: [isArchivedPredicate, containsWeekdaysPredicate, afterStartDatePredicate]), animation: .default)
+    }
+    
+    var allHabits: [Habit] {
+        habits.map { $0 }
     }
     
     var openHabits: [Habit] {
@@ -49,8 +55,6 @@ struct HabitListView: View {
                 return !progress.isSkipped && !progress.isCompleted
             }
             return true
-        }.sorted { (lhs, rhs) in
-            return lhs.wrappedName < rhs.wrappedName
         }
     }
     
@@ -60,8 +64,6 @@ struct HabitListView: View {
                 return !progress.isSkipped && progress.isCompleted
             }
             return false
-        }.sorted { (lhs, rhs) in
-            return lhs.wrappedName < rhs.wrappedName
         }
     }
     
@@ -71,48 +73,41 @@ struct HabitListView: View {
                 return progress.isSkipped
             }
             return false
-        }.sorted { (lhs, rhs) in
-            return lhs.wrappedName < rhs.wrappedName
         }
-        
     }
     
     var body: some View {
         List {
-                Section {
-                    if openHabits.count > 0 && showActive {
-                        ForEach(openHabits) { habit in
-                            HabitRowView(habit: habit, date: $dateSelected, progress:
-                                            habit.findProgress(from: dateSelected))
-                            .overlay(
-                                NavigationLink {
-                                    HabitView(habit: habit, date: $dateSelected)
-                                } label: {
-                                    EmptyView()
-                                }.opacity(0)
-                            )
-                        }
+            Section {
+                if openHabits.count > 0 && showActive {
+                    ForEach(openHabits) { habit in
+                        HabitRowView(habit: habit, date: $dateSelected, progress:
+                                        habit.findProgress(from: dateSelected))
+                        .overlay(
+                            NavigationLink {
+                                HabitView(habit: habit, date: $dateSelected)
+                            } label: {
+                                EmptyView()
+                            }.opacity(0)
+                        )
                     }
-                } header: {
-                    HStack {
-                        /*if openHabits.count > 0 && showActive {
-                            Text("Active")
-                                .font(.system(.title3, design: .rounded, weight: .medium))
-                        }*/
-                        Spacer()
-                        Button {
-                            openListFilters.toggle()
-                        } label: {
-                            Image(systemName: "line.3.horizontal.decrease")
-                                .font(.title3)
-                                .fontWeight(.medium)
-                                .foregroundStyle(.pink)
-                        }
-                    }
-                    .textCase(nil)
-                    .foregroundStyle(.primary)
                 }
-                .listRowInsets(EdgeInsets(top: 16, leading: 24, bottom: 8, trailing: 24))
+            } header: {
+                HStack {
+                    Spacer()
+                    Button {
+                        openListFilters.toggle()
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease")
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.pink)
+                    }
+                }
+                .textCase(nil)
+                .foregroundStyle(.primary)
+            }
+            .listRowInsets(EdgeInsets(top: 16, leading: 24, bottom: 8, trailing: 24))
             if completedHabits.count > 0 && showComplete {
                 Section {
                     ForEach(completedHabits) { habit in
@@ -168,13 +163,16 @@ struct HabitListView: View {
                     .padding()
             }
         }
-        .sheet(isPresented: $openListFilters) {
-            NavigationStack {
-                FilterListView(showActive: $showActive, showComplete: $showComplete, showSkipped: $showSkipped)
-            }
-            .presentationDetents([.height(300)])
+        .sheet(isPresented: $openListFilters, onDismiss: filterDismissed) {
+            FilterListView(showActive: $showActive, showComplete: $showComplete, showSkipped: $showSkipped, habits: allHabits)
+                .presentationDetents([.medium])
         }
-        
+    }
+    
+    private func filterDismissed() {
+        if moc.hasChanges {
+            try? moc.save()
+        }
     }
 }
 

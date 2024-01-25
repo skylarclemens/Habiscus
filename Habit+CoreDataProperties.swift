@@ -2,14 +2,13 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus - Habit Tracker
 //
-//  Created by Skylar Clemens on 11/13/23.
+//  Created by Skylar Clemens on 1/25/24.
 //
 //
 
 import Foundation
 import CoreData
 import SwiftUI
-
 
 extension Habit {
 
@@ -30,14 +29,14 @@ extension Habit {
     @NSManaged public var isArchived: Bool
     @NSManaged public var lastUpdated: Date?
     @NSManaged public var name: String?
+    @NSManaged public var progressMethod: String?
     @NSManaged public var startDate: Date?
     @NSManaged public var unit: String?
     @NSManaged public var weekdays: String?
-    @NSManaged public var progressMethod: String?
+    @NSManaged public var order: Int16
     @NSManaged public var actions: NSSet?
     @NSManaged public var notifications: NSSet?
     @NSManaged public var progress: NSSet?
-    
     
     public var wrappedName: String {
         name ?? "Unkown name"
@@ -275,8 +274,6 @@ extension Habit {
     public func getLongestStreak() -> Int {
         calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray).max() ?? 0
     }
-    
-
 }
 
 // MARK: Generated accessors for actions
