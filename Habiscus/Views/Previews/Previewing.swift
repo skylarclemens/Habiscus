@@ -53,6 +53,8 @@ struct PreviewData {
             habit.interval = 1
             habit.frequency = "daily"
             habit.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+            habit.customCount = true
+            habit.defaultCount = 2
             
             let count = Count(context: context)
             count.id = UUID()
