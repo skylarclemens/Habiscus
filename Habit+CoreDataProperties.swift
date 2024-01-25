@@ -214,10 +214,12 @@ extension Habit {
     // If first progress is not completed or is more than one day from today, returns a streak of 0
     // Returns first, most recent, streak of streak array
     public func getCurrentStreak() -> Int {
-        guard let mostRecentProgress = progressArray.last(where: { $0.isCompleted && !$0.isSkipped }),
-              let progressDate = Date().closestPreviousWeekday(in: self.weekdaysArray),
+        guard let mostRecentProgress = progressArray.last(where: { $0.isCompleted && !$0.isSkipped }) else { return 0 }
+        
+        guard let progressDate = Date().closestPreviousWeekday(in: self.weekdaysArray),
               let closestProgress = self.findProgress(from: progressDate)
         else {
+            if Calendar.current.isDateInToday(mostRecentProgress.wrappedDate) && mostRecentProgress.isCompleted { return 1 }
             return 0
         }
         
