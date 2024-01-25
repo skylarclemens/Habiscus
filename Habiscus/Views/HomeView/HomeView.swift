@@ -18,7 +18,7 @@ struct HomeView: View {
                 .fill(Color(UIColor.secondarySystemBackground))
                 .ignoresSafeArea()
             VStack {
-                VStack {
+                VStack(spacing: 8) {
                     VStack(spacing: 0) {
                         Text(checkCloseDate().uppercased())
                             .font(.subheadline)
@@ -33,11 +33,25 @@ struct HomeView: View {
                     }
                     .animation(.spring(), value: dateSelected)
                     MultiWeekView(selectedDate: $dateSelected)
-                        .frame(height: 60)
-                        .offset(y: -15)
-                        .padding(.bottom, 16)
+                        .frame(height: 51)
                 }
                 HabitListView(dateSelected: $dateSelected, weekdayFilter: dateSelected.currentWeekdayString)
+                    .mask {
+                        VStack(spacing: 0) {
+                            LinearGradient(
+                                colors: [
+                                    Color.black,
+                                    Color.black.opacity(0.75),
+                                    Color.black.opacity(0),
+                                ],
+                                startPoint: .bottom,
+                                endPoint: .top
+                            )
+                            .frame(height: 5)
+                            Rectangle()
+                        }
+                    }
+                    .ignoresSafeArea()
             }
         }
         .toolbar {

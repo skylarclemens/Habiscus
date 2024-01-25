@@ -24,6 +24,7 @@
 		7E3AE2192A96D37900BFAC65 /* HabiscusShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DF2D92A96AD6C00890B8E /* HabiscusShortcuts.swift */; };
 		7E3AE21A2A96D37B00BFAC65 /* HabitEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DF2DB2A96ADF400890B8E /* HabitEntity.swift */; };
 		7E3BE9142A8C27EA008C1503 /* AddCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3BE9132A8C27EA008C1503 /* AddCountView.swift */; };
+		7E4884692B62D3F30036AD37 /* FilterListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4884682B62D3F30036AD37 /* FilterListView.swift */; };
 		7E4EAC762A93D91700EC16A5 /* Notification+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */; };
 		7E4EAC772A93D91700EC16A5 /* Notification+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC732A93D91700EC16A5 /* Notification+CoreDataProperties.swift */; };
 		7E4EAC782A93D91700EC16A5 /* Habit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4EAC742A93D91700EC16A5 /* Habit+CoreDataClass.swift */; };
@@ -179,6 +180,7 @@
 		7E34D87D2A82F47300A7D649 /* EmojiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiManager.swift; sourceTree = "<group>"; };
 		7E36B7412A956F28006D4632 /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
 		7E3BE9132A8C27EA008C1503 /* AddCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCountView.swift; sourceTree = "<group>"; };
+		7E4884682B62D3F30036AD37 /* FilterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterListView.swift; sourceTree = "<group>"; };
 		7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7E4EAC732A93D91700EC16A5 /* Notification+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7E4EAC742A93D91700EC16A5 /* Habit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Habit+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -566,6 +568,7 @@
 			children = (
 				7E83225C2A72F3E200042486 /* HabitListView.swift */,
 				7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */,
+				7E4884682B62D3F30036AD37 /* FilterListView.swift */,
 			);
 			path = HabitList;
 			sourceTree = "<group>";
@@ -718,6 +721,7 @@
 				7E86D0102AFC2599008E41B8 /* WelcomeView.swift in Sources */,
 				7EE5ED352A8E7E42007424CD /* NotificationManager.swift in Sources */,
 				7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */,
+				7E4884692B62D3F30036AD37 /* FilterListView.swift in Sources */,
 				7E697DD42A843B84000EC5D8 /* HabitView.swift in Sources */,
 				7E4EAC7C2A9401E900EC16A5 /* SettingsView.swift in Sources */,
 				7E4EF3E52A96C9E60006E33C /* HabitsManager.swift in Sources */,
