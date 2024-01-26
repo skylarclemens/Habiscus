@@ -98,9 +98,14 @@ struct PreviewData {
             timerAction.number = 60
             habit.addToActions(timerAction)
             
+            let noteAction = Action(context: context)
+            noteAction.type = "note"
+            noteAction.order = 1
+            habit.addToActions(noteAction)
+            
             let emotionAction = Action(context: context)
             emotionAction.type = "emotion"
-            emotionAction.order = 1
+            emotionAction.order = 2
             habit.addToActions(emotionAction)
             
             let progressTimerAction = Action(context: context)
@@ -110,9 +115,16 @@ struct PreviewData {
             progressTimerAction.completed = true
             progressTimerAction.date = Date()
             
+            let progressNoteAction = Action(context: context)
+            progressNoteAction.type = "note"
+            progressNoteAction.order = 1
+            progressNoteAction.text = "Test note"
+            progressNoteAction.completed = true
+            progressNoteAction.date = Date()
+            
             let progressEmotionAction = Action(context: context)
             progressEmotionAction.type = "emotion"
-            progressEmotionAction.order = 1
+            progressEmotionAction.order = 2
             
             let progress = Progress(context: context)
             progress.id = UUID()
@@ -121,6 +133,7 @@ struct PreviewData {
             progress.isSkipped = false
             progress.habit = habit
             progress.addToActions(progressTimerAction)
+            progress.addToActions(progressNoteAction)
             progress.addToActions(progressEmotionAction)
             
             return habit

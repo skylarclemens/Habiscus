@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct NotesActionView: View {
+    @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var action: Action
-    var moveToNext: () -> Void
+    var moveToNext: (() -> Void)? = nil
     
     @FocusState private var focusedInput: FocusedField?
     enum FocusedField: Hashable {
@@ -18,35 +19,46 @@ struct NotesActionView: View {
     }
     
     @State var noteText: String = ""
+    
+    init(action: Action, moveToNext: (() -> Void)? = nil, focusedInput: FocusedField? = nil) {
+        self.action = action
+        self.moveToNext = moveToNext
+        self.focusedInput = focusedInput
+        if action.completed {
+            self._noteText = State(initialValue: action.text ?? "")
+        } else {
+            self._noteText = State(initialValue: "")
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
-                TextField("Note", text: $noteText, axis: .vertical)
+                TextField("Write your note here", text: $noteText, axis: .vertical)
                     .lineLimit(10, reservesSpace: true)
                     .textInputAutocapitalization(.never)
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .fill(Color(UIColor.secondarySystemGroupedBackground))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.quaternary, lineWidth: 1)
-                            )
                     )
                     .focused($focusedInput, equals: .note)
+                    .disabled(action.completed)
                 HStack {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Cancel")
-                            .frame(maxWidth: .infinity)
+                    if !action.completed {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Text("Cancel")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.large)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.large)
                     Button {
                         setNote(with: noteText)
                         dismiss()
-                        moveToNext()
+                        moveToNext?()
                     } label: {
                         Text("Done")
                             .frame(maxWidth: .infinity)
@@ -54,13 +66,27 @@ struct NotesActionView: View {
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                 }
-                .padding(.vertical, 8)
+                .padding(.top, 8)
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(UIColor.systemGroupedBackground))
+            .toolbar {
+                if action.completed {
+                    ToolbarItem(placement: .destructiveAction) {
+                        Button(role: .destructive) {
+                            deleteNote()
+                            dismiss()
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Note")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                focusedInput = .note
+                if !action.completed { focusedInput = .note }
             }
         }
     }
@@ -71,9 +97,19 @@ struct NotesActionView: View {
         action.date = Date()
         action.progress?.habit?.lastUpdated = Date()
     }
+    
+    func deleteNote() {
+        let habitManager = HabitManager()
+        habitManager.undoAction(action: action)
+    }
 }
 
 #Preview {
-    var emptyFunction : () -> Void = { }
-    return NotesActionView(action: Action(), moveToNext: emptyFunction)
+    return VStack {
+        
+    }
+    .sheet(isPresented: .constant(true)) {
+        NotesActionView(action: Action())
+            .presentationDetents([.height(400)])
+    }
 }

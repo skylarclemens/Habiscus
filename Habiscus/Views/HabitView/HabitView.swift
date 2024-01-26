@@ -48,6 +48,7 @@ struct HabitView: View {
     }
     
     @State private var showSkippedOverlay: Bool = false
+    @State private var viewAction: Action?
     
     @State var showActionAlert: Bool = false
     @State var alertTitle = ""
@@ -169,6 +170,21 @@ struct HabitView: View {
                                     }
                                     Spacer()
                                     if let progressAction = progressActions?.first(where: { $0.order == action.order }) {
+                                        if (action.actionType == .emotion || action.actionType == .note) && progressAction.completed {
+                                            Button {
+                                                viewAction = progressAction
+                                            } label: {
+                                                Text("View")
+                                                    .font(.callout)
+                                            }
+                                            .foregroundStyle(.secondary)
+                                            .padding(EdgeInsets(top: 2, leading: 8, bottom: 2, trailing: 8))
+                                            .background(.secondary.opacity(0.25))
+                                            .clipShape(Capsule())
+                                            .overlay(
+                                                Capsule().stroke(.secondary.opacity(0.5), lineWidth: 1)
+                                            )
+                                        }
                                         Image(systemName: "\(progressAction.completed ? "checkmark.circle.fill" : "circle")")
                                             .foregroundStyle(progressAction.completed ? Color.green : Color.secondary)
                                             
@@ -345,6 +361,9 @@ struct HabitView: View {
                         }
                     }
                 }
+                .sheet(item: $viewAction, onDismiss: { viewAction = nil }) { action in
+                    ActionView(action: action)
+                }
                 .sheet(item: $updateHabit) { update in
                     NavigationStack {
                         EditHabitView(habit: update.childObject)
@@ -403,7 +422,7 @@ struct HabitView: View {
 
 struct HabitView_Previews: PreviewProvider {
     static var previews: some View {
-        Previewing(\.habit) { habit in
+        Previewing(\.habitWithActions) { habit in
             NavigationStack {
                 HabitView(habit: habit, date: .constant(Date()))
                     .navigationTitle(habit.wrappedName)

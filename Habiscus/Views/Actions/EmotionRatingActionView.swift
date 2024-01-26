@@ -12,7 +12,17 @@ struct EmotionRatingActionView: View {
     @ObservedObject var action: Action
     let emojis = ["😁", "😊", "😐", "😟", "😡"]
     @State var selectedEmotion: String = ""
-    var moveToNext: () -> Void
+    var moveToNext: (() -> Void)? = nil
+    
+    init(action: Action, moveToNext: (() -> Void)? = nil) {
+        self.action = action
+        self.moveToNext = moveToNext
+        if action.completed {
+            self._selectedEmotion = State(initialValue: action.text ?? "")
+        } else {
+            self._selectedEmotion = State(initialValue: "")
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -39,21 +49,24 @@ struct EmotionRatingActionView: View {
                                 .stroke(.blue.opacity(0.75), lineWidth: selectedEmotion == emoji ? 3 : 0)
                         )
                         .clipShape(.rect(cornerRadius: 10))
+                        .disabled(action.completed)
                     }
                 }
                 HStack {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Cancel")
-                            .frame(maxWidth: .infinity)
+                    if !action.completed {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Text("Cancel")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.large)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.large)
                     Button {
                         setEmotionActionRating(with: selectedEmotion)
                         dismiss()
-                        moveToNext()
+                        moveToNext?()
                     } label: {
                         Text("Done")
                             .frame(maxWidth: .infinity)
@@ -66,6 +79,18 @@ struct EmotionRatingActionView: View {
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(UIColor.systemGroupedBackground))
+            .toolbar {
+                if action.completed {
+                    ToolbarItem(placement: .destructiveAction) {
+                        Button(role: .destructive) {
+                            deleteEmojiRating()
+                            dismiss()
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -75,9 +100,19 @@ struct EmotionRatingActionView: View {
         action.date = Date()
         action.progress?.habit?.lastUpdated = Date()
     }
+    
+    func deleteEmojiRating() {
+        let habitManager = HabitManager()
+        habitManager.undoAction(action: action)
+    }
 }
 
 #Preview {
-    var emptyFunction : () -> Void = {  }
-    return EmotionRatingActionView(action: Action(), moveToNext: emptyFunction)
+    return VStack {
+        
+    }
+    .sheet(isPresented: .constant(true)) {
+        EmotionRatingActionView(action: Action())
+            .presentationDetents([.height(225)])
+    }
 }
