@@ -134,6 +134,20 @@ struct HabitManager {
         WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
     }
     
+    func undoAction(action: Action) {
+        guard let progress = action.progress else { return }
+        action.completed = false
+        action.text = nil
+        action.date = nil
+        
+        progress.isCompleted = progress.checkCompleted()
+        
+        progress.habit?.lastUpdated = Date()
+        
+        try? moc.save()
+        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+    }
+    
     // TODO: Rewrite weekly code
     func markHabitComplete(_ habit: Habit? = nil, date: Date?) {
         guard let habit = getHabit(habit) else {

@@ -38,7 +38,7 @@ struct StartActionsView: View {
         .buttonStyle(.plain)
         .disabled(isDateAfterToday)
         .sheet(item: $actionManager.currentAction, onDismiss: { showActionsSheet = false }) { action in
-            ActionView(action: action, actionManager: actionManager)
+            ActionView(action: action, manager: actionManager)
         }
     }
 }

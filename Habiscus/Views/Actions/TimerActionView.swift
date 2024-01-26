@@ -12,7 +12,7 @@ struct TimerActionView: View {
     @EnvironmentObject var toastManager: ToastManager
     
     @ObservedObject var action: Action
-    @ObservedObject var actionManager: ActionManager
+    var moveToNext: (() -> Void)? = nil
     
     @State var showToast: Bool = false
     
@@ -77,7 +77,7 @@ struct TimerActionView: View {
                     Button("Done") {
                         checkTimerComplete()
                         dismiss()
-                        actionManager.moveToNext()
+                        moveToNext?()
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
@@ -107,8 +107,14 @@ struct TimerActionView: View {
 
 #Preview {
     Previewing(\.timerAction) { action in
-        TimerActionView(action: action, actionManager: ActionManager())
-            .environmentObject(ToastManager())
+        VStack {
+            
+        }
+        .sheet(isPresented: .constant(true)) {
+            TimerActionView(action: action)
+                .environmentObject(ToastManager())
+                .presentationDetents([.fraction(0.5)])
+        }
     }
 }
 
@@ -132,7 +138,6 @@ extension Double {
         
         let hours = (interval / 3600)
         let minutes = (interval / 60) % 60
-        let seconds = interval % 60
         
         if hours > 0 {
             return String(format: "%d hr, %d min", hours, minutes)
