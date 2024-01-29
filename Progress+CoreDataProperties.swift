@@ -41,6 +41,14 @@ extension Progress {
         lastUpdated ?? Date.now
     }
     
+    public var completed: Bool {
+        if isCompleted { return isCompleted }
+        if wrappedHabit.wrappedType == .quit {
+            return totalCount <= wrappedHabit.goalNumber
+        }
+        return false
+    }
+    
     public var countsArray: [Count] {
         let set = counts as? Set<Count> ?? []
         return set.sorted {
@@ -74,11 +82,10 @@ extension Progress {
     }
     
     public func checkCompleted() -> Bool {
-        if wrappedHabit.wrappedType == .build {
-            totalCount >= wrappedHabit.goalNumber
-        } else {
-            totalCount < wrappedHabit.goalNumber
+        if wrappedHabit.wrappedType == .quit {
+            return totalCount <= wrappedHabit.goalNumber
         }
+        return totalCount >= wrappedHabit.goalNumber
     }
     
     public var isEmpty: Bool {

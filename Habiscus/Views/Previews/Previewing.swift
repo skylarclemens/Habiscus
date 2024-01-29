@@ -152,7 +152,7 @@ struct PreviewData {
             habit.startDate = Date()
             habit.endDate = nil
             habit.isArchived = false
-            habit.goal = 1
+            habit.goal = 2
             habit.unit = "count"
             habit.interval = 1
             habit.frequency = "daily"
@@ -160,6 +160,20 @@ struct PreviewData {
             habit.progressMethod = "count"
             habit.customCount = false
             habit.defaultCount = 1
+            
+            let count = Count(context: context)
+            count.id = UUID()
+            count.createdAt = Date()
+            count.date = Date()
+            
+            let progress = Progress(context: context)
+            progress.id = UUID()
+            progress.date = Date()
+            progress.isCompleted = true
+            progress.isSkipped = false
+            
+            progress.addToCounts(count)
+            habit.addToProgress(progress)
             
             return habit
         }

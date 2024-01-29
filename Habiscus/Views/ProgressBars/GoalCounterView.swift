@@ -22,15 +22,18 @@ struct GoalCounterView: View {
         return 0
     }
     private var goalCompletion: Double {
-        Double(currentGoalCount) / Double(habit.goalNumber)
+        let goalCount = Double(currentGoalCount) / Double(habit.goalNumber)
+        if habit.wrappedType == .quit {
+            let quitCount = 1 - goalCount
+            return min(max(quitCount, 0), 1)
+        }
+        return min(max(goalCount, 0), 1)
     }
     private var goalComplete: Bool {
-        if habit.wrappedType == .build {
-            return currentGoalCount >= habit.goalNumber
-        } else if habit.wrappedType == .quit {
+        if habit.wrappedType == .quit {
             return currentGoalCount <= habit.goalNumber
         }
-        return false
+        return currentGoalCount >= habit.goalNumber
     }
     
     var body: some View {
@@ -50,7 +53,7 @@ struct GoalCounterView: View {
                     }
                 }
             }
-            ProgressView(value: goalComplete ? 1.0 : goalCompletion, total: 1.0)
+            ProgressView(value: goalCompletion, total: 1.0)
                 .progressViewStyle(CircleProgressStyle(color: .white, strokeWidth: 6))
                 .frame(width: size)
                 .animation(.easeOut(duration: 1.25), value: currentGoalCount)
