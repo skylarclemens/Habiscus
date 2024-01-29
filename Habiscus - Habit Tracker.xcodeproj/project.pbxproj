@@ -106,6 +106,8 @@
 		7EB1C77A2A83E2A7008CB6C3 /* emoji.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EB1C7792A83E2A7008CB6C3 /* emoji.json */; };
 		7EB770902A8423BE00559D73 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB7708F2A8423BE00559D73 /* IconView.swift */; };
 		7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */; };
+		7ECFBEA52B6826FA00935EA0 /* HabitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFBEA42B6826FA00935EA0 /* HabitType.swift */; };
+		7ECFBEA62B6827FE00935EA0 /* HabitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFBEA42B6826FA00935EA0 /* HabitType.swift */; };
 		7ED649712B017D910083E80D /* TimerActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED649702B017D910083E80D /* TimerActionView.swift */; };
 		7ED649732B017D9B0083E80D /* NotesActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED649722B017D9B0083E80D /* NotesActionView.swift */; };
 		7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */; };
@@ -238,6 +240,7 @@
 		7EB1C7792A83E2A7008CB6C3 /* emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 		7EB7708F2A8423BE00559D73 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
 		7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
+		7ECFBEA42B6826FA00935EA0 /* HabitType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitType.swift; sourceTree = "<group>"; };
 		7ED649702B017D910083E80D /* TimerActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerActionView.swift; sourceTree = "<group>"; };
 		7ED649722B017D9B0083E80D /* NotesActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesActionView.swift; sourceTree = "<group>"; };
 		7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountGridView.swift; sourceTree = "<group>"; };
@@ -518,9 +521,10 @@
 				7EE0FC9F2AFAD55A00F600D0 /* AdditionalOptionsView.swift */,
 				7E5FFE6E2AFEE84000C644A3 /* ActionSelectorView.swift */,
 				7E29FDA82AFFEE0A006C98F0 /* TimePickerWheel.swift */,
-				7E55A2EB2B028C560060CE66 /* HabitProgressMethod.swift */,
 				7E55A2F02B02B51D0060CE66 /* ActionListRowLarge.swift */,
 				7E55A2F22B02BD610060CE66 /* ActionInfoView.swift */,
+				7E55A2EB2B028C560060CE66 /* HabitProgressMethod.swift */,
+				7ECFBEA42B6826FA00935EA0 /* HabitType.swift */,
 			);
 			path = EditHabit;
 			sourceTree = "<group>";
@@ -701,6 +705,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ECFBEA52B6826FA00935EA0 /* HabitType.swift in Sources */,
 				7E80A7ED2A7D9CFB0035F658 /* SoundManager.swift in Sources */,
 				7E13C7562A8441EE006EBA82 /* StatisticsView.swift in Sources */,
 				7E5609242A95357F0003568D /* RemindersSettingsView.swift in Sources */,
@@ -806,6 +811,7 @@
 				7E55A2ED2B028C880060CE66 /* HabitProgressMethod.swift in Sources */,
 				7E8460ED2AF6E8E3008043B6 /* Progress+CoreDataProperties.swift in Sources */,
 				7E9684562AF9902900BBCAD4 /* HapticManager.swift in Sources */,
+				7ECFBEA62B6827FE00935EA0 /* HabitType.swift in Sources */,
 				7E5FFE762AFEE94A00C644A3 /* Action+CoreDataProperties.swift in Sources */,
 				7E8460F42AF6E937008043B6 /* Notification+CoreDataClass.swift in Sources */,
 				7E8460F22AF6E915008043B6 /* DataController.swift in Sources */,

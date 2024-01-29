@@ -12,10 +12,16 @@ struct StatisticsView: View {
     @ObservedObject var habit: Habit
     
     private var currentStreak: Int {
+        if habit.wrappedType == .quit {
+            return habit.getCurrentQuitStreak()
+        }
         return habit.getCurrentStreak()
     }
     
     private var longestStreak: Int {
+        if habit.wrappedType == .quit {
+            return habit.getLongestQuitStreak()
+        }
         return habit.getLongestStreak()
     }
     

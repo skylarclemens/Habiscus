@@ -2,7 +2,7 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus - Habit Tracker
 //
-//  Created by Skylar Clemens on 1/25/24.
+//  Created by Skylar Clemens on 1/28/24.
 //
 //
 
@@ -29,11 +29,12 @@ extension Habit {
     @NSManaged public var isArchived: Bool
     @NSManaged public var lastUpdated: Date?
     @NSManaged public var name: String?
+    @NSManaged public var order: Int16
     @NSManaged public var progressMethod: String?
     @NSManaged public var startDate: Date?
     @NSManaged public var unit: String?
     @NSManaged public var weekdays: String?
-    @NSManaged public var order: Int16
+    @NSManaged public var type: String?
     @NSManaged public var actions: NSSet?
     @NSManaged public var notifications: NSSet?
     @NSManaged public var progress: NSSet?
@@ -52,6 +53,29 @@ extension Habit {
     
     public var emojiIcon: String {
         icon ?? ""
+    }
+    
+    public var wrappedType: HabitType {
+        if let type {
+            return HabitType(rawValue: type) ?? .build
+        }
+        return .build
+    }
+    
+    public var totalValidDays: Int {
+        guard let daysSinceStarted = self.startDate?.totalValidDaysBetween(Date(), in: self.weekdaysArray) else { return 0 }
+        let daysSinceFirstProgress = self.activeProgressArray.first?.wrappedDate.totalValidDaysBetween(Date(), in: self.weekdaysArray) ?? 0
+        
+        return max(daysSinceStarted, daysSinceFirstProgress)
+    }
+    
+    public var wrappedStartDate: Date {
+        let startDate = self.startDate ?? Date()
+        if let firstProgressDate = self.activeProgressArray.first?.wrappedDate,
+           firstProgressDate < startDate {
+            return firstProgressDate
+        }
+        return startDate
     }
     
     public var url: URL? {
@@ -197,16 +221,16 @@ extension Habit {
     // Divides total completed progress count over number of days since each day has one progress object
     // Returns percentage
     public func getSuccessPercentage() -> Double? {
-        guard let daysSinceStarted = self.startDate?.validDaysBetween(Date(), in: self.weekdaysArray),
-              let daysSinceFirstProgress = self.activeProgressArray.first?.wrappedDate.validDaysBetween(Date(), in: self.weekdaysArray) else {
-            return nil
+        guard self.totalValidDays > 0 else { return nil }
+        
+        var completedProgress = progressArray.filter { $0.completed }.count
+        let skippedProgress = progressArray.filter { $0.isSkipped }.count
+        if self.wrappedType == .quit {
+            let totalQuitCompleted = self.totalValidDays - progressArray.count
+            completedProgress = completedProgress + totalQuitCompleted
         }
         
-        let progressDays = max(daysSinceStarted, daysSinceFirstProgress)
-        
-        let completedProgress = progressArray.filter { $0.isCompleted }.count
-        
-        return (Double(completedProgress) / Double(progressDays) * 100)
+        return (Double(completedProgress) / Double(self.totalValidDays - skippedProgress) * 100)
     }
     
     // Starts progress array at most recent, assumed that progress is array is already sorted
@@ -268,6 +292,47 @@ extension Habit {
         }
         
         return streakArray
+    }
+    
+    public func getCurrentQuitStreak() -> Int {
+        let mostRecentBreak = progressArray.last(where: { !$0.isCompleted && !$0.isSkipped })?.wrappedDate ?? self.wrappedStartDate
+        guard !Calendar.current.isDateInToday(mostRecentBreak) else { return 0 }
+        
+        let validDatesBetween = mostRecentBreak.validDaysBetween(Date(), in: self.weekdaysArray) ?? []
+        
+        return calculateQuitStreak(in: validDatesBetween)
+    }
+    
+    public func calculateQuitStreak(in dates: [Date]) -> Int {
+        var streak = 0
+        for currDate in dates {
+            if let progress = self.findProgress(from: currDate),
+               !progress.isCompleted || progress.isSkipped {
+                continue
+            }
+            streak += 1
+        }
+        
+        return streak;
+    }
+    
+    public func calculateQuitStreaksArray(from: [Date]? = nil) -> [Int] {
+        let refArray: [Date] = from ?? []
+        var streakArray: [Int] = []
+
+        for (date, refDate) in zip(refArray.dropFirst(), refArray) {
+            let datesToCheck = date.validDaysBetween(refDate, in: self.weekdaysArray) ?? []
+            streakArray.append(calculateQuitStreak(in: datesToCheck))
+        }
+        
+        return streakArray
+    }
+    
+    public func getLongestQuitStreak() -> Int {
+        var allBreakDates = self.progressArray.filter { !$0.isCompleted && !$0.isSkipped }.map { $0.wrappedDate }
+        allBreakDates.insert(self.wrappedStartDate, at: 0)
+        allBreakDates.append(Date())
+        return calculateQuitStreaksArray(from: allBreakDates.reversed()).max() ?? 0
     }
     
     // Gets the highest number in the streak array

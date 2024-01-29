@@ -32,6 +32,7 @@ struct EditHabitView: View {
     // Time for reminders to be set
     @State private var selectedTime = Date()
     
+    @State private var habitType: HabitType = .build
     
     @State private var frequency: RepeatOptions
     @State private var weekdays: Set<Weekday>
@@ -55,6 +56,7 @@ struct EditHabitView: View {
         self._notifications = State(initialValue: habit.notificationsArray)
         self._actions = State(initialValue: habit.actionsArray)
         self._progressMethod = State(initialValue: habit.wrappedProgressMethod)
+        self._habitType = State(initialValue: habit.wrappedType)
         if let _ = habit.createdAt {
             if habit.notificationsArray.count > 0 {
                 if let firstNotification = habit.notificationsArray.first {
@@ -113,14 +115,24 @@ struct EditHabitView: View {
                 }
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
                 .listRowInsets(EdgeInsets())
-                
             }
-            Section {
-                Picker("Progress method", selection: $progressMethod) {
-                    Text("Counts")
-                        .tag(HabitProgressMethod.counts)
-                    Text("Actions")
-                        .tag(HabitProgressMethod.actions)
+            Section("Habit type") {
+                Picker("Type", selection: $habitType) {
+                    Text("Build").tag(HabitType.build)
+                    Text("Quit").tag(HabitType.quit)
+                }
+                .pickerStyle(.segmented)
+                .listRowBackground(Color(UIColor.systemGroupedBackground))
+                .listRowInsets(EdgeInsets())
+            }
+            if habitType == .build {
+                Section {
+                    Picker("Progress method", selection: $progressMethod) {
+                        Text("Counts")
+                            .tag(HabitProgressMethod.counts)
+                        Text("Actions")
+                            .tag(HabitProgressMethod.actions)
+                    }
                 }
             }
             if progressMethod == .counts {
@@ -152,7 +164,7 @@ struct EditHabitView: View {
                     .listRowBackground(Color(UIColor.systemGroupedBackground))
                     .listRowInsets(EdgeInsets())
                 } header: {
-                    Text("Goal")
+                    Text(habitType == .build ? "Goal" : "Maximum")
                 } footer: {
                     Text("Adjust the default count in 'Additional options'.")
                 }
@@ -202,6 +214,7 @@ struct EditHabitView: View {
                             action.habit = habit
                         }
                     }
+                    habit.type = habitType.rawValue
                     
                     // Remove all current notifications
                     let habitManager = HabitManager(habit: habit, context: childContext)
