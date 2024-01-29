@@ -27,7 +27,7 @@ extension Date {
         abs(daysBetween(date) ?? 0) > 1
     }
     
-    func validDaysBetween(_ stopDate: Date, in weekdays: [Weekday], direction: Calendar.SearchDirection = .backward) -> Int? {
+    func validDaysBetween(_ stopDate: Date, in weekdays: [Weekday], direction: Calendar.SearchDirection = .backward) -> [Date]? {
         var result: [Date] = []
         let weekdayNumbers = weekdays.compactMap {
             if let num = Weekday.allValues.firstIndex(of: $0) {
@@ -52,7 +52,11 @@ extension Date {
             }
         }
         
-        return result.count
+        return result
+    }
+    
+    func totalValidDaysBetween(_ stopDate: Date, in weekdays: [Weekday], direction: Calendar.SearchDirection = .backward) -> Int? {
+        return validDaysBetween(stopDate, in: weekdays, direction: direction)?.count
     }
     
     func startOfMonth() -> Date {
