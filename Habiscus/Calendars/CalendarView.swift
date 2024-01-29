@@ -84,6 +84,9 @@ struct CalendarMonth: Equatable, Hashable {
     
     func calculateOpacity(for day: CalendarDay) -> Double {
         guard let habit = habit else { return 0.0 }
+        if habit.wrappedType == .quit {
+            return Double(day.count) / Double(habit.goalNumber + 1)
+        }
         return Double(day.count) / Double(habit.goalNumber)
     }
     

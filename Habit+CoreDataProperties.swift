@@ -224,12 +224,13 @@ extension Habit {
         guard self.totalValidDays > 0 else { return nil }
         
         var completedProgress = progressArray.filter { $0.completed }.count
+        let skippedProgress = progressArray.filter { $0.isSkipped }.count
         if self.wrappedType == .quit {
             let totalQuitCompleted = self.totalValidDays - progressArray.count
             completedProgress = completedProgress + totalQuitCompleted
         }
         
-        return (Double(completedProgress) / Double(self.totalValidDays) * 100)
+        return (Double(completedProgress) / Double(self.totalValidDays - skippedProgress) * 100)
     }
     
     // Starts progress array at most recent, assumed that progress is array is already sorted
@@ -294,10 +295,10 @@ extension Habit {
     }
     
     public func getCurrentQuitStreak() -> Int {
-        guard let mostRecentBreak = progressArray.last(where: { !$0.isCompleted && !$0.isSkipped }) else { return self.totalValidDays }
-        guard !Calendar.current.isDateInToday(mostRecentBreak.wrappedDate) else { return 0 }
+        let mostRecentBreak = progressArray.last(where: { !$0.isCompleted && !$0.isSkipped })?.wrappedDate ?? self.wrappedStartDate
+        guard !Calendar.current.isDateInToday(mostRecentBreak) else { return 0 }
         
-        let validDatesBetween = mostRecentBreak.wrappedDate.validDaysBetween(Date(), in: self.weekdaysArray) ?? []
+        let validDatesBetween = mostRecentBreak.validDaysBetween(Date(), in: self.weekdaysArray) ?? []
         
         return calculateQuitStreak(in: validDatesBetween)
     }
@@ -318,7 +319,7 @@ extension Habit {
     public func calculateQuitStreaksArray(from: [Date]? = nil) -> [Int] {
         let refArray: [Date] = from ?? []
         var streakArray: [Int] = []
-        
+
         for (date, refDate) in zip(refArray.dropFirst(), refArray) {
             let datesToCheck = date.validDaysBetween(refDate, in: self.weekdaysArray) ?? []
             streakArray.append(calculateQuitStreak(in: datesToCheck))
@@ -328,7 +329,7 @@ extension Habit {
     }
     
     public func getLongestQuitStreak() -> Int {
-        var allBreakDates = self.progressArray.filter { !$0.isCompleted }.map { $0.wrappedDate }
+        var allBreakDates = self.progressArray.filter { !$0.isCompleted && !$0.isSkipped }.map { $0.wrappedDate }
         allBreakDates.insert(self.wrappedStartDate, at: 0)
         allBreakDates.append(Date())
         return calculateQuitStreaksArray(from: allBreakDates.reversed()).max() ?? 0
