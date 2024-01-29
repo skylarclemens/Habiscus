@@ -99,7 +99,11 @@ struct CountGridView: View {
     }
     
     func calculateOpacity(from contribution: Contribution) -> Double {
-        Double(contribution.count) / Double(habit.goalNumber)
+        if contribution.date < Calendar.current.startOfDay(for: habit.wrappedStartDate) { return 0 }
+        if habit.wrappedType == .quit {
+            return 1 - Double(contribution.count) / Double(habit.goalNumber + 1)
+        }
+        return Double(contribution.count) / Double(habit.goalNumber)
     }
     
     func getAllDates() {
@@ -126,7 +130,7 @@ struct CountGridView: View {
 
 struct CountGridView_Previews: PreviewProvider {
     static var previews: some View {
-        Previewing(\.habit) { habit in
+        Previewing(\.quitHabit) { habit in
             CountGridView(habit: habit)
         }
     }
