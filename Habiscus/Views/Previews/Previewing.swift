@@ -140,6 +140,31 @@ struct PreviewData {
         }
     }
     
+    var quitHabit: (NSManagedObjectContext) -> Habit {
+        { context in
+            let habit = Habit(context: context)
+            habit.id = UUID()
+            habit.name = "Quit"
+            habit.icon = "🚫"
+            habit.color = "blue"
+            habit.type = "quit"
+            habit.createdAt = Date.now
+            habit.startDate = Date()
+            habit.endDate = nil
+            habit.isArchived = false
+            habit.goal = 1
+            habit.unit = "count"
+            habit.interval = 1
+            habit.frequency = "daily"
+            habit.weekdays = "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+            habit.progressMethod = "count"
+            habit.customCount = false
+            habit.defaultCount = 1
+            
+            return habit
+        }
+    }
+    
     var habits: (NSManagedObjectContext) -> [Habit] {
         { context in
             var previewHabits: [Habit] = []

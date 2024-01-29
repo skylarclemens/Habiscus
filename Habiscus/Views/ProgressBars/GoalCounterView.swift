@@ -24,11 +24,19 @@ struct GoalCounterView: View {
     private var goalCompletion: Double {
         Double(currentGoalCount) / Double(habit.goalNumber)
     }
+    private var goalComplete: Bool {
+        if habit.wrappedType == .build {
+            return currentGoalCount >= habit.goalNumber
+        } else if habit.wrappedType == .quit {
+            return currentGoalCount <= habit.goalNumber
+        }
+        return false
+    }
     
     var body: some View {
         ZStack {
             HStack {
-                if goalCompletion >= 1 {
+                if goalComplete {
                     AnimatedCheckmark(animationDuration: 1.25, size: checkmarkSize)
                 } else {
                     if let char = habit.icon,
@@ -42,7 +50,7 @@ struct GoalCounterView: View {
                     }
                 }
             }
-            ProgressView(value: goalCompletion > 1 ? 1.0 : goalCompletion, total: 1.0)
+            ProgressView(value: goalComplete ? 1.0 : goalCompletion, total: 1.0)
                 .progressViewStyle(CircleProgressStyle(color: .white, strokeWidth: 6))
                 .frame(width: size)
                 .animation(.easeOut(duration: 1.25), value: currentGoalCount)
@@ -128,7 +136,7 @@ struct CircleProgressStyle: ProgressViewStyle {
 
 struct GoalCounterView_Previews: PreviewProvider {
     static var previews: some View {
-        Previewing(\.habit) { habit in
+        Previewing(\.quitHabit) { habit in
             GoalCounterView(habit: habit, date: .constant(Date()))
                 .padding()
                 .background(

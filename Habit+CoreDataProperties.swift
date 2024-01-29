@@ -2,7 +2,7 @@
 //  Habit+CoreDataProperties.swift
 //  Habiscus - Habit Tracker
 //
-//  Created by Skylar Clemens on 1/25/24.
+//  Created by Skylar Clemens on 1/28/24.
 //
 //
 
@@ -29,11 +29,12 @@ extension Habit {
     @NSManaged public var isArchived: Bool
     @NSManaged public var lastUpdated: Date?
     @NSManaged public var name: String?
+    @NSManaged public var order: Int16
     @NSManaged public var progressMethod: String?
     @NSManaged public var startDate: Date?
     @NSManaged public var unit: String?
     @NSManaged public var weekdays: String?
-    @NSManaged public var order: Int16
+    @NSManaged public var type: String?
     @NSManaged public var actions: NSSet?
     @NSManaged public var notifications: NSSet?
     @NSManaged public var progress: NSSet?
@@ -52,6 +53,13 @@ extension Habit {
     
     public var emojiIcon: String {
         icon ?? ""
+    }
+    
+    public var wrappedType: HabitType {
+        if let type {
+            return HabitType(rawValue: type) ?? .build
+        }
+        return .build
     }
     
     public var url: URL? {

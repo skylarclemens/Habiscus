@@ -74,7 +74,11 @@ extension Progress {
     }
     
     public func checkCompleted() -> Bool {
-        totalCount >= wrappedHabit.goalNumber
+        if wrappedHabit.wrappedType == .build {
+            totalCount >= wrappedHabit.goalNumber
+        } else {
+            totalCount < wrappedHabit.goalNumber
+        }
     }
     
     public var isEmpty: Bool {
