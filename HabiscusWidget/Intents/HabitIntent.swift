@@ -25,6 +25,24 @@ struct WidgetHabitSelection: WidgetConfigurationIntent {
     }
 }
 
+struct WidgetMultiHabitSelection: WidgetConfigurationIntent {
+    static var title: LocalizedStringResource = "Select Multiple Habits"
+    static var description = IntentDescription("Select habits to display")
+    
+    @Parameter(title: "Habits")
+    var habits: [HabitEntity]
+    
+    init(habits: [HabitEntity]) {
+        self.habits = habits
+    }
+    
+    init() {}
+    
+    func perform() async throws -> some IntentResult {
+        return .result()
+    }
+}
+
 struct AddCountToHabit: AppIntent {
     static var title: LocalizedStringResource = "Add count"
     

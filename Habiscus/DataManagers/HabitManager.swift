@@ -44,7 +44,7 @@ struct HabitManager {
         
         updateProgress(progress)
         try? moc.save()
-        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     // Makes sure the date is today or earlier
@@ -99,7 +99,7 @@ struct HabitManager {
         habit.lastUpdated = Date()
         
         try? moc.save()
-        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func setProgressSkip(_ habit: Habit? = nil, progress: Progress, skip: Bool) {
@@ -109,7 +109,7 @@ struct HabitManager {
         habit.lastUpdated = Date()
         
         try? moc.save()
-        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func skipNewProgress(_ habit: Habit? = nil, on date: Date) {
@@ -131,7 +131,7 @@ struct HabitManager {
         habit.lastUpdated = Date()
         
         try? moc.save()
-        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func undoAction(action: Action) {
@@ -145,7 +145,7 @@ struct HabitManager {
         progress.habit?.lastUpdated = Date()
         
         try? moc.save()
-        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     // TODO: Rewrite weekly code
@@ -178,7 +178,7 @@ struct HabitManager {
         } catch let error {
             print(error.localizedDescription)
         }
-        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func unarchiveHabit(_ habit: Habit? = nil) throws {
@@ -187,7 +187,7 @@ struct HabitManager {
         }
         habit.isArchived = false
         try? moc.save()
-        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func removeHabit(_ habit: Habit? = nil) throws {
@@ -197,7 +197,7 @@ struct HabitManager {
         removeAllNotifications(habit)
         moc.delete(habit)
         try? moc.save()
-        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func removeHabit(_ habit: Habit? = nil, toastManager: ToastManager) throws {
@@ -219,7 +219,7 @@ struct HabitManager {
             toastManager.showAlert = true
             HapticManager.shared.simpleError()
         }
-        WidgetCenter.shared.reloadTimelines(ofKind: "HabitWidget")
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func removeAllNotifications(_ habit: Habit? = nil) {

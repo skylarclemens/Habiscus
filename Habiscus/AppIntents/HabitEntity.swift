@@ -29,6 +29,12 @@ struct HabitEntity: AppEntity, Identifiable {
     @Property(title: "Ends on")
     var endDate: Date?
     
+    @Property(title: "Type")
+    var type: String
+    
+    @Property(title: "Progress method")
+    var progressMethod: String
+    
     @Property(title: "Icon")
     var icon: String
     
@@ -54,7 +60,7 @@ struct HabitEntity: AppEntity, Identifiable {
         URL(string: "habiscus://open-habit?id=\(id)")
     }
     
-    init(id: UUID, name: String?, createdAt: Date?, startDate: Date?, endDate: Date?, icon: String, color: String?, count: Int, goal: Int, unit: String, lastUpdated: Date?, isArchived: Bool) {
+    init(id: UUID, name: String?, createdAt: Date?, startDate: Date?, endDate: Date?, type: String?, progressMethod: String?, icon: String, color: String?, count: Int, goal: Int, unit: String, lastUpdated: Date?, isArchived: Bool) {
         let habitName = name ?? "Unknown name"
         
         self.id = id
@@ -62,6 +68,8 @@ struct HabitEntity: AppEntity, Identifiable {
         self.createdAt = createdAt ?? Date()
         self.startDate = startDate ?? Date()
         self.endDate = endDate
+        self.type = type ?? "build"
+        self.progressMethod = progressMethod ?? "counts"
         self.icon = icon
         self.color = color ?? "pink"
         self.count = count
@@ -77,6 +85,8 @@ struct HabitEntity: AppEntity, Identifiable {
         self.createdAt = habit.createdDate
         self.startDate = habit.startDate ?? Date()
         self.endDate = habit.endDate
+        self.type = habit.type ?? "build"
+        self.progressMethod = habit.progressMethod ?? "counts"
         self.icon = habit.emojiIcon
         self.color = habit.color ?? "pink"
         self.count = habit.getCountByDate(from: Date())
@@ -86,7 +96,9 @@ struct HabitEntity: AppEntity, Identifiable {
         self.isArchived = habit.isArchived
     }
     
-    static let example: HabitEntity = HabitEntity(id: UUID(), name: "Habit", createdAt: Date(), startDate: Date(), endDate: nil, icon: "👍", color: "blue", count: 1, goal: 2, unit: "completed", lastUpdated: Date(), isArchived: false)
+    static let example: HabitEntity = HabitEntity(id: UUID(), name: "Habit", createdAt: Date(), startDate: Date(), endDate: nil, type: "build", progressMethod: "counts", icon: "👍", color: "blue", count: 1, goal: 2, unit: "completed", lastUpdated: Date(), isArchived: false)
+    static let example2: HabitEntity = HabitEntity(id: UUID(), name: "Habit2", createdAt: Date(), startDate: Date(), endDate: nil, type: "build", progressMethod: "action", icon: "🎉", color: "pink", count: 4, goal: 5, unit: "add", lastUpdated: Date(), isArchived: false)
+    static let example3: HabitEntity = HabitEntity(id: UUID(), name: "Habit3", createdAt: Date(), startDate: Date(), endDate: nil, type: "quit", progressMethod: "counts", icon: "🚫", color: "green", count: 2, goal: 3, unit: "add", lastUpdated: Date(), isArchived: false)
 }
 
 struct HabitQuery: EntityPropertyQuery {

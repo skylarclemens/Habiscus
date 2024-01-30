@@ -58,7 +58,12 @@ class HabitsManager: ObservableObject {
         }
     }
     
-    func findHabits(for ids: [UUID]) throws -> [Habit] {
+    func findHabits(for ids: [UUID], refresh: Bool = false) throws -> [Habit] {
+        if refresh {
+            try? self.context.setQueryGenerationFrom(.current)
+            self.context.refreshAllObjects()
+        }
+        
         let request: NSFetchRequest<Habit> = Habit.fetchRequest()
         request.predicate = NSPredicate(format: "id IN %@", ids)
         do {
