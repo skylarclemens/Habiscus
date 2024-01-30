@@ -12,5 +12,6 @@ import SwiftUI
 struct HabiscusWidgetBundle: WidgetBundle {
     var body: some Widget {
         HabiscusWidget()
+        MultiHabitWidget()
     }
 }

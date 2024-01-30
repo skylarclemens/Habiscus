@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import WidgetKit
 
 class ActionManager: ObservableObject {
     private let moc = DataController.shared.container.viewContext
@@ -65,6 +66,7 @@ class ActionManager: ObservableObject {
         if moc.hasChanges {
             try? moc.save()
         }
+        WidgetCenter.shared.reloadAllTimelines()
         currentAction = incompleteOrderedActions.first
     }
 }

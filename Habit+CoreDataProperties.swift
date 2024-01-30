@@ -178,17 +178,15 @@ extension Habit {
     }
     
     public func findProgress(from date: Date) -> Progress? {
+        guard !self.progressArray.isEmpty else { return nil }
         var progressDate = date
         if goalFrequency == "weekly" {
             progressDate = date.startOfWeek()
         }
-        if let progressObjects = self.progress?.allObjects as? [Progress],
-           let progressOnDate = progressObjects.first(where: {
-               Calendar.current.isDate($0.wrappedDate, inSameDayAs: progressDate)
-           }) {
-            return progressOnDate
-        }
-        return nil
+        let progressOnDate = self.progressArray.first(where: {
+            Calendar.current.isDate($0.wrappedDate, inSameDayAs: progressDate)
+        })
+        return progressOnDate
     }
     
     public func lastUpdatedProgress() -> Progress {

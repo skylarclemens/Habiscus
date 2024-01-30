@@ -20,6 +20,7 @@
 		7E34D8762A82EE9700A7D649 /* IconPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D8752A82EE9700A7D649 /* IconPickerView.swift */; };
 		7E34D87E2A82F47300A7D649 /* EmojiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E34D87D2A82F47300A7D649 /* EmojiManager.swift */; };
 		7E36B7422A956F28006D4632 /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E36B7412A956F28006D4632 /* ToastManager.swift */; };
+		7E3A74CF2B696A78009248F6 /* WidgetGoalCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3A74CE2B696A78009248F6 /* WidgetGoalCounter.swift */; };
 		7E3AE2182A96D37600BFAC65 /* HabiscusAppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DF2CB2A96A66900890B8E /* HabiscusAppIntents.swift */; };
 		7E3AE2192A96D37900BFAC65 /* HabiscusShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DF2D92A96AD6C00890B8E /* HabiscusShortcuts.swift */; };
 		7E3AE21A2A96D37B00BFAC65 /* HabitEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2DF2DB2A96ADF400890B8E /* HabitEntity.swift */; };
@@ -108,6 +109,8 @@
 		7ECD695B2A7D31930096AF19 /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */; };
 		7ECFBEA52B6826FA00935EA0 /* HabitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFBEA42B6826FA00935EA0 /* HabitType.swift */; };
 		7ECFBEA62B6827FE00935EA0 /* HabitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFBEA42B6826FA00935EA0 /* HabitType.swift */; };
+		7ECFBEA82B6853AC00935EA0 /* SmallMultiHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFBEA72B6853AC00935EA0 /* SmallMultiHabitView.swift */; };
+		7ECFBEAA2B685A8400935EA0 /* MultiHabitWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFBEA92B685A8400935EA0 /* MultiHabitWidget.swift */; };
 		7ED649712B017D910083E80D /* TimerActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED649702B017D910083E80D /* TimerActionView.swift */; };
 		7ED649732B017D9B0083E80D /* NotesActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED649722B017D9B0083E80D /* NotesActionView.swift */; };
 		7ED93E152A7AE2B0000C41B9 /* CountGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */; };
@@ -181,6 +184,7 @@
 		7E34D8752A82EE9700A7D649 /* IconPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPickerView.swift; sourceTree = "<group>"; };
 		7E34D87D2A82F47300A7D649 /* EmojiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiManager.swift; sourceTree = "<group>"; };
 		7E36B7412A956F28006D4632 /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
+		7E3A74CE2B696A78009248F6 /* WidgetGoalCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetGoalCounter.swift; sourceTree = "<group>"; };
 		7E3BE9132A8C27EA008C1503 /* AddCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCountView.swift; sourceTree = "<group>"; };
 		7E4884682B62D3F30036AD37 /* FilterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterListView.swift; sourceTree = "<group>"; };
 		7E4EAC722A93D91700EC16A5 /* Notification+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -241,6 +245,8 @@
 		7EB7708F2A8423BE00559D73 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
 		7ECD695A2A7D31930096AF19 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
 		7ECFBEA42B6826FA00935EA0 /* HabitType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitType.swift; sourceTree = "<group>"; };
+		7ECFBEA72B6853AC00935EA0 /* SmallMultiHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallMultiHabitView.swift; sourceTree = "<group>"; };
+		7ECFBEA92B685A8400935EA0 /* MultiHabitWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiHabitWidget.swift; sourceTree = "<group>"; };
 		7ED649702B017D910083E80D /* TimerActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerActionView.swift; sourceTree = "<group>"; };
 		7ED649722B017D9B0083E80D /* NotesActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesActionView.swift; sourceTree = "<group>"; };
 		7ED93E142A7AE2B0000C41B9 /* CountGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountGridView.swift; sourceTree = "<group>"; };
@@ -452,6 +458,7 @@
 				7E8460F92AF6EFA6008043B6 /* HabiscusWidgetExtension.entitlements */,
 				7E8460D62AF6E62A008043B6 /* HabiscusWidgetBundle.swift */,
 				7E8460D82AF6E62A008043B6 /* HabiscusWidget.swift */,
+				7ECFBEA92B685A8400935EA0 /* MultiHabitWidget.swift */,
 				7E8460DA2AF6E62D008043B6 /* Assets.xcassets */,
 				7E8460DC2AF6E62D008043B6 /* Info.plist */,
 			);
@@ -479,6 +486,8 @@
 			isa = PBXGroup;
 			children = (
 				7E8460E42AF6E6D6008043B6 /* SmallHabitView.swift */,
+				7ECFBEA72B6853AC00935EA0 /* SmallMultiHabitView.swift */,
+				7E3A74CE2B696A78009248F6 /* WidgetGoalCounter.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -791,6 +800,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ECFBEAA2B685A8400935EA0 /* MultiHabitWidget.swift in Sources */,
 				7E9684532AF9900E00BBCAD4 /* HabitManager.swift in Sources */,
 				7E8460EE2AF6E8E7008043B6 /* Weekday.swift in Sources */,
 				7E8460D72AF6E62A008043B6 /* HabiscusWidgetBundle.swift in Sources */,
@@ -800,6 +810,7 @@
 				7E8460F02AF6E8FF008043B6 /* IconView.swift in Sources */,
 				7E9684542AF9902000BBCAD4 /* ToastManager.swift in Sources */,
 				7E9684552AF9902200BBCAD4 /* NotificationManager.swift in Sources */,
+				7E3A74CF2B696A78009248F6 /* WidgetGoalCounter.swift in Sources */,
 				7E96844A2AF96AC400BBCAD4 /* HabitIntent.swift in Sources */,
 				7E9684432AF9699900BBCAD4 /* HabitEntity.swift in Sources */,
 				7E96844E2AF97FA900BBCAD4 /* HabitModel.swift in Sources */,
@@ -810,6 +821,7 @@
 				7E8460EF2AF6E8EA008043B6 /* Date.swift in Sources */,
 				7E55A2ED2B028C880060CE66 /* HabitProgressMethod.swift in Sources */,
 				7E8460ED2AF6E8E3008043B6 /* Progress+CoreDataProperties.swift in Sources */,
+				7ECFBEA82B6853AC00935EA0 /* SmallMultiHabitView.swift in Sources */,
 				7E9684562AF9902900BBCAD4 /* HapticManager.swift in Sources */,
 				7ECFBEA62B6827FE00935EA0 /* HabitType.swift in Sources */,
 				7E5FFE762AFEE94A00C644A3 /* Action+CoreDataProperties.swift in Sources */,
