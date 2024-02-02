@@ -103,34 +103,35 @@ struct HabitEntity: AppEntity, Identifiable {
 
 struct HabitQuery: EntityPropertyQuery {
     func entities(for identifiers: [UUID]) async throws -> [HabitEntity] {
-        return try HabitsManager.shared.findHabits(for: identifiers).map {
-            HabitEntity(habit: $0)
+        guard let habits = try HabitsManager.shared.findHabits(for: identifiers) else {
+            return []
         }
-    }
-    
-    func suggestedEntities() async throws -> [HabitEntity] {
-        let habits = HabitsManager.shared.getAllHabits().filter { !$0.isArchived }
-        return habits.map {
-            HabitEntity(habit: $0)
-        }
+        return habits.map { HabitEntity(habit: $0) }
     }
     
     func entities(matching string: String) async throws -> [HabitEntity] {
-        let filteredHabits = HabitsManager.shared.getAllHabits().filter { habit in
+        guard let habits = try? HabitsManager.shared.getAllHabits() else {
+            return []
+        }
+            
+        let filteredHabits = habits.filter { habit in
             habit.wrappedName.lowercased().localizedCaseInsensitiveContains(string.lowercased())
         }
         
-        return filteredHabits.map {
-            HabitEntity(habit: $0)
+        return filteredHabits.map { HabitEntity(habit: $0) }
+    }
+    
+    func suggestedEntities() async throws -> [HabitEntity] {
+        guard let habits = try HabitsManager.shared.getAllActiveHabits() else {
+            return []
         }
+        return habits.map { HabitEntity(habit: $0) }
     }
     
     func defaultResult() async -> HabitEntity? {
         do {
-            let entity = try await suggestedEntities().first
-            return entity
+            return try await self.suggestedEntities().first
         } catch {
-            print(error.localizedDescription)
             return nil
         }
     }
@@ -175,9 +176,7 @@ struct HabitQuery: EntityPropertyQuery {
         //let predicate = NSCompoundPredicate(type: mode == .and ? .and : .or, subpredicates: comparators)
         //let sortDescriptors = toSortDescriptor(sortedBy)
         let matchingHabits = try context.fetch(request)
-        return matchingHabits.map {
-            HabitEntity(habit: $0)
-        }
+        return matchingHabits.map { HabitEntity(habit: $0) }
     }
     
     private func toSortDescriptor(_ sortedBy: [Sort<HabitEntity>]) -> [NSSortDescriptor] {

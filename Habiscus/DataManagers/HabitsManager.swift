@@ -16,92 +16,119 @@ class HabitsManager: ObservableObject {
     
     let context = DataController.shared.container.viewContext
     
-    func getAllHabits() -> [Habit] {
+    func getAllHabits() throws -> [Habit]? {
         let request: NSFetchRequest<Habit> = Habit.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
-        do {
-            return try context.fetch(request)
-        } catch let error {
-            print("Fetch all habits failed: \(error.localizedDescription)")
+        var habits: [Habit]?
+        context.performAndWait {
+            do {
+                habits = try context.fetch(request)
+            } catch let error {
+                print("Fetch all habits failed: \(error.localizedDescription)")
+            }
         }
-        return []
+        
+        return habits
     }
     
-    func getAllActiveHabits() throws -> [Habit] {
+    func getAllActiveHabits(refresh: Bool = false) throws -> [Habit]? {
         let request: NSFetchRequest<Habit> = Habit.fetchRequest()
         request.predicate = NSPredicate(format: "isArchived == NO")
         request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
-        do {
-            return try context.fetch(request)
-        } catch let error {
-            print("Fetch all active habits failed: \(error.localizedDescription)")
+        var habits: [Habit]?
+        context.performAndWait {
+            if refresh {
+                try? self.context.setQueryGenerationFrom(.current)
+                self.context.refreshAllObjects()
+            }
+            
+            do {
+                habits = try context.fetch(request)
+            } catch let error {
+                print("Fetch all active habits failed: \(error.localizedDescription)")
+            }
         }
-        return []
+        
+        return habits
     }
     
-    func findHabit(id: UUID, refresh: Bool = false) throws -> Habit {
-        if refresh {
-            try? self.context.setQueryGenerationFrom(.current)
-            self.context.refreshAllObjects()
-        }
+    func findHabit(id: UUID, refresh: Bool = false) throws -> Habit? {
+        var habit: Habit?
         
         let request: NSFetchRequest<Habit> = Habit.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", id as CVarArg)
         request.fetchLimit = 1
-        do {
-            guard let habit = try context.fetch(request).first else {
+        
+        try context.performAndWait {
+            if refresh {
+                try? self.context.setQueryGenerationFrom(.current)
+                self.context.refreshAllObjects()
+            }
+            
+            do {
+                habit = try context.fetch(request).first
+            } catch {
                 throw Errors.notFound
             }
-            return habit
-        } catch {
-            throw Errors.notFound
-        }
-    }
-    
-    func findHabits(for ids: [UUID], refresh: Bool = false) throws -> [Habit] {
-        if refresh {
-            try? self.context.setQueryGenerationFrom(.current)
-            self.context.refreshAllObjects()
         }
         
-        let request: NSFetchRequest<Habit> = Habit.fetchRequest()
-        request.predicate = NSPredicate(format: "id IN %@", ids)
-        do {
-            let habits = try context.fetch(request)
-            guard !habits.isEmpty else {
-                throw Errors.notFound
-            }
-            return habits
-        } catch {
-            throw Errors.notFound
-        }
+        return habit
     }
     
-    func findHabitByName(name: String) throws -> Habit {
+    func findHabits(for ids: [UUID], refresh: Bool = false) throws -> [Habit]? {
+        let request: NSFetchRequest<Habit> = Habit.fetchRequest()
+        request.predicate = NSPredicate(format: "id IN %@", ids)
+        
+        var habits: [Habit]?
+        
+        try context.performAndWait {
+            if refresh {
+                try? self.context.setQueryGenerationFrom(.current)
+                self.context.refreshAllObjects()
+            }
+            
+            do {
+                habits = try context.fetch(request)
+            } catch {
+                throw Errors.notFound
+            }
+        }
+        
+        return habits
+    }
+    
+    func findHabitByName(name: String) throws -> Habit? {
         let request: NSFetchRequest<Habit> = Habit.fetchRequest()
         request.predicate = NSPredicate(format: "name = %@", name)
         request.fetchLimit = 1
-        do {
-            guard let habit = try context.fetch(request).first else {
+        
+        var habit: Habit?
+        
+        try context.performAndWait {
+            do {
+                habit = try context.fetch(request).first
+            } catch {
                 throw Errors.notFound
             }
-            return habit
-        } catch {
-            throw Errors.notFound
         }
+        
+        return habit
     }
     
-    func findHabitsByName(name: String) throws -> [Habit] {
+    func findHabitsByName(name: String) throws -> [Habit]? {
         let request: NSFetchRequest<Habit> = Habit.fetchRequest()
         request.predicate = NSPredicate(format: "name = %@", name)
-        do {
-            let habits = try context.fetch(request)
-            guard !habits.isEmpty else {
+        
+        var habits: [Habit]?
+        
+        try context.performAndWait {
+            do {
+                habits = try context.fetch(request)
+            } catch {
                 throw Errors.notFound
             }
-            return habits
-        } catch {
-            throw Errors.notFound
         }
+        
+        return habits
     }
 }

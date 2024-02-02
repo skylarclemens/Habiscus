@@ -80,7 +80,9 @@ struct OpenHabit: AppIntent {
             throw Error.notFound
         }
         do {
-            let habitMatch = try HabitsManager.shared.findHabit(id: habit.id)
+            guard let habitMatch = try HabitsManager.shared.findHabit(id: habit.id) else {
+                throw Error.notFound
+            }
             Navigator.shared.goTo(habit: habitMatch)
             return .result()
         } catch let error {

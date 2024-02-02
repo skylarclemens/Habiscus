@@ -53,7 +53,10 @@ struct Provider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
         do {
-            let habits = try HabitsManager.shared.getAllActiveHabits()
+            guard let habits = try HabitsManager.shared.getAllActiveHabits() else {
+                completion(.placeholder)
+                return
+            }
             if let habit = habits.first {
                 let habitEntity = HabitEntity(habit: habit)
                 let entry = SimpleEntry(habit: habitEntity, date: .now)
@@ -68,7 +71,10 @@ struct Provider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         do {
-            let habits = try HabitsManager.shared.getAllActiveHabits()
+            guard let habits = try HabitsManager.shared.getAllActiveHabits() else {
+                completion(.init(entries: [], policy: .never))
+                return
+            }
             var entries: [SimpleEntry] = []
 
             let entryDate: Date = .now

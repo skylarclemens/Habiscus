@@ -64,7 +64,10 @@ struct MultiHabitProvider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (MultiHabitEntry) -> ()) {
         do {
-            let habits = try HabitsManager.shared.getAllActiveHabits()
+            guard let habits = try HabitsManager.shared.getAllActiveHabits() else {
+                completion(.placeholder)
+                return
+            }
             
             var habitEntities: [HabitEntity] = []
             let habitSlice = habits[0..<4]
@@ -82,7 +85,10 @@ struct MultiHabitProvider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         do {
-            let habits = try HabitsManager.shared.getAllActiveHabits()
+            guard let habits = try HabitsManager.shared.getAllActiveHabits() else {
+                completion(.init(entries: [], policy: .never))
+                return
+            }
             var habitEntities: [HabitEntity] = []
             var entries: [MultiHabitEntry] = []
 

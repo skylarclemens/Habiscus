@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Habiscus - Habit Tracker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7E8460CE2AF6E62A008043B6"
+               BuildableName = "HabiscusWidgetExtension.appex"
+               BlueprintName = "HabiscusWidgetExtension"
+               ReferencedContainer = "container:Habiscus - Habit Tracker.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -55,6 +69,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "-com.apple.CoreData.ConcurrencyDebug 1"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-com.apple.CoreData.Logging.stderr 0"
             isEnabled = "YES">
          </CommandLineArgument>
@@ -64,12 +82,12 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-com.apple.CoreData.Logging.stderr 0   "
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
