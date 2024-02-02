@@ -56,8 +56,8 @@ struct RedactedHabitView: View {
 
 #Preview {
     VStack {
-        RedactedHabitView(color: Color("pink"), goalCompletion: 0.5)
-        RedactedHabitView(color: Color("blue"), goalCompletion: 1)
-        RedactedHabitView(color: Color("purple"), goalCompletion: 0.25)
+        RedactedHabitView(color: Color.habiscusPink, goalCompletion: 0.5)
+        RedactedHabitView(color: Color.habiscusBlue, goalCompletion: 1)
+        RedactedHabitView(color: Color.habiscusPurple, goalCompletion: 0.25)
     }
 }

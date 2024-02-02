@@ -154,7 +154,6 @@ struct HabitManager {
             return
         }
         let selectedDate = date ?? Date()
-        var progressDate = selectedDate
 
         if let progress = habit.findProgress(from: selectedDate) {
             let currentCount = progress.totalCount

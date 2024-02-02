@@ -28,6 +28,6 @@ struct IconView: View {
 
 struct IconView_Previews: PreviewProvider {
     static var previews: some View {
-        IconView(char: "😀", size: 32, showFrame: true, color: .pink.opacity(0.125))
+        IconView(char: "😀", size: 32, showFrame: true, color: Color.habiscusPink.opacity(0.125))
     }
 }

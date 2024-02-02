@@ -15,20 +15,20 @@ struct WelcomeView: View {
             Text("Habiscus")
                 .font(.system(size: 40, weight: .semibold, design: .rounded))
                 .foregroundStyle(
-                    .linearGradient(colors: [Color("pink"), Color("blue")], startPoint: .leading, endPoint: .trailing)
+                    .linearGradient(colors: [Color.habiscusPink, Color.habiscusBlue], startPoint: .leading, endPoint: .trailing)
                 )
             Spacer()
             VStack(spacing: -50) {
-                RedactedHabitView(color: Color("purple"), goalCompletion: 0.5)
+                RedactedHabitView(color: Color.habiscusPurple, goalCompletion: 0.5)
                     .scaleEffect(0.85)
                     .offset(y: 15)
-                RedactedHabitView(color: Color("green"), goalCompletion: 0.25)
+                RedactedHabitView(color: Color.habiscusGreen, goalCompletion: 0.25)
                     .scaleEffect(0.90)
                     .offset(y: 10)
-                RedactedHabitView(color: Color("blue"), goalCompletion: 1)
+                RedactedHabitView(color: Color.habiscusBlue, goalCompletion: 1)
                     .scaleEffect(0.95)
                     .offset(y: 5)
-                RedactedHabitView(color: Color("pink"), goalCompletion: 0.75)
+                RedactedHabitView(color: Color.habiscusPink, goalCompletion: 0.75)
             }
             Spacer()
             Button {
@@ -40,7 +40,7 @@ struct WelcomeView: View {
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
-            .tint(Color("pink"))
+            .tint(Color.habiscusPink)
             
         }
         .padding()

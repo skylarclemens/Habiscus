@@ -28,7 +28,7 @@ class DataController: ObservableObject {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
         }
         
-        guard let path = container.persistentStoreDescriptions.first?.url?.path else {
+        guard container.persistentStoreDescriptions.first?.url?.path != nil else {
             fatalError("error getting path")
         }
         

@@ -21,7 +21,7 @@ struct ContentView: View {
         NavigationStack(path: $navigator.path) {
             HomeView(dateSelected: $dateSelected)
         }
-        .tint(.pink)
+        .tint(Color.habiscusPink)
         .onAppear {
             HapticManager.shared.prepareHaptics()
         }

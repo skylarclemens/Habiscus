@@ -36,7 +36,7 @@ struct MultiWeekView: View {
                                 .foregroundColor(isSelectedDay ? .white : .primary)
                                 .padding(8)
                                 .frame(width: 42)
-                                .background(isSelectedDay ? .pink : Color(UIColor.systemFill))
+                                .background(isSelectedDay ? Color.habiscusPink : Color(UIColor.systemFill))
                                 .opacity(isSelectedDay ? 1 : 0.75)
                                 .clipShape(RoundedRectangle(cornerRadius: 16))
                                 .onTapGesture {
