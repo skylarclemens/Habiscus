@@ -143,7 +143,7 @@ extension Habit {
     }
     
     public var habitColor: Color {
-        Color(color ?? "pink")
+        Color(color ?? "habiscusPink")
     }
     
     public var goalNumber: Int {
