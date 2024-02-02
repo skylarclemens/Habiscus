@@ -219,7 +219,7 @@ struct PreviewData {
             habit.id = UUID()
             habit.name = "Complete Test"
             habit.icon = "🤩"
-            habit.color = "purple"
+            habit.color = "habiscusPurple"
             habit.createdAt = Date.now
             habit.startDate = Date()
             habit.endDate = nil

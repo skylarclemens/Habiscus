@@ -37,7 +37,7 @@ public struct HabitModel {
         self.id = habit.id!
         self.name = habit.wrappedName
         self.emojiIcon = habit.emojiIcon
-        self.color = habit.color ?? "pink"
+        self.color = habit.color ?? "habiscusPink"
         self.count = habit.getCountByDate(from: Date())
         self.goal = habit.goalNumber
         self.unit = habit.wrappedUnit
@@ -47,7 +47,7 @@ public struct HabitModel {
         self.id = habit.id!
         self.name = habit.wrappedName
         self.emojiIcon = habit.emojiIcon
-        self.color = habit.color ?? "pink"
+        self.color = habit.color ?? "habiscusPink"
         self.count = habit.getCountByDate(from: date)
         self.goal = habit.goalNumber
         self.unit = habit.wrappedUnit

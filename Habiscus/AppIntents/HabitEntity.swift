@@ -71,7 +71,7 @@ struct HabitEntity: AppEntity, Identifiable {
         self.type = type ?? "build"
         self.progressMethod = progressMethod ?? "counts"
         self.icon = icon
-        self.color = color ?? "pink"
+        self.color = color ?? "habiscusPink"
         self.count = count
         self.goal = goal
         self.unit = unit
@@ -88,7 +88,7 @@ struct HabitEntity: AppEntity, Identifiable {
         self.type = habit.type ?? "build"
         self.progressMethod = habit.progressMethod ?? "counts"
         self.icon = habit.emojiIcon
-        self.color = habit.color ?? "pink"
+        self.color = habit.color ?? "habiscusPink"
         self.count = habit.getCountByDate(from: Date())
         self.goal = habit.goalNumber
         self.unit = habit.wrappedUnit
