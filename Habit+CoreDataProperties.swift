@@ -40,7 +40,7 @@ extension Habit {
     @NSManaged public var progress: NSSet?
     
     public var wrappedName: String {
-        name ?? "Unkown name"
+        name ?? "Unknown name"
     }
     
     public var createdDate: Date {
