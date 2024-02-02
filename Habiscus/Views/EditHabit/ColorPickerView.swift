@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ColorPickerView: View {
     @Binding var selection: String
-    let colorOptions = ["pink", "blue", "green", "purple"]
+    let colorOptions = ["habiscusPink", "habiscusBlue", "habiscusGreen", "habiscusPurple"]
     
     var body: some View {
         ScrollView(.horizontal) {
@@ -38,6 +38,6 @@ struct ColorPickerView: View {
 
 struct ColorPickerView_Previews: PreviewProvider {
     static var previews: some View {
-        ColorPickerView(selection: .constant("pink"))
+        ColorPickerView(selection: .constant("habiscusPink"))
     }
 }

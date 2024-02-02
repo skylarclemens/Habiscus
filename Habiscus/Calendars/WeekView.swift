@@ -23,7 +23,7 @@ struct WeekView: View {
                 .foregroundColor(isSelectedDay ? .white : .primary)
                 .padding(8)
                 .frame(maxWidth: .infinity)
-                .background(isSelectedDay ? .pink : Color(UIColor.systemFill))
+                .background(isSelectedDay ? Color.habiscusPink : Color(UIColor.systemFill))
                 .opacity(isSelectedDay ? 1 : 0.75)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .onTapGesture {

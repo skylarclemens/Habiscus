@@ -104,7 +104,7 @@ struct CalendarView: View {
     
     @State var selectedMonth: CalendarMonth
     
-    init(habit: Habit, date: Binding<Date>, size: CGFloat = 36, spacing: CGFloat = 16, color: Color = .pink) {
+    init(habit: Habit, date: Binding<Date>, size: CGFloat = 36, spacing: CGFloat = 16, color: Color = Color.habiscusPink) {
         self.habit = habit
         self._date = date
         self.size = size

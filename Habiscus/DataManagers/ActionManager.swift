@@ -90,11 +90,11 @@ public enum ActionType: String, CaseIterable, Identifiable {
     func color() -> Color {
         switch (self) {
         case .timer:
-            Color("blue")
+            Color.habiscusBlue
         case .emotion:
-            .pink
+            Color.habiscusPink
         case .note:
-            Color("purple")
+            Color.habiscusPurple
         }
     }
     

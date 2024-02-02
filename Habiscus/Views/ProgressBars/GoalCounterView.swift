@@ -144,7 +144,7 @@ struct GoalCounterView_Previews: PreviewProvider {
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(.pink)
+                        .fill(Color.habiscusPink)
                 )
         }
     }

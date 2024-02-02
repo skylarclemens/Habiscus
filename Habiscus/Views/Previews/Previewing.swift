@@ -43,7 +43,7 @@ struct PreviewData {
             habit.id = UUID()
             habit.name = "Test"
             habit.icon = "🤩"
-            habit.color = "blue"
+            habit.color = "habiscusBlue"
             habit.createdAt = Date.now
             habit.startDate = Date()
             habit.endDate = nil
@@ -80,7 +80,7 @@ struct PreviewData {
             habit.id = UUID()
             habit.name = "Test"
             habit.icon = "🤩"
-            habit.color = "blue"
+            habit.color = "habiscusBlue"
             habit.createdAt = Date.now
             habit.startDate = Date()
             habit.endDate = nil
@@ -146,7 +146,7 @@ struct PreviewData {
             habit.id = UUID()
             habit.name = "Quit"
             habit.icon = "🚫"
-            habit.color = "blue"
+            habit.color = "habiscusBlue"
             habit.type = "quit"
             habit.createdAt = Date.now
             habit.startDate = Date()
@@ -187,7 +187,7 @@ struct PreviewData {
                 habit.id = UUID()
                 habit.name = "Test"
                 habit.icon = "🤩"
-                habit.color = "blue"
+                habit.color = "habiscusBlue"
                 habit.createdAt = Date.now
                 habit.startDate = Date()
                 habit.endDate = nil

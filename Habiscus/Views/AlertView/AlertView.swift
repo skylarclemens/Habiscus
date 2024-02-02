@@ -23,7 +23,7 @@ struct ActionAlertView: View {
     var body: some View {
         HStack(spacing: isSuccess ? 14 : 8) {
             if isSuccess {
-                AnimatedCheckmark(color: .pink)
+                AnimatedCheckmark(color: Color.habiscusPink)
                     .scaleEffect(0.8)
                 if let successTitle = successTitle {
                     Text(successTitle)
@@ -90,7 +90,7 @@ extension AnyTransition {
         ActionAlertView(isSuccess: .constant(true))
         CustomAlertView() {
             HStack(spacing: 20) {
-                AnimatedCheckmark(color: .pink)
+                AnimatedCheckmark(color: Color.habiscusPink)
                     .scaleEffect(0.8)
                 VStack {
                     Text("Test")

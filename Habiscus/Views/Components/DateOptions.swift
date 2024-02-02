@@ -164,7 +164,7 @@ struct DateOptionsPreviewHelper: View {
             Form {
                 DateOptions(frequency: $frequency, weekdays: $weekdays, interval: $interval, startDate: $startDate, endDate: .constant(nil))
             }
-            .tint(.pink)
+            .tint(Color.habiscusPink)
         }
     }
 }

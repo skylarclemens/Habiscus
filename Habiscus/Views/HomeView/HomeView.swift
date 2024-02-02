@@ -102,7 +102,7 @@ struct HomeView_Previews: PreviewProvider {
         NavigationStack {
             HomeView(dateSelected: .constant(Date()))
                 .environment(\.managedObjectContext, dataController.container.viewContext)
-                .tint(.pink)
+                .tint(Color.habiscusPink)
         }
         
     }

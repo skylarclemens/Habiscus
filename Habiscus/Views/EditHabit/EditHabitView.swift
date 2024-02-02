@@ -97,16 +97,16 @@ struct EditHabitView: View {
                             } else {
                                 Image(systemName: "plus")
                                     .font(.title)
-                                    .foregroundColor(Color(habit.color ?? "pink"))
+                                    .foregroundColor(Color(habit.color ?? "habiscusPink"))
                             }
                         }
                         .frame(width: 65, height: 65)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color(habit.color ?? "pink").opacity(0.1))
+                                .fill(Color(habit.color ?? "habiscusPink").opacity(0.1))
                         )
                     }
-                    ColorPickerView(selection: $habit.color ?? "pink")
+                    ColorPickerView(selection: $habit.color ?? "habiscusPink")
                         .padding(6)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)

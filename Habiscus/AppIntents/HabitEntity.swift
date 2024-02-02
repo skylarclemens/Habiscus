@@ -96,9 +96,9 @@ struct HabitEntity: AppEntity, Identifiable {
         self.isArchived = habit.isArchived
     }
     
-    static let example: HabitEntity = HabitEntity(id: UUID(), name: "Habit", createdAt: Date(), startDate: Date(), endDate: nil, type: "build", progressMethod: "counts", icon: "👍", color: "blue", count: 1, goal: 2, unit: "completed", lastUpdated: Date(), isArchived: false)
-    static let example2: HabitEntity = HabitEntity(id: UUID(), name: "Habit2", createdAt: Date(), startDate: Date(), endDate: nil, type: "build", progressMethod: "action", icon: "🎉", color: "pink", count: 4, goal: 5, unit: "add", lastUpdated: Date(), isArchived: false)
-    static let example3: HabitEntity = HabitEntity(id: UUID(), name: "Habit3", createdAt: Date(), startDate: Date(), endDate: nil, type: "quit", progressMethod: "counts", icon: "🚫", color: "green", count: 2, goal: 3, unit: "add", lastUpdated: Date(), isArchived: false)
+    static let example: HabitEntity = HabitEntity(id: UUID(), name: "Habit", createdAt: Date(), startDate: Date(), endDate: nil, type: "build", progressMethod: "counts", icon: "👍", color: "habiscusBlue", count: 1, goal: 2, unit: "completed", lastUpdated: Date(), isArchived: false)
+    static let example2: HabitEntity = HabitEntity(id: UUID(), name: "Habit2", createdAt: Date(), startDate: Date(), endDate: nil, type: "build", progressMethod: "action", icon: "🎉", color: "habiscusPink", count: 4, goal: 5, unit: "add", lastUpdated: Date(), isArchived: false)
+    static let example3: HabitEntity = HabitEntity(id: UUID(), name: "Habit3", createdAt: Date(), startDate: Date(), endDate: nil, type: "quit", progressMethod: "counts", icon: "🚫", color: "habiscusGreen", count: 2, goal: 3, unit: "add", lastUpdated: Date(), isArchived: false)
 }
 
 struct HabitQuery: EntityPropertyQuery {

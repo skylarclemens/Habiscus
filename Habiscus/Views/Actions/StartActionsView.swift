@@ -64,7 +64,7 @@ struct StartActionsView_Previews: PreviewProvider {
         return VStack {
             StartActionsView(habit: habit, date: .constant(Date.now), habitManager: HabitManager())
         }.padding()
-        .background(.pink)
+            .background(Color.habiscusPink)
         .clipShape(.rect(cornerRadius: 10))
     }
 }

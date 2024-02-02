@@ -76,7 +76,7 @@ struct CalendarGridView: View {
 struct CalendarGridView_Previews: PreviewProvider {
     static var previews: some View {
         Previewing(\.habit) { habit in
-            CalendarGridView(date: .constant(Date()), month: CalendarMonth(date: Date(), habit: habit), size: 36, color: .pink)
+            CalendarGridView(date: .constant(Date()), month: CalendarMonth(date: Date(), habit: habit), size: 36, color: Color.habiscusPink)
         }
     }
 }

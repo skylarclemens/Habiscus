@@ -58,6 +58,6 @@ struct WidgetGoalCounter_Previews: PreviewProvider {
             WidgetGoalCounter(size: 50, date: Date(), count: 1, goal: 2, icon: "🤩", habitType: "build", checkmarkSize: 10)
         }
         .previewContext(WidgetPreviewContext(family: .systemSmall))
-        .widgetBackground(Color.pink)
+        .widgetBackground(Color.habiscusPink)
     }
 }

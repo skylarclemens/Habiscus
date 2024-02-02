@@ -21,7 +21,7 @@ public struct HabitModel {
         Color(color)
     }
     
-    static var example = HabitModel(id: UUID(), name: "Habit", emojiIcon: "🤩", color: "blue", count: 1, goal: 2, unit: "completed")
+    static var example = HabitModel(id: UUID(), name: "Habit", emojiIcon: "🤩", color: "habiscusBlue", count: 1, goal: 2, unit: "completed")
     
     init(id: UUID, name: String, emojiIcon: String, color: String, count: Int, goal: Int, unit: String) {
         self.id = UUID()
