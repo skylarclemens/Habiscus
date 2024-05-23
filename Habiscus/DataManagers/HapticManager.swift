@@ -41,6 +41,29 @@ class HapticManager: ObservableObject {
         return events
     }
     
+    func welcomeHaptic() {
+        // make sure that the device supports haptics
+        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
+        var events = [CHHapticEvent]()
+
+        // create one intense, sharp tap
+        for i in stride(from: 0.3, to: 1.5, by: 0.3) {
+            let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: Float(i*3))
+            let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: Float(i*3))
+            let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: i)
+            events.append(event)
+        }
+
+        // convert those events into a pattern and play it immediately
+        do {
+            let pattern = try CHHapticPattern(events: events, parameters: [])
+            let player = try hapticEngine?.makePlayer(with: pattern)
+            try player?.start(atTime: 0)
+        } catch {
+            print("Failed to play pattern: \(error.localizedDescription).")
+        }
+    }
+    
     func completionSuccess() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
         var events = [CHHapticEvent]()

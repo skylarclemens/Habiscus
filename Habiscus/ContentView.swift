@@ -10,6 +10,7 @@ import UserNotifications
 import CoreHaptics
 
 struct ContentView: View {
+    
     @Environment(\.managedObjectContext) var moc
     @Environment(\.colorScheme) var colorScheme
     @StateObject var toastManager = ToastManager.shared
