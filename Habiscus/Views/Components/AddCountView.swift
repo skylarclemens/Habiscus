@@ -53,7 +53,7 @@ struct AddCountView: View {
         if let progress = progress {
             habitManager.addNewCount(progress: progress, date: date, habit: habit, amount: amount)
         } else {
-            habitManager.addNewProgress(date: date, amount: countAmount)
+            habitManager.addNewProgress(date: date, amount: amount)
         }
         
         HapticManager.shared.simpleSuccess()
