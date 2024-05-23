@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @State var showHabitViews: Bool = false
+    @State var scale = 0.8
+    var finish: () -> Void
+    
     var body: some View {
         VStack {
             Text("Welcome to")
@@ -19,20 +23,29 @@ struct WelcomeView: View {
                 )
             Spacer()
             VStack(spacing: -50) {
-                RedactedHabitView(color: Color.habiscusPurple, goalCompletion: 0.5)
-                    .scaleEffect(0.85)
-                    .offset(y: 15)
+                RedactedHabitView(color: Color.habiscusPurple, goalCompletion: 0)
+                    .scaleEffect(showHabitViews ? 0.85 : scale)
+                    .offset(y: showHabitViews ? 15 : 0)
+                    .opacity(showHabitViews ? 1 : 0)
+                    .animation(.spring.delay(1.2), value: showHabitViews)
                 RedactedHabitView(color: Color.habiscusGreen, goalCompletion: 0.25)
-                    .scaleEffect(0.90)
-                    .offset(y: 10)
+                    .scaleEffect(showHabitViews ? 0.90 : scale)
+                    .offset(y: showHabitViews ? 10 : 0)
+                    .opacity(showHabitViews ? 1 : 0)
+                    .animation(.spring.delay(0.9), value: showHabitViews)
                 RedactedHabitView(color: Color.habiscusBlue, goalCompletion: 1)
-                    .scaleEffect(0.95)
-                    .offset(y: 5)
+                    .scaleEffect(showHabitViews ? 0.95 : scale)
+                    .offset(y: showHabitViews ? 5 : 0)
+                    .opacity(showHabitViews ? 1 : 0)
+                    .animation(.spring.delay(0.6), value: showHabitViews)
                 RedactedHabitView(color: Color.habiscusPink, goalCompletion: 0.75)
+                    .scaleEffect(showHabitViews ? 1.0 : scale)
+                    .opacity(showHabitViews ? 1 : 0)
+                    .animation(.spring.delay(0.3), value: showHabitViews)
             }
             Spacer()
             Button {
-                
+                finish()
             } label: {
                 Text("Continue")
                     .font(.headline)
@@ -44,9 +57,15 @@ struct WelcomeView: View {
             
         }
         .padding()
+        .onAppear {
+            withAnimation {
+                self.showHabitViews = true
+            }
+            HapticManager.shared.welcomeHaptic()
+        }
     }
 }
 
 #Preview {
-    WelcomeView()
+    WelcomeView(finish: { })
 }

@@ -7,19 +7,7 @@
 
 import SwiftUI
 
-struct NoHabitsView: View {
-    @Binding var date: Date
-    var body: some View {
-        VStack {
-            VStack(spacing: 4) {
-                Text("No habits for \(date.formatted(date: .abbreviated, time: .omitted))")
-                    .font(.title2)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-        }
-    }
-}
+
 
 struct HabitListView: View {
     @Environment(\.managedObjectContext) var moc

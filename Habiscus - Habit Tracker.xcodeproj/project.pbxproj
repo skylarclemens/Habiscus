@@ -129,6 +129,7 @@
 		7EF1E2B22A6EDE9C00DE3517 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */; };
 		7EF7DCC72A8D15C7007AF16C /* Weekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF7DCC62A8D15C7007AF16C /* Weekday.swift */; };
 		7EF9C85B2A7B1DFC006E5130 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */; };
+		7EFDA95B2B715F7200AA87A2 /* NoHabitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFDA95A2B715F7200AA87A2 /* NoHabitsView.swift */; };
 		7EFE65BA2A928391009E655F /* DataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE65B92A928391009E655F /* DataOperation.swift */; };
 /* End PBXBuildFile section */
 
@@ -265,6 +266,7 @@
 		7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRowView.swift; sourceTree = "<group>"; };
 		7EF7DCC62A8D15C7007AF16C /* Weekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
 		7EF9C85A2A7B1DFC006E5130 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		7EFDA95A2B715F7200AA87A2 /* NoHabitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoHabitsView.swift; sourceTree = "<group>"; };
 		7EFE65B92A928391009E655F /* DataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataOperation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -582,6 +584,7 @@
 				7E83225C2A72F3E200042486 /* HabitListView.swift */,
 				7EF1E2B12A6EDE9C00DE3517 /* HabitRowView.swift */,
 				7E4884682B62D3F30036AD37 /* FilterListView.swift */,
+				7EFDA95A2B715F7200AA87A2 /* NoHabitsView.swift */,
 			);
 			path = HabitList;
 			sourceTree = "<group>";
@@ -746,6 +749,7 @@
 				7E3AE21A2A96D37B00BFAC65 /* HabitEntity.swift in Sources */,
 				7E93174F2A7D84160074E210 /* HapticManager.swift in Sources */,
 				7E55A2F32B02BD610060CE66 /* ActionInfoView.swift in Sources */,
+				7EFDA95B2B715F7200AA87A2 /* NoHabitsView.swift in Sources */,
 				7E55A2EC2B028C560060CE66 /* HabitProgressMethod.swift in Sources */,
 				7EE77DEA2A6DDBC90058CDF8 /* Habiscus.xcdatamodeld in Sources */,
 				7E56091D2A9428CC0003568D /* HomeView.swift in Sources */,
