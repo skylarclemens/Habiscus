@@ -39,12 +39,6 @@ struct EditHabitView: View {
     @State private var startDate: Date
     @State private var notifications: [Notification]
     @State var selectedEmoji: String? = nil
-    private var weekdaysSelected: [RepeatOptions : Set<Weekday>] {
-        return [
-            .daily: [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday],
-            .weekly: weekdays
-        ]
-    }
     @State var actions: [Action]
     @State private var progressMethod: HabitProgressMethod = .counts
     
@@ -196,7 +190,7 @@ struct EditHabitView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Save") {
                     // Sort selected week days
-                    let sortedDaysSelected = weekdaysSelected[frequency]!.sorted { Weekday.allValues.firstIndex(of: $0)! < Weekday.allValues.firstIndex(of: $1)! }
+                    let sortedDaysSelected = weekdays.sorted { Weekday.allValues.firstIndex(of: $0)! < Weekday.allValues.firstIndex(of: $1)! }
                     let daysSelectedArray = sortedDaysSelected.map { $0.rawValue.localizedCapitalized }
                     // Convert to string array for storage
                     let daysSelected = daysSelectedArray.joined(separator: ", ")

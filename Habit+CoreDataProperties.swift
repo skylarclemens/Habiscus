@@ -92,6 +92,13 @@ extension Habit {
         weekdaysStrings.compactMap { Weekday(rawValue: $0.localizedLowercase) ?? nil }
     }
     
+    public var weekdaysForCalc: [Weekday] {
+        if self.goalFrequency == "weekly" {
+            return [.sunday]
+        }
+        return self.weekdaysArray
+    }
+    
     public var formattedCreatedDate: String {
         createdAt?.formatted(.dateTime.day().month().year()) ?? "Date not found"
     }
@@ -221,14 +228,66 @@ extension Habit {
     public func getSuccessPercentage() -> Double? {
         guard self.totalValidDays > 0 else { return nil }
         
-        var completedProgress = progressArray.filter { $0.completed }.count
-        let skippedProgress = progressArray.filter { $0.isSkipped }.count
-        if self.wrappedType == .quit {
-            let totalQuitCompleted = self.totalValidDays - progressArray.count
-            completedProgress = completedProgress + totalQuitCompleted
+        var successPercentage: Double = 0
+        
+        if self.frequency == "weekly" {
+            let totalValidWeeks = calculateTotalValidWeeks()
+            var completedProgress = calculateCompletedWeeks()
+            let totalSkippedWeeks = calculateSkippedWeeks()
+            guard totalValidWeeks > 0 else { return nil }
+            
+            if self.wrappedType == .quit {
+                completedProgress = totalValidWeeks - completedProgress
+            }
+            
+            successPercentage = (Double(completedProgress) / Double(totalValidWeeks - totalSkippedWeeks) * 100)
+        } else {
+            var completedProgress = progressArray.filter { $0.completed }.count
+            let skippedProgress = progressArray.filter { $0.isSkipped }.count
+            
+            if self.wrappedType == .quit {
+                let totalQuitCompleted = self.totalValidDays - progressArray.count
+                completedProgress = completedProgress + totalQuitCompleted
+            }
+            
+            successPercentage = (Double(completedProgress) / Double(self.totalValidDays - skippedProgress) * 100)
         }
         
-        return (Double(completedProgress) / Double(self.totalValidDays - skippedProgress) * 100)
+        return successPercentage
+    }
+    
+    private func calculateTotalValidWeeks() -> Int {
+        guard let startDate = self.startDate else { return 0 }
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let components = calendar.dateComponents([.weekOfYear], from: startDate, to: today)
+        return (components.weekOfYear ?? 0) + 1
+    }
+    
+    private func calculateCompletedWeeks() -> Int {
+        let calendar = Calendar.current
+        var completedWeeks: Set<Int> = []
+        
+        for progress in progressArray {
+            let weekOfYear = calendar.component(.weekOfYear, from: progress.date!)
+            let isCompleted = self.wrappedType == .quit ? !progress.completed : progress.completed
+            if isCompleted {
+                completedWeeks.insert(weekOfYear)
+            }
+        }
+        
+        return completedWeeks.count
+    }
+    
+    private func calculateSkippedWeeks() -> Int {
+        let calendar = Calendar.current
+        var skippedWeeks: Set<Int> = []
+        for progress in progressArray where progress.isSkipped {
+            let weekOfYear = calendar.component(.weekOfYear, from: progress.date!)
+            skippedWeeks.insert(weekOfYear)
+        }
+        
+        return skippedWeeks.count
     }
     
     // Starts progress array at most recent, assumed that progress is array is already sorted
@@ -237,7 +296,7 @@ extension Habit {
     public func getCurrentStreak() -> Int {
         guard let mostRecentProgress = progressArray.last(where: { $0.isCompleted && !$0.isSkipped }) else { return 0 }
         
-        guard let progressDate = Date().closestPreviousWeekday(in: self.weekdaysArray),
+        guard let progressDate = Date().closestPreviousWeekday(in: self.weekdaysForCalc),
               let closestProgress = self.findProgress(from: progressDate)
         else {
             if Calendar.current.isDateInToday(mostRecentProgress.wrappedDate) && mostRecentProgress.isCompleted { return 1 }
@@ -246,7 +305,7 @@ extension Habit {
         
         var streaks: [Int] = []
         if Calendar.current.isDateInToday(mostRecentProgress.wrappedDate) || (closestProgress.isCompleted) {
-            streaks = calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray)
+            streaks = calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysForCalc)
         }
         return streaks.first ?? 0
     }
@@ -296,7 +355,7 @@ extension Habit {
         let mostRecentBreak = progressArray.last(where: { !$0.isCompleted && !$0.isSkipped })?.wrappedDate ?? self.wrappedStartDate
         guard !Calendar.current.isDateInToday(mostRecentBreak) else { return 0 }
         
-        let validDatesBetween = mostRecentBreak.validDaysBetween(Date(), in: self.weekdaysArray) ?? []
+        let validDatesBetween = mostRecentBreak.validDaysBetween(Date(), in: self.weekdaysForCalc) ?? []
         
         return calculateQuitStreak(in: validDatesBetween)
     }
@@ -319,7 +378,7 @@ extension Habit {
         var streakArray: [Int] = []
 
         for (date, refDate) in zip(refArray.dropFirst(), refArray) {
-            let datesToCheck = date.validDaysBetween(refDate, in: self.weekdaysArray) ?? []
+            let datesToCheck = date.validDaysBetween(refDate, in: self.weekdaysForCalc) ?? []
             streakArray.append(calculateQuitStreak(in: datesToCheck))
         }
         
@@ -335,7 +394,7 @@ extension Habit {
     
     // Gets the highest number in the streak array
     public func getLongestStreak() -> Int {
-        calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysArray).max() ?? 0
+        calculateStreaksArray(from: progressArray.reversed(), onDays: self.weekdaysForCalc).max() ?? 0
     }
 }
 
