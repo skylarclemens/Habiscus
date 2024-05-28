@@ -40,9 +40,11 @@ struct StatisticsView: View {
                     .font(.system(size: 12, weight: .medium, design: .rounded))
                     .foregroundColor(.primary.opacity(0.8))
                 
-                Text("\(longestStreak) \(longestStreak == 1 ? "day" : "days")")
+                Text("\(longestStreak) \(habit.frequency == "weekly" ? "week" : "day")\(longestStreak == 1 ? "" : "s")")
                     .font(.system(size: 24, weight: .medium, design: .rounded))
                     .foregroundColor(habit.habitColor)
+                    .minimumScaleFactor(0.1)
+                    .lineLimit(1)
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 14)
@@ -59,9 +61,11 @@ struct StatisticsView: View {
                     .font(.system(size: 12, weight: .medium, design: .rounded))
                     .foregroundColor(.primary.opacity(0.8))
                 
-                Text("\(currentStreak) \(currentStreak == 1 ? "day" : "days")")
+                Text("\(currentStreak) \(habit.frequency == "weekly" ? "week" : "day")\(currentStreak == 1 ? "" : "s")")
                     .font(.system(size: 24, weight: .medium, design: .rounded))
                     .foregroundColor(habit.habitColor)
+                    .minimumScaleFactor(0.1)
+                    .lineLimit(1)
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 14)
